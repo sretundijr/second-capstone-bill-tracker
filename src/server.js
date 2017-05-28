@@ -1,5 +1,8 @@
 var path = require("path"),
-    express = require("express");
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+
 
 var DIST_DIR = path.join(__dirname, "../dist"),
     PORT = 8080,
