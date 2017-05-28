@@ -9,7 +9,7 @@ var DIST_DIR = path.join(__dirname, "../dist"),
 app.use(express.static(DIST_DIR));
 
 //Send index.html when the user access the web
-app.get("*", function (req, res) {
+app.get("/", function (req, res) {
     res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
