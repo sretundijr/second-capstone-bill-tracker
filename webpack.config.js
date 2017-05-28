@@ -6,7 +6,7 @@ var DIST_DIR = path.join(__dirname, "dist"),
 module.exports = {
     context: CLIENT_DIR,
 
-    entry: "./main",
+    entry: ['whatwg-fetch', "./main"],
 
     output: {
         path: DIST_DIR,
