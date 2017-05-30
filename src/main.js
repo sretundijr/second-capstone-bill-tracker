@@ -6,10 +6,6 @@ require('./app/client');
 
 const fetch = require('whatwg-fetch');
 
-var hello = document.getElementById("hello");
-hello.innerHTML = "Hello World!";
-
-
 class Magic {
 
 }

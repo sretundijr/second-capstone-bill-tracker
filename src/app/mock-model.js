@@ -6,6 +6,7 @@ const households = [
             {
                 name: 'electric',
                 amount: 100.33,
+                dueDate: '11-15-17',
                 users: [
                     {
                         roommates_id: 'steve-2',

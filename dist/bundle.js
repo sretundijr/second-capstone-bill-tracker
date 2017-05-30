@@ -75,7 +75,13 @@
 
 var HouseHolds = __webpack_require__(4);
 
-console.log(HouseHolds[0].roommates);
+console.log(HouseHolds[0].bills[0].name);
+
+var col_1_head = document.getElementById('col-head-1-js');
+var col_2_head = document.getElementById('col-head-2-js');
+
+col_1_head.innerHTML = HouseHolds[0].bills[0].name;
+col_2_head.innerHTML = HouseHolds[0].bills[0].dueDate;
 
 /***/ }),
 /* 1 */
@@ -569,6 +575,7 @@ var households = [{
     bills: [{
         name: 'electric',
         amount: 100.33,
+        dueDate: '11-15-17',
         users: [{
             roommates_id: 'steve-2',
             amountPaid: 100.33
@@ -613,9 +620,6 @@ __webpack_require__(1);
 __webpack_require__(0);
 
 var fetch = __webpack_require__(3);
-
-var hello = document.getElementById("hello");
-hello.innerHTML = "Hello World!";
 
 var Magic = function Magic() {
   _classCallCheck(this, Magic);
