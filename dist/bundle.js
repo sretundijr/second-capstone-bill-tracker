@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,14 +73,24 @@
 "use strict";
 
 
-__webpack_require__(3);
-__webpack_require__(2);
+var HouseHolds = __webpack_require__(4);
 
-var hello = document.getElementById("hello");
-hello.innerHTML = "Hello World!";
+console.log(HouseHolds[0].roommates);
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "house-stats.html";
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "index.html";
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -547,24 +557,63 @@ hello.innerHTML = "Hello World!";
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "house-stats.html";
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "index.html";
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(0);
+"use strict";
 
+
+var households = [{
+    _id: "slug-slog",
+    name: 'slug slog',
+    bills: [{
+        name: 'electric',
+        amount: 100.33,
+        users: [{
+            roommates_id: 'slug-steve-2',
+            amount: .5
+        }, {
+            roommates_id: 'slug-christina',
+            amount: .5
+        }]
+    }],
+    roommates: [{
+        _id: 'slug-steve-2',
+        name: 'slug steve 2'
+    }, {
+        _id: 'slug-christina',
+        name: 'slug christina'
+    }]
+}];
+
+// function getHouseHolds(){
+//     return 
+// }
+
+module.exports = households;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+__webpack_require__(2);
+__webpack_require__(1);
+
+__webpack_require__(0);
+
+var fetch = __webpack_require__(3);
+
+var hello = document.getElementById("hello");
+hello.innerHTML = "Hello World!";
+
+var Magic = function Magic() {
+  _classCallCheck(this, Magic);
+};
 
 /***/ })
 /******/ ]);
