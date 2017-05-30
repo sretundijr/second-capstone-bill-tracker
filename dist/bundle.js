@@ -564,31 +564,37 @@ module.exports = __webpack_require__.p + "index.html";
 
 
 var households = [{
-    _id: "slug-slog",
-    name: 'slug slog',
+    _id: "steve-christina-house",
+    name: 'steve christina house',
     bills: [{
         name: 'electric',
         amount: 100.33,
         users: [{
-            roommates_id: 'slug-steve-2',
-            amount: .5
+            roommates_id: 'steve-2',
+            amountPaid: 100.33
         }, {
-            roommates_id: 'slug-christina',
-            amount: .5
+            roommates_id: 'christina',
+            amountPaid: 0
+        }]
+    }, {
+        name: 'mortgage',
+        amount: 886.78,
+        users: [{
+            roommates_id: 'steve-2',
+            amountPaid: 450
+        }, {
+            roommates_id: 'christina',
+            amountPaid: 436.78
         }]
     }],
     roommates: [{
-        _id: 'slug-steve-2',
-        name: 'slug steve 2'
+        _id: 'steve-2',
+        name: 'steve 2'
     }, {
-        _id: 'slug-christina',
-        name: 'slug christina'
+        _id: 'christina',
+        name: 'christina'
     }]
 }];
-
-// function getHouseHolds(){
-//     return 
-// }
 
 module.exports = households;
 
