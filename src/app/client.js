@@ -22,7 +22,7 @@ let tableToString = (bills) => {
     return tableString;
 }
 
-let renderMainContent = (Bills) => {
+let renderTableData = (Bills) => {
     let mainContent = document.getElementById('main-content-js');
     return mainContent.insertAdjacentHTML('beforeend', tableToString(Bills));
 }
@@ -30,7 +30,7 @@ let renderMainContent = (Bills) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderMainContent(lotsOfBills)
+    renderTableData(lotsOfBills)
     // event handler for later
     // document.getElementById('main-content-js').onclick = (e) => {
     //     console.log(e);
