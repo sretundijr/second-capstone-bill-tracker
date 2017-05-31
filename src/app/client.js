@@ -22,9 +22,9 @@ let tableToString = (bills) => {
     return tableString;
 }
 
-let renderTableData = (Bills) => {
+let renderTableData = (bills) => {
     let mainContent = document.getElementById('main-content-js');
-    return mainContent.insertAdjacentHTML('beforeend', tableToString(Bills));
+    return mainContent.insertAdjacentHTML('beforeend', tableToString(bills));
 }
 
 
