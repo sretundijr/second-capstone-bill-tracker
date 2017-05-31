@@ -81,13 +81,14 @@ var doubleIt = function doubleIt(bills) {
 };
 var lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
 
-var htmlString = function htmlString(item) {
-    return '<tr><td>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td></tr>');
+//set content editable when button is pushed
+var htmlString = function htmlString(item, index) {
+    return '<tr><td contenteditable="true">' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td contenteditable="true">' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
 };
 
 var buildTable = function buildTable(bills) {
-    return bills.map(function (item) {
-        return htmlString(item);
+    return bills.map(function (item, index) {
+        return htmlString(item, index);
     });
 };
 
@@ -96,17 +97,21 @@ var tableToString = function tableToString(bills) {
     return tableString;
 };
 
-var renderMainContent = function renderMainContent(Bills) {
-    var mainContent = document.getElementById('main-content-js');
-    return mainContent.insertAdjacentHTML('beforeend', tableToString(Bills));
+var getTableBodyId = function getTableBodyId() {
+    return document.getElementById('main-content-js');
+};
+
+var renderTableData = function renderTableData(bills) {
+    return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    renderMainContent(lotsOfBills);
+    renderTableData(lotsOfBills);
     // event handler for later
-    // document.getElementById('main-content-js').onclick = (e) => {
-    //     console.log(e);
-    // }
+    getTableBodyId().onclick = function (e) {
+        var index = e.target.id.substring(5, 6);
+        index = parseInt(index);
+    };
 });
 
 /***/ }),
