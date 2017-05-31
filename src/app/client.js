@@ -1,14 +1,38 @@
 const HouseHolds = require('./mock-model');
 
-console.log(HouseHolds[0].bills[0].name);
-
-var col_1_head = document.getElementById('col-head-1-js');
-var col_2_head = document.getElementById('col-head-2-js');
-
 let bills = HouseHolds[0].bills;
 let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
-col_1_head.innerHTML = HouseHolds[0].bills[0].name;
-col_2_head.innerHTML = HouseHolds[0].bills[0].dueDate;
 
-console.log(lotsOfBills);
+let htmlString = (item) => {
+    return `<tr><td>${item.name}</td>` +
+        `<td>${item.dueDate}</td>` +
+        `<td>${item.amount}</td>` +
+        `<td>${item.users[0].roommates_id}<span> paid it on: ${item.lastPaidOn}</span></td></tr>`
+}
+
+let buildTable = (bills) => {
+    return bills.map((item) => {
+        return htmlString(item);
+    })
+}
+
+let tableToString = (bills) => {
+    let tableString = buildTable(bills).join('')
+    return tableString;
+}
+
+let renderMainContent = (Bills) => {
+    let mainContent = document.getElementById('main-content-js');
+    return mainContent.insertAdjacentHTML('beforeend', tableToString(Bills));
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderMainContent(lotsOfBills)
+    // event handler for later
+    // document.getElementById('main-content-js').onclick = (e) => {
+    //     console.log(e);
+    // }
+});

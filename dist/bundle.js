@@ -75,20 +75,39 @@
 
 var HouseHolds = __webpack_require__(4);
 
-console.log(HouseHolds[0].bills[0].name);
-
-var col_1_head = document.getElementById('col-head-1-js');
-var col_2_head = document.getElementById('col-head-2-js');
-
 var bills = HouseHolds[0].bills;
 var doubleIt = function doubleIt(bills) {
-  return bills.concat(bills.slice(0));
+    return bills.concat(bills.slice(0));
 };
 var lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
-col_1_head.innerHTML = HouseHolds[0].bills[0].name;
-col_2_head.innerHTML = HouseHolds[0].bills[0].dueDate;
 
-console.log(lotsOfBills);
+var htmlString = function htmlString(item) {
+    return '<tr><td>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td></tr>');
+};
+
+var buildTable = function buildTable(bills) {
+    return bills.map(function (item) {
+        return htmlString(item);
+    });
+};
+
+var tableToString = function tableToString(bills) {
+    var tableString = buildTable(bills).join('');
+    return tableString;
+};
+
+var renderMainContent = function renderMainContent(Bills) {
+    var mainContent = document.getElementById('main-content-js');
+    return mainContent.insertAdjacentHTML('beforeend', tableToString(Bills));
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    renderMainContent(lotsOfBills);
+    // event handler for later
+    // document.getElementById('main-content-js').onclick = (e) => {
+    //     console.log(e);
+    // }
+});
 
 /***/ }),
 /* 1 */
@@ -583,6 +602,7 @@ var households = [{
         name: 'electric',
         amount: 100.33,
         dueDate: '11-15-17',
+        lastPaidOn: '11-12-17',
         users: [{
             roommates_id: 'steve-2',
             amountPaid: 100.33
@@ -593,6 +613,8 @@ var households = [{
     }, {
         name: 'mortgage',
         amount: 886.78,
+        dueDate: '589u9480u50',
+        lastPaidOn: 'klfsajfklsja',
         users: [{
             roommates_id: 'steve-2',
             amountPaid: 450
