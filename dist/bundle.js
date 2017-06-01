@@ -83,7 +83,6 @@ var doubleIt = function doubleIt(bills) {
 };
 var lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
 
-//set content editable when button is pushed
 var htmlString = function htmlString(item, index) {
     var editable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['contenteditable=', false];
 
@@ -110,7 +109,6 @@ var getTableBodyId = function getTableBodyId() {
 };
 
 var renderOneRow = function renderOneRow(index, id) {
-
     var tableData = id.parentNode;
     var tableRow = tableData.parentNode;
 
@@ -124,17 +122,19 @@ var renderTableData = function renderTableData(bills) {
     return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    renderTableData(lotsOfBills);
-    // event handler for later
+var watchEdit = function watchEdit() {
     getTableBodyId().onclick = function (e) {
         var element = e.target;
         var index = element.id.substring(5, 6);
         index = parseInt(index);
-        // buildOneRow(index);
-        // console.log(element);
         renderOneRow(index, element);
     };
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    renderTableData(lotsOfBills);
+
+    watchEdit();
 });
 
 /***/ }),

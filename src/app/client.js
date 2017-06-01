@@ -7,7 +7,6 @@ let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
 
 
-//set content editable when button is pushed
 let htmlString = (item, index, editable = ['contenteditable=', false]) => {
     return `<tr id="row-${index}-js"><td ${editable.join('')}>${item.name}</td>` +
         `<td>${item.dueDate}</td>` +
@@ -37,7 +36,6 @@ let getTableBodyId = () => {
 }
 
 let renderOneRow = (index, id) => {
-
     let tableData = id.parentNode;
     let tableRow = tableData.parentNode;
 
@@ -51,15 +49,17 @@ let renderTableData = (bills) => {
     return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderTableData(lotsOfBills)
-    // event handler for later
+let watchEdit = () => {
     getTableBodyId().onclick = (e) => {
         let element = e.target
         let index = element.id.substring(5, 6);
         index = parseInt(index);
-        // buildOneRow(index);
-        // console.log(element);
         renderOneRow(index, element);
     }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderTableData(lotsOfBills);
+
+    watchEdit();
 });
