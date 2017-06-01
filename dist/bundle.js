@@ -75,6 +75,8 @@
 
 var HouseHolds = __webpack_require__(4);
 
+var idString = "data-container-js";
+
 var bills = HouseHolds[0].bills;
 var doubleIt = function doubleIt(bills) {
     return bills.concat(bills.slice(0));
@@ -83,7 +85,13 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
 
 //set content editable when button is pushed
 var htmlString = function htmlString(item, index) {
-    return '<tr><td contenteditable="true">' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td contenteditable="true">' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
+    var editable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['contenteditable=', false];
+
+    return '<tr id="row-' + index + '-js"><td ' + editable.join('') + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td contenteditable="true">' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
+};
+
+var buildOneRow = function buildOneRow(index) {
+    return htmlString(lotsOfBills[index], index, ['contenteditable=', true]);
 };
 
 var buildTable = function buildTable(bills) {
@@ -101,6 +109,17 @@ var getTableBodyId = function getTableBodyId() {
     return document.getElementById('main-content-js');
 };
 
+var renderOneRow = function renderOneRow(index, id) {
+
+    var tableData = id.parentNode;
+    var tableRow = tableData.parentNode;
+
+    var newNode = document.getElementById('row-' + index + '-js');
+    newNode.innerHTML = buildOneRow(index);
+
+    return getTableBodyId().replaceChild(newNode, tableRow);
+};
+
 var renderTableData = function renderTableData(bills) {
     return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
 };
@@ -109,8 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
     renderTableData(lotsOfBills);
     // event handler for later
     getTableBodyId().onclick = function (e) {
-        var index = e.target.id.substring(5, 6);
+        var element = e.target;
+        var index = element.id.substring(5, 6);
         index = parseInt(index);
+        // buildOneRow(index);
+        // console.log(element);
+        renderOneRow(index, element);
     };
 });
 
