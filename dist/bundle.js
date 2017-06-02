@@ -89,7 +89,7 @@ var htmlString = function htmlString(item, index) {
     var editable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['contenteditable=', false];
 
     var contentEditable = item.editable ? 'contenteditable=true' : 'contenteditable=false';
-    return '<tr><td ' + contentEditable + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td ' + contentEditable + '>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
+    return '<tr><td ' + contentEditable + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td ' + contentEditable + '>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="watch-js btn btn-sm">Edit</button></td>') + '</tr>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -112,13 +112,17 @@ var renderTableData = function renderTableData(bills) {
 };
 
 var watchEdit = function watchEdit() {
-    getTableBodyId().onclick = function (e) {
-        var element = e.target;
-        var index = element.id.substring(5, 6);
-        index = parseInt(index);
-        lotsOfBills[index].editable = true;
-        renderTableData(lotsOfBills);
-    };
+    var editButton = document.getElementsByClassName("watch-js");
+
+    Array.from(editButton).forEach(function (element) {
+        element.addEventListener('click', function (e) {
+            var element = e.target;
+            var index = element.id.substring(5, 6);
+            index = parseInt(index);
+            lotsOfBills[index].editable = true;
+            renderTableData(lotsOfBills);
+        });
+    });
 };
 
 document.addEventListener('DOMContentLoaded', function () {

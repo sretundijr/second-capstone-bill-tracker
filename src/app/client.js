@@ -13,7 +13,7 @@ let htmlString = (item, index, editable = ['contenteditable=', false]) => {
         `<td>${item.dueDate}</td>` +
         `<td ${contentEditable}>${item.amount}</td>` +
         `<td>${item.users[0].roommates_id}<span> paid it on: ${item.lastPaidOn}</span></td>` +
-        `<td><button id="edit-${index}-js" class="btn btn-sm">Edit</button></td>` +
+        `<td><button id="edit-${index}-js" class="watch-js btn btn-sm">Edit</button></td>` +
         `</tr>`
 }
 
@@ -37,13 +37,18 @@ let renderTableData = (bills) => {
 }
 
 let watchEdit = () => {
-    getTableBodyId().onclick = (e) => {
-        let element = e.target
-        let index = element.id.substring(5, 6);
-        index = parseInt(index);
-        lotsOfBills[index].editable = true;
-        renderTableData(lotsOfBills);
-    }
+    let editButton = document.getElementsByClassName("watch-js");
+
+    Array.from(editButton).forEach(function (element) {
+        element.addEventListener('click', (e) => {
+            let element = e.target
+            let index = element.id.substring(5, 6);
+            index = parseInt(index);
+            lotsOfBills[index].editable = true;
+            renderTableData(lotsOfBills);
+        });
+    });
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
