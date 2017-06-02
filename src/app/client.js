@@ -4,20 +4,17 @@ const idString = "data-container-js";
 
 let bills = HouseHolds[0].bills;
 let doubleIt = (bills) => bills.concat(bills.slice(0))
-let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
-
+let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
+    .map((e) => Object.assign({}, e, { editable: false }));
 
 let htmlString = (item, index, editable = ['contenteditable=', false]) => {
-    return `<tr id="row-${index}-js"><td ${editable.join('')}>${item.name}</td>` +
+    let contentEditable = item.editable ? 'contenteditable=true' : 'contenteditable=false';
+    return `<tr><td ${contentEditable}>${item.name}</td>` +
         `<td>${item.dueDate}</td>` +
-        `<td contenteditable="true">${item.amount}</td>` +
+        `<td ${contentEditable}>${item.amount}</td>` +
         `<td>${item.users[0].roommates_id}<span> paid it on: ${item.lastPaidOn}</span></td>` +
         `<td><button id="edit-${index}-js" class="btn btn-sm">Edit</button></td>` +
         `</tr>`
-}
-
-let buildOneRow = (index) => {
-    return htmlString(lotsOfBills[index], index, ['contenteditable=', true]);
 }
 
 let buildTable = (bills) => {
@@ -35,18 +32,8 @@ let getTableBodyId = () => {
     return document.getElementById('main-content-js');
 }
 
-let renderOneRow = (index, id) => {
-    let tableData = id.parentNode;
-    let tableRow = tableData.parentNode;
-
-    let newNode = document.getElementById(`row-${index}-js`)
-    newNode.innerHTML = buildOneRow(index);
-
-    return getTableBodyId().replaceChild(newNode, tableRow)
-}
-
 let renderTableData = (bills) => {
-    return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
+    return getTableBodyId().innerHTML = tableToString(bills);
 }
 
 let watchEdit = () => {
@@ -54,7 +41,8 @@ let watchEdit = () => {
         let element = e.target
         let index = element.id.substring(5, 6);
         index = parseInt(index);
-        renderOneRow(index, element);
+        lotsOfBills[index].editable = true;
+        renderTableData(lotsOfBills);
     }
 }
 

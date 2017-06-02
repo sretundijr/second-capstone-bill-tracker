@@ -81,16 +81,15 @@ var bills = HouseHolds[0].bills;
 var doubleIt = function doubleIt(bills) {
     return bills.concat(bills.slice(0));
 };
-var lotsOfBills = doubleIt(doubleIt(doubleIt(bills)));
+var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
+    return Object.assign({}, e, { editable: false });
+});
 
 var htmlString = function htmlString(item, index) {
     var editable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['contenteditable=', false];
 
-    return '<tr id="row-' + index + '-js"><td ' + editable.join('') + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td contenteditable="true">' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
-};
-
-var buildOneRow = function buildOneRow(index) {
-    return htmlString(lotsOfBills[index], index, ['contenteditable=', true]);
+    var contentEditable = item.editable ? 'contenteditable=true' : 'contenteditable=false';
+    return '<tr><td ' + contentEditable + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td ' + contentEditable + '>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="btn btn-sm">Edit</button></td>') + '</tr>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -108,18 +107,8 @@ var getTableBodyId = function getTableBodyId() {
     return document.getElementById('main-content-js');
 };
 
-var renderOneRow = function renderOneRow(index, id) {
-    var tableData = id.parentNode;
-    var tableRow = tableData.parentNode;
-
-    var newNode = document.getElementById('row-' + index + '-js');
-    newNode.innerHTML = buildOneRow(index);
-
-    return getTableBodyId().replaceChild(newNode, tableRow);
-};
-
 var renderTableData = function renderTableData(bills) {
-    return getTableBodyId().insertAdjacentHTML('beforeend', tableToString(bills));
+    return getTableBodyId().innerHTML = tableToString(bills);
 };
 
 var watchEdit = function watchEdit() {
@@ -127,7 +116,8 @@ var watchEdit = function watchEdit() {
         var element = e.target;
         var index = element.id.substring(5, 6);
         index = parseInt(index);
-        renderOneRow(index, element);
+        lotsOfBills[index].editable = true;
+        renderTableData(lotsOfBills);
     };
 };
 
@@ -684,3 +674,4 @@ var Magic = function Magic() {
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=bundle.js.map
