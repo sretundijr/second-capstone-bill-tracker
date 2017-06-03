@@ -85,7 +85,7 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
 
 var htmlString = function htmlString(item, index) {
     var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return '<div class="row">\n                <div class="col-md-6 col-md-offset-3">\n                    <div class="row">\n                        <div class="col-md-3">\n                            <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div  class="col-md-3">\n                            <input type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                        <div  class="col-md-3">\n                            <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        <div  class="col-md-3">' + item.users[0].roommates_id + '\n                            <input type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n                    </div>\n                </div>\n                 <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </div>';
+    return '<div class="row">\n                <div class="col-md-10 col-md-offset-1">\n                    <div class="row">\n                    <form action="#" class="form-inline">\n\n                        <div class="col-md-2">\n                        <label for="bill">Name</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div class="col-md-2">\n                        <label for="bill"> Date Due</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                       \n                        <div class="col-md-2">\n                         <label for="bill">Amount</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        \n                        <div class="col-md-2">\n                        <label for="bill">Who paid it:</label>\n                            <input class="form-control" name="bill" type="text" value="' + item.users[0].roommates_id + '">\n                        </div>\n                        \n                        <div  class="col-md-2">\n                        <label for="bill">Paid On:</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n\n                        <div class="col-md-2">\n                        <span></span>\n                            <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                            ' + inputReadOnly[2] + '\n                            </button>\n                        </div>\n                    </form>\n                    </div>\n                </div>\n            </div>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -112,6 +112,7 @@ var watchEdit = function watchEdit() {
 
     Array.from(editButton).forEach(function (element, i, array) {
         element.addEventListener('click', function (e) {
+            e.preventDefault();
             var element = e.target;
             var index = 0;
             if (i <= 9) {
@@ -129,11 +130,14 @@ var watchEdit = function watchEdit() {
 
 var setEditedRow = function setEditedRow(e, i) {
     var data = e.target.parentNode.parentNode.getElementsByTagName('input');
+    // console.log(e.target.parentNode.parentNode);
+    console.log(data);
 
     lotsOfBills[i].name = data[0].value;
     lotsOfBills[i].dueDate = data[1].value;
     lotsOfBills[i].amount = data[2].value;
-    lotsOfBills[i].lastPaidOn = data[3].value;
+    // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
+    lotsOfBills[i].lastPaidOn = data[4].value;
 };
 
 var isEditable = function isEditable(index) {
