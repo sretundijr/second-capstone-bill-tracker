@@ -85,7 +85,7 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
 
 var htmlString = function htmlString(item, index) {
     var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return '<tr>\n             <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n            </td>\n            <td><input type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '"</td>\n            <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n            </td>\n            <td>' + item.users[0].roommates_id + '\n                <span> paid it on: \n                    <input type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                </span>\n            </td>\n            <td>\n                <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </td>\n        </tr>';
+    return '<div class="row">\n                <div class="col-md-6 col-md-offset-3">\n                    <div class="row">\n                        <div class="col-md-3">\n                            <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div  class="col-md-3">\n                            <input type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                        <div  class="col-md-3">\n                            <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        <div  class="col-md-3">' + item.users[0].roommates_id + '\n                            <input type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n                    </div>\n                </div>\n                 <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </div>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -95,8 +95,7 @@ var buildTable = function buildTable(bills) {
 };
 
 var tableToString = function tableToString(bills) {
-    var tableString = buildTable(bills).join('');
-    return tableString;
+    return buildTable(bills).join('');
 };
 
 var getTableBodyId = function getTableBodyId() {
