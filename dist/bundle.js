@@ -75,8 +75,6 @@
 
 var HouseHolds = __webpack_require__(4);
 
-var idString = "data-container-js";
-
 var bills = HouseHolds[0].bills;
 var doubleIt = function doubleIt(bills) {
     return bills.concat(bills.slice(0));
@@ -86,10 +84,9 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
 });
 
 var htmlString = function htmlString(item, index) {
-    var editable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['contenteditable=', false];
 
-    var contentEditable = item.editable ? 'contenteditable=true' : 'contenteditable=false';
-    return '<tr><td ' + contentEditable + '>' + item.name + '</td>' + ('<td>' + item.dueDate + '</td>') + ('<td ' + contentEditable + '>' + item.amount + '</td>') + ('<td>' + item.users[0].roommates_id + '<span> paid it on: ' + item.lastPaidOn + '</span></td>') + ('<td><button id="edit-' + index + '-js" class="watch-js btn btn-sm">Edit</button></td>') + '</tr>';
+    var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
+    return '<tr>\n             <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.name + '>\n            </td>\n            <td>' + item.dueDate + '</td>\n            <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.amount + '>\n            </td>\n            <td>' + item.users[0].roommates_id + '\n                <span> paid it on: ' + item.lastPaidOn + '</span>\n            </td>\n            <td>\n                <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </td>\n        </tr>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -108,27 +105,49 @@ var getTableBodyId = function getTableBodyId() {
 };
 
 var renderTableData = function renderTableData(bills) {
-    return getTableBodyId().innerHTML = tableToString(bills);
+    getTableBodyId().innerHTML = tableToString(bills);
+    return watchEdit();
 };
 
 var watchEdit = function watchEdit() {
     var editButton = document.getElementsByClassName("watch-js");
 
-    Array.from(editButton).forEach(function (element) {
+    Array.from(editButton).forEach(function (element, i, array) {
         element.addEventListener('click', function (e) {
             var element = e.target;
-            var index = element.id.substring(5, 6);
+            var index = 0;
+            if (i <= 9) {
+                index = element.id.substring(5, 6);
+            } else {
+                index = element.id.substring(5, 7);
+            }
             index = parseInt(index);
-            lotsOfBills[index].editable = true;
+            lotsOfBills[index].editable = isEditable(index);
+            getEditedRow(e, index);
             renderTableData(lotsOfBills);
         });
     });
 };
 
+var getEditedRow = function getEditedRow(e, i) {
+    var data = e.target.parentNode.parentNode.getElementsByTagName('input');
+
+    lotsOfBills[i].name = data[0].value;
+    lotsOfBills[i].amount = data[1].value;
+    // console.log(data);
+    console.log(lotsOfBills[i].name);
+};
+
+var isEditable = function isEditable(index) {
+    if (lotsOfBills[index].editable) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     renderTableData(lotsOfBills);
-
-    watchEdit();
 });
 
 /***/ }),

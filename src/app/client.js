@@ -1,20 +1,30 @@
 const HouseHolds = require('./mock-model');
 
-const idString = "data-container-js";
-
 let bills = HouseHolds[0].bills;
 let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
-let htmlString = (item, index, editable = ['contenteditable=', false]) => {
-    let contentEditable = item.editable ? 'contenteditable=true' : 'contenteditable=false';
-    return `<tr><td ${contentEditable}>${item.name}</td>` +
-        `<td>${item.dueDate}</td>` +
-        `<td ${contentEditable}>${item.amount}</td>` +
-        `<td>${item.users[0].roommates_id}<span> paid it on: ${item.lastPaidOn}</span></td>` +
-        `<td><button id="edit-${index}-js" class="watch-js btn btn-sm">Edit</button></td>` +
-        `</tr>`
+let htmlString = (item, index) => {
+
+    let inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
+    return `<tr>
+             <td>
+                <input name="bill" type="text" ${inputReadOnly[0]} value=${item.name}>
+            </td>
+            <td>${item.dueDate}</td>
+            <td>
+                <input name="bill" type="text" ${inputReadOnly[0]} value=${item.amount}>
+            </td>
+            <td>${item.users[0].roommates_id}
+                <span> paid it on: ${item.lastPaidOn}</span>
+            </td>
+            <td>
+                <button name="bill" id="edit-${index}-js" ${inputReadOnly[1]} class="watch-js btn btn-primary btn-sm">
+                    ${inputReadOnly[2]}
+                </button>
+            </td>
+        </tr>`
 }
 
 let buildTable = (bills) => {
@@ -33,26 +43,47 @@ let getTableBodyId = () => {
 }
 
 let renderTableData = (bills) => {
-    return getTableBodyId().innerHTML = tableToString(bills);
+    getTableBodyId().innerHTML = tableToString(bills);
+    return watchEdit();
 }
 
 let watchEdit = () => {
     let editButton = document.getElementsByClassName("watch-js");
 
-    Array.from(editButton).forEach(function (element) {
+    Array.from(editButton).forEach(function (element, i, array) {
         element.addEventListener('click', (e) => {
             let element = e.target
-            let index = element.id.substring(5, 6);
+            let index = 0;
+            if (i <= 9) {
+                index = element.id.substring(5, 6);
+            } else {
+                index = element.id.substring(5, 7);
+            }
             index = parseInt(index);
-            lotsOfBills[index].editable = true;
+            lotsOfBills[index].editable = isEditable(index);
+            getEditedRow(e, index);
             renderTableData(lotsOfBills);
         });
     });
+}
 
+let getEditedRow = (e, i) => {
+    let data = e.target.parentNode.parentNode.getElementsByTagName('input');
+
+    lotsOfBills[i].name = data[0].value
+    lotsOfBills[i].amount = data[1].value
+    // console.log(data);
+    console.log(lotsOfBills[i].name)
+}
+
+let isEditable = (index) => {
+    if (lotsOfBills[index].editable) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
-
-    watchEdit();
 });
