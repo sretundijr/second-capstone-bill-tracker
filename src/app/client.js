@@ -1,54 +1,12 @@
 const HouseHolds = require('./mock-model');
+const HOUSE_HTML = require('./house-stats-html');
 
 let bills = HouseHolds[0].bills;
 let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
-let htmlString = (item, index) => {
-    let inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return `<div class="row">
-                <div class="col-md-10 col-md-offset-1">
-                    <div class="row">
-                    <form action="#" class="form-inline">
-
-                        <div class="col-md-2">
-                        <label for="bill">Name</label>
-                            <input class="form-control" name="bill" type="text" ${inputReadOnly[0]} value="${item.name}">
-                        </div>
-                        <div class="col-md-2">
-                        <label for="bill"> Date Due</label>
-                            <input class="form-control" name="bill" type="date" ${inputReadOnly[0]} value="${item.dueDate}">
-                        </div>
-                       
-                        <div class="col-md-2">
-                         <label for="bill">Amount</label>
-                            <input class="form-control" name="bill" type="text" ${inputReadOnly[0]} value="${item.amount}">
-                        </div>
-                        
-                        <div class="col-md-2">
-                        <label for="bill">Who paid it:</label>
-                            <input class="form-control" name="bill" type="text" value="${item.users[0].roommates_id}">
-                        </div>
-                        
-                        <div  class="col-md-2">
-                        <label for="bill">Paid On:</label>
-                            <input class="form-control" name="bill" type="date" ${inputReadOnly[0]} value="${item.lastPaidOn}">
-                        </div>
-
-                        <div class="col-md-2">
-                        <span></span>
-                            <button name="bill" id="edit-${index}-js" ${inputReadOnly[1]} class="watch-js btn btn-primary btn-sm">
-                            ${inputReadOnly[2]}
-                            </button>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-            </div>`
-}
-
-let buildTable = (bills) => bills.map((item, index) => htmlString(item, index));
+let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 
 let tableToString = (bills) => buildTable(bills).join('');
 

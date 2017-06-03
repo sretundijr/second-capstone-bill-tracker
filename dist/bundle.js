@@ -74,6 +74,7 @@
 
 
 var HouseHolds = __webpack_require__(4);
+var HOUSE_HTML = __webpack_require__(8);
 
 var bills = HouseHolds[0].bills;
 var doubleIt = function doubleIt(bills) {
@@ -83,14 +84,9 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
     return Object.assign({}, e, { editable: false });
 });
 
-var htmlString = function htmlString(item, index) {
-    var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return '<div class="row">\n                <div class="col-md-10 col-md-offset-1">\n                    <div class="row">\n                    <form action="#" class="form-inline">\n\n                        <div class="col-md-2">\n                        <label for="bill">Name</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div class="col-md-2">\n                        <label for="bill"> Date Due</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                       \n                        <div class="col-md-2">\n                         <label for="bill">Amount</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        \n                        <div class="col-md-2">\n                        <label for="bill">Who paid it:</label>\n                            <input class="form-control" name="bill" type="text" value="' + item.users[0].roommates_id + '">\n                        </div>\n                        \n                        <div  class="col-md-2">\n                        <label for="bill">Paid On:</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n\n                        <div class="col-md-2">\n                        <span></span>\n                            <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                            ' + inputReadOnly[2] + '\n                            </button>\n                        </div>\n                    </form>\n                    </div>\n                </div>\n            </div>';
-};
-
 var buildTable = function buildTable(bills) {
     return bills.map(function (item, index) {
-        return htmlString(item, index);
+        return HOUSE_HTML(item, index);
     });
 };
 
@@ -688,6 +684,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 __webpack_require__(2);
 __webpack_require__(1);
+__webpack_require__(7);
 
 __webpack_require__(0);
 
@@ -696,6 +693,27 @@ var fetch = __webpack_require__(3);
 var Magic = function Magic() {
   _classCallCheck(this, Magic);
 };
+
+/***/ }),
+/* 6 */,
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "house-stats.css";
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var htmlString = function htmlString(item, index) {
+    var inputReadOnly = item.editable ? ['', '', 'Save'] : ['readonly', '', 'Edit'];
+    return '<div class="row">\n                <div class="col-md-10 col-md-offset-1">\n                    <div class="row main-container-style">\n                    <form action="#" class="form-inline">\n\n                        <div class="col-md-2">\n                        <label for="bill">Name</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div class="col-md-2">\n                        <label for="bill"> Date Due</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                       \n                        <div class="col-md-2">\n                         <label for="bill">Amount</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        \n                        <div class="col-md-2">\n                        <label for="bill">Who paid it:</label>\n                            <input class="form-control" name="bill" type="text" value="' + item.users[0].roommates_id + '">\n                        </div>\n                        \n                        <div  class="col-md-2">\n                        <label for="bill">Paid On:</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n\n                        <div class="col-md-2">\n                            <div></div>\n                            <input value="' + inputReadOnly[2] + '" name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="edit-btn-style watch-js btn btn-primary btn-sm">\n                           \n                            </input>\n                        </div>\n                    </form>\n                    <ul>    \n                    </div>\n                </div>\n            </div>';
+};
+
+module.exports = htmlString;
 
 /***/ })
 /******/ ]);
