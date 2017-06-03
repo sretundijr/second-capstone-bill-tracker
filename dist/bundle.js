@@ -84,7 +84,6 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
 });
 
 var htmlString = function htmlString(item, index) {
-    console.log(item.name);
     var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
     return '<tr>\n             <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n            </td>\n            <td><input type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '"</td>\n            <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n            </td>\n            <td>' + item.users[0].roommates_id + '\n                <span> paid it on: \n                    <input type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                </span>\n            </td>\n            <td>\n                <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </td>\n        </tr>';
 };
@@ -133,7 +132,6 @@ var setEditedRow = function setEditedRow(e, i) {
     var data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
     lotsOfBills[i].name = data[0].value;
-    // console.log(lotsOfBills[i].name);
     lotsOfBills[i].dueDate = data[1].value;
     lotsOfBills[i].amount = data[2].value;
     lotsOfBills[i].lastPaidOn = data[3].value;
