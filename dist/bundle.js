@@ -86,7 +86,7 @@ var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
 var htmlString = function htmlString(item, index) {
 
     var inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return '<tr>\n             <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.name + '>\n            </td>\n            <td>' + item.dueDate + '</td>\n            <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.amount + '>\n            </td>\n            <td>' + item.users[0].roommates_id + '\n                <span> paid it on: ' + item.lastPaidOn + '</span>\n            </td>\n            <td>\n                <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </td>\n        </tr>';
+    return '<tr>\n             <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.name + '>\n            </td>\n            <td><input type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '"</td>\n            <td>\n                <input name="bill" type="text" ' + inputReadOnly[0] + ' value=' + item.amount + '>\n            </td>\n            <td>' + item.users[0].roommates_id + '\n                <span> paid it on: \n                    <input type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                </span>\n            </td>\n            <td>\n                <button name="bill" id="edit-' + index + '-js" ' + inputReadOnly[1] + ' class="watch-js btn btn-primary btn-sm">\n                    ' + inputReadOnly[2] + '\n                </button>\n            </td>\n        </tr>';
 };
 
 var buildTable = function buildTable(bills) {
@@ -123,19 +123,19 @@ var watchEdit = function watchEdit() {
             }
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
-            getEditedRow(e, index);
+            setEditedRow(e, index);
             renderTableData(lotsOfBills);
         });
     });
 };
 
-var getEditedRow = function getEditedRow(e, i) {
+var setEditedRow = function setEditedRow(e, i) {
     var data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
     lotsOfBills[i].name = data[0].value;
-    lotsOfBills[i].amount = data[1].value;
-    // console.log(data);
-    console.log(lotsOfBills[i].name);
+    lotsOfBills[i].dueDate = data[1].value;
+    lotsOfBills[i].amount = data[2].value;
+    lotsOfBills[i].lastPaidOn = data[3].value;
 };
 
 var isEditable = function isEditable(index) {
@@ -642,8 +642,8 @@ var households = [{
     bills: [{
         name: 'electric',
         amount: 100.33,
-        dueDate: '11-15-17',
-        lastPaidOn: '11-12-17',
+        dueDate: '2017-11-15',
+        lastPaidOn: '2017-11-12',
         users: [{
             roommates_id: 'steve-2',
             amountPaid: 100.33
@@ -654,8 +654,8 @@ var households = [{
     }, {
         name: 'mortgage',
         amount: 886.78,
-        dueDate: '589u9480u50',
-        lastPaidOn: 'klfsajfklsja',
+        dueDate: '2017-11-15',
+        lastPaidOn: '2017-11-15',
         users: [{
             roommates_id: 'steve-2',
             amountPaid: 450

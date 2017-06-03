@@ -12,12 +12,14 @@ let htmlString = (item, index) => {
              <td>
                 <input name="bill" type="text" ${inputReadOnly[0]} value=${item.name}>
             </td>
-            <td>${item.dueDate}</td>
+            <td><input type="date" ${inputReadOnly[0]} value="${item.dueDate}"</td>
             <td>
                 <input name="bill" type="text" ${inputReadOnly[0]} value=${item.amount}>
             </td>
             <td>${item.users[0].roommates_id}
-                <span> paid it on: ${item.lastPaidOn}</span>
+                <span> paid it on: 
+                    <input type="date" ${inputReadOnly[0]} value="${item.lastPaidOn}">
+                </span>
             </td>
             <td>
                 <button name="bill" id="edit-${index}-js" ${inputReadOnly[1]} class="watch-js btn btn-primary btn-sm">
@@ -71,7 +73,9 @@ let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
     lotsOfBills[i].name = data[0].value
-    lotsOfBills[i].amount = data[1].value
+    lotsOfBills[i].dueDate = data[1].value
+    lotsOfBills[i].amount = data[2].value
+    lotsOfBills[i].lastPaidOn = data[3].value
 }
 
 let isEditable = (index) => {

@@ -6,8 +6,8 @@ const households = [
             {
                 name: 'electric',
                 amount: 100.33,
-                dueDate: '11-15-17',
-                lastPaidOn: '11-12-17',
+                dueDate: '2017-11-15',
+                lastPaidOn: '2017-11-12',
                 users: [
                     {
                         roommates_id: 'steve-2',
@@ -22,8 +22,8 @@ const households = [
             {
                 name: 'mortgage',
                 amount: 886.78,
-                dueDate: '589u9480u50',
-                lastPaidOn: 'klfsajfklsja',
+                dueDate: '2017-11-15',
+                lastPaidOn: '2017-11-15',
                 users: [
                     {
                         roommates_id: 'steve-2',
