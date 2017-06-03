@@ -61,19 +61,17 @@ let watchEdit = () => {
             }
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
-            getEditedRow(e, index);
+            setEditedRow(e, index);
             renderTableData(lotsOfBills);
         });
     });
 }
 
-let getEditedRow = (e, i) => {
+let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
     lotsOfBills[i].name = data[0].value
     lotsOfBills[i].amount = data[1].value
-    // console.log(data);
-    console.log(lotsOfBills[i].name)
 }
 
 let isEditable = (index) => {
