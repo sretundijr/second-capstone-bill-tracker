@@ -6,15 +6,15 @@ let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
 let htmlString = (item, index) => {
-
+    console.log(item.name)
     let inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
     return `<tr>
              <td>
-                <input name="bill" type="text" ${inputReadOnly[0]} value=${item.name}>
+                <input name="bill" type="text" ${inputReadOnly[0]} value="${item.name}">
             </td>
             <td><input type="date" ${inputReadOnly[0]} value="${item.dueDate}"</td>
             <td>
-                <input name="bill" type="text" ${inputReadOnly[0]} value=${item.amount}>
+                <input name="bill" type="text" ${inputReadOnly[0]} value="${item.amount}">
             </td>
             <td>${item.users[0].roommates_id}
                 <span> paid it on: 
@@ -73,6 +73,7 @@ let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
     lotsOfBills[i].name = data[0].value
+    // console.log(lotsOfBills[i].name);
     lotsOfBills[i].dueDate = data[1].value
     lotsOfBills[i].amount = data[2].value
     lotsOfBills[i].lastPaidOn = data[3].value
