@@ -36,9 +36,9 @@ let htmlString = (item, index) => {
                             </input>
                         </div>
                     </form>
-                    <ul>    
                     </div>
-                </div>
+                    <hr class='hr-style'>
+                </div>                
             </div>`
 }
 

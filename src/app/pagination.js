@@ -6,7 +6,7 @@ let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
-const fiveResultsEach = ARRAY.chunk(lotsOfBills, 5);
+const fiveResultsEach = ARRAY.chunk(lotsOfBills, 4);
 
 let state = {
     firstPage: 0,
