@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="/house-stats.css">
     <script defer src="/bundle.js"></script>
 </head>
 
@@ -25,25 +26,26 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th id="th-1-js">Name</th>
-                            <th id="th-2-js">Due Date</th>
-                            <th id="th-3-js">Amount</th>
-                            <th id="th-3-js">Who paid it</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="main-content-js">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
 
-                    </tbody>
-                </table>
+                </div>
+            </div>
+        </div>
+        <div id="main-content-js">
+
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <span>
+                    <button id="previous-js" type="button">Previous 4</button>
+                </span>
+                <span>
+                    <button id="next-js" type="button">Next 4</button>
+                </span>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

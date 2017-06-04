@@ -1,47 +1,14 @@
-const HouseHolds = require('./mock-model');
 
-let bills = HouseHolds[0].bills;
-let doubleIt = (bills) => bills.concat(bills.slice(0))
-let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
-    .map((e) => Object.assign({}, e, { editable: false }));
+const HOUSE_HTML = require('./house-stats-html');
+const { sendFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
 
-let htmlString = (item, index) => {
-    let inputReadOnly = item.editable ? ['', 'type="submit"', 'Save'] : ['readonly', '', 'Edit'];
-    return `<tr>
-             <td>
-                <input name="bill" type="text" ${inputReadOnly[0]} value="${item.name}">
-            </td>
-            <td><input type="date" ${inputReadOnly[0]} value="${item.dueDate}"</td>
-            <td>
-                <input name="bill" type="text" ${inputReadOnly[0]} value="${item.amount}">
-            </td>
-            <td>${item.users[0].roommates_id}
-                <span> paid it on: 
-                    <input type="date" ${inputReadOnly[0]} value="${item.lastPaidOn}">
-                </span>
-            </td>
-            <td>
-                <button name="bill" id="edit-${index}-js" ${inputReadOnly[1]} class="watch-js btn btn-primary btn-sm">
-                    ${inputReadOnly[2]}
-                </button>
-            </td>
-        </tr>`
-}
+let lotsOfBills = sendFirstPage();
 
-let buildTable = (bills) => {
-    return bills.map((item, index) => {
-        return htmlString(item, index);
-    })
-}
+let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 
-let tableToString = (bills) => {
-    let tableString = buildTable(bills).join('')
-    return tableString;
-}
+let tableToString = (bills) => buildTable(bills).join('');
 
-let getTableBodyId = () => {
-    return document.getElementById('main-content-js');
-}
+let getTableBodyId = () => document.getElementById('main-content-js');
 
 let renderTableData = (bills) => {
     getTableBodyId().innerHTML = tableToString(bills);
@@ -53,6 +20,7 @@ let watchEdit = () => {
 
     Array.from(editButton).forEach(function (element, i, array) {
         element.addEventListener('click', (e) => {
+            e.preventDefault();
             let element = e.target
             let index = 0;
             if (i <= 9) {
@@ -69,12 +37,13 @@ let watchEdit = () => {
 }
 
 let setEditedRow = (e, i) => {
-    let data = e.target.parentNode.parentNode.getElementsByTagName('input');
+    let data = e.target.parentNode.parentNode.getElementsByTagName('input')
 
     lotsOfBills[i].name = data[0].value
     lotsOfBills[i].dueDate = data[1].value
     lotsOfBills[i].amount = data[2].value
-    lotsOfBills[i].lastPaidOn = data[3].value
+    // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
+    lotsOfBills[i].lastPaidOn = data[4].value
 }
 
 let isEditable = (index) => {
@@ -85,6 +54,24 @@ let isEditable = (index) => {
     }
 }
 
+let watchNextBtn = () => {
+    let nextBtn = document.getElementById('next-js');
+    nextBtn.addEventListener('click', (e) => {
+        lotsOfBills = forwardOnePage(state.currentPage);
+        renderTableData(lotsOfBills)
+    })
+}
+
+let watchPreviousBtn = () => {
+    let previousBtn = document.getElementById('previous-js');
+    previousBtn.addEventListener('click', (e) => {
+        lotsOfBills = backOnePage(state.currentPage);
+        renderTableData(lotsOfBills);
+    })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
+    watchNextBtn();
+    watchPreviousBtn();
 });
