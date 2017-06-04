@@ -1,10 +1,8 @@
-const HouseHolds = require('./mock-model');
-const HOUSE_HTML = require('./house-stats-html');
 
-let bills = HouseHolds[0].bills;
-let doubleIt = (bills) => bills.concat(bills.slice(0))
-let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
-    .map((e) => Object.assign({}, e, { editable: false }));
+const HOUSE_HTML = require('./house-stats-html');
+const { sendFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
+
+let lotsOfBills = sendFirstPage();
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 
@@ -39,9 +37,7 @@ let watchEdit = () => {
 }
 
 let setEditedRow = (e, i) => {
-    let data = e.target.parentNode.parentNode.getElementsByTagName('input');
-    // console.log(e.target.parentNode.parentNode);
-    console.log(data);
+    let data = e.target.parentNode.parentNode.getElementsByTagName('input')
 
     lotsOfBills[i].name = data[0].value
     lotsOfBills[i].dueDate = data[1].value
@@ -58,6 +54,24 @@ let isEditable = (index) => {
     }
 }
 
+let watchNextBtn = () => {
+    let nextBtn = document.getElementById('next-js');
+    nextBtn.addEventListener('click', (e) => {
+        lotsOfBills = forwardOnePage(state.currentPage);
+        renderTableData(lotsOfBills)
+    })
+}
+
+let watchPreviousBtn = () => {
+    let previousBtn = document.getElementById('previous-js');
+    previousBtn.addEventListener('click', (e) => {
+        lotsOfBills = backOnePage(state.currentPage);
+        renderTableData(lotsOfBills);
+    })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
+    watchNextBtn();
+    watchPreviousBtn();
 });
