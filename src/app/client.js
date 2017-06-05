@@ -22,12 +22,7 @@ let watchEdit = () => {
         element.addEventListener('click', (e) => {
             e.preventDefault();
             let element = e.target
-            let index = 0;
-            if (i <= 9) {
-                index = element.id.substring(5, 6);
-            } else {
-                index = element.id.substring(5, 7);
-            }
+            let index = element.id.substring(10);
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
             setEditedRow(e, index);

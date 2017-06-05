@@ -31,7 +31,7 @@ let htmlString = (item, index) => {
 
                         <div class="col-md-2">
                             <div></div>
-                            <input value="${inputReadOnly[2]}" name="bill" id="edit-${index}-js" ${inputReadOnly[1]} class="edit-btn-style watch-js btn btn-primary btn-sm">
+                            <input value="${inputReadOnly[2]}" name="bill" id="edit-bill-${index}" ${inputReadOnly[1]} class="edit-btn-style watch-js btn btn-primary btn-sm">
                            
                             </input>
                         </div>
