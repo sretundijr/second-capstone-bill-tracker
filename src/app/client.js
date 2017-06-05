@@ -1,8 +1,8 @@
 
 const HOUSE_HTML = require('./house-stats-html');
-const { sendFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
+const { getFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
 
-let lotsOfBills = sendFirstPage();
+let lotsOfBills = getFirstPage();
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 

@@ -6,7 +6,8 @@ let doubleIt = (bills) => bills.concat(bills.slice(0))
 let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
-const fiveResultsEach = ARRAY.chunk(lotsOfBills, 4);
+const billsPerPage = 4
+const fiveResultsEach = ARRAY.chunk(lotsOfBills, billsPerPage);
 
 let state = {
     firstPage: 0,
@@ -16,8 +17,7 @@ let state = {
 
 let forwardOnePage = (currentIndex) => {
     if (currentIndex !== state.lastPage) {
-        currentIndex++;
-        state.currentPage = currentIndex;
+        state.currentPage++;
         return pagedResults(state.currentPage);
     } else {
         state.currentPage = state.firstPage;
@@ -27,8 +27,7 @@ let forwardOnePage = (currentIndex) => {
 
 let backOnePage = (currentIndex) => {
     if (currentIndex > state.firstPage) {
-        currentIndex--;
-        state.currentPage = currentIndex;
+        state.currentPage--;
         return pagedResults(state.currentPage)
     } else {
         state.currentPage = state.lastPage;
@@ -36,7 +35,7 @@ let backOnePage = (currentIndex) => {
     }
 }
 
-let sendFirstPage = () => {
+let getFirstPage = () => {
     return pagedResults(state.firstPage);
 }
 
@@ -44,4 +43,4 @@ let pagedResults = (index) => {
     return fiveResultsEach[index];
 }
 
-module.exports = { sendFirstPage, forwardOnePage, backOnePage, state };
+module.exports = { getFirstPage, forwardOnePage, backOnePage, state };
