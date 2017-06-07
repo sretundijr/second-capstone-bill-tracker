@@ -1,8 +1,14 @@
 
+const HouseHolds = require('./mock-model');
+let bills = HouseHolds[0].bills;
+let doubleIt = (bills) => bills.concat(bills.slice(0))
+let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
+    .map((e) => Object.assign({}, e, { editable: false }));
+
 const HOUSE_HTML = require('./house-stats-html');
 const { getFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
 
-let lotsOfBills = getFirstPage();
+let lotsOfBills = getFirstPage(BillsTripled);
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 

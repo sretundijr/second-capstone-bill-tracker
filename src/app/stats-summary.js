@@ -1,14 +1,9 @@
-const HouseHolds = require('./mock-model');
-let bills = HouseHolds[0].bills;
-let doubleIt = (bills) => bills.concat(bills.slice(0))
-let lotsOfBills = doubleIt(doubleIt(doubleIt(bills)))
-    .map((e) => Object.assign({}, e, { editable: false }));
 
-let totalAmount = (bills) => bills.map((item) => {
-    let total = 0;
+
+let totalAmount = (bills) => bills.reduce((total, item) => {
     return total += item.amount;
-})
+}, 0);
 
-let totalNumberOfBills = () => lotsOfBills.length
+let totalNumberOfBills = (bills) => bills.length;
 
 module.exports = { totalAmount, totalNumberOfBills }

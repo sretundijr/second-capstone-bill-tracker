@@ -2874,6 +2874,15 @@ module.exports = function(module) {
 "use strict";
 
 
+var HouseHolds = __webpack_require__(89);
+var bills = HouseHolds[0].bills;
+var doubleIt = function doubleIt(bills) {
+    return bills.concat(bills.slice(0));
+};
+var BillsTripled = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
+    return Object.assign({}, e, { editable: false });
+});
+
 var HOUSE_HTML = __webpack_require__(88);
 
 var _require = __webpack_require__(90),
@@ -2882,7 +2891,7 @@ var _require = __webpack_require__(90),
     backOnePage = _require.backOnePage,
     state = _require.state;
 
-var lotsOfBills = getFirstPage();
+var lotsOfBills = getFirstPage(BillsTripled);
 
 var buildTable = function buildTable(bills) {
     return bills.map(function (item, index) {
@@ -3511,26 +3520,21 @@ module.exports = households;
 "use strict";
 
 
-var HouseHolds = __webpack_require__(89);
 var ARRAY = __webpack_require__(170);
 
-var bills = HouseHolds[0].bills;
-var doubleIt = function doubleIt(bills) {
-    return bills.concat(bills.slice(0));
-};
-var lotsOfBills = doubleIt(doubleIt(doubleIt(bills))).map(function (e) {
-    return Object.assign({}, e, { editable: false });
-});
-
 var billsPerPage = 4;
-var fiveResultsEach = ARRAY.chunk(lotsOfBills, billsPerPage);
+var fiveResultsEach = function fiveResultsEach(bills) {
+    return ARRAY.chunk(bills, billsPerPage);
+};
 
+//remove state
 var state = {
     firstPage: 0,
     currentPage: 0,
     lastPage: fiveResultsEach.length - 1
 };
 
+//make pure 
 var forwardOnePage = function forwardOnePage(currentIndex) {
     if (currentIndex !== state.lastPage) {
         state.currentPage++;
@@ -3541,6 +3545,7 @@ var forwardOnePage = function forwardOnePage(currentIndex) {
     }
 };
 
+//make pure
 var backOnePage = function backOnePage(currentIndex) {
     if (currentIndex > state.firstPage) {
         state.currentPage--;
@@ -3551,12 +3556,12 @@ var backOnePage = function backOnePage(currentIndex) {
     }
 };
 
-var getFirstPage = function getFirstPage() {
-    return pagedResults(state.firstPage);
+var getFirstPage = function getFirstPage(bills) {
+    return pagedResults(0, bills);
 };
 
-var pagedResults = function pagedResults(index) {
-    return fiveResultsEach[index];
+var pagedResults = function pagedResults(index, bills) {
+    return fiveResultsEach(bills)[index];
 };
 
 module.exports = { getFirstPage: getFirstPage, forwardOnePage: forwardOnePage, backOnePage: backOnePage, state: state };
@@ -3568,19 +3573,15 @@ module.exports = { getFirstPage: getFirstPage, forwardOnePage: forwardOnePage, b
 "use strict";
 
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 __webpack_require__(86);
 __webpack_require__(85);
+__webpack_require__(242);
 __webpack_require__(84);
+__webpack_require__(243);
 
 __webpack_require__(83);
 
 var fetch = __webpack_require__(87);
-
-var Magic = function Magic() {
-  _classCallCheck(this, Magic);
-};
 
 /***/ }),
 /* 92 */
@@ -9054,6 +9055,18 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "create-house.html";
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "create-house.css";
 
 /***/ })
 /******/ ]);

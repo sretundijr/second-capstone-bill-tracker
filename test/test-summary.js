@@ -8,18 +8,16 @@ const testArr = [{ amount: 500 }, { amount: 1250 }, { amount: 75 }];
 
 describe("testing stats summary", function () {
     it('should return the total amount', function () {
-        var total = testArr.map(function (item) {
-            return total += item.amount;
-        })
+        var expectedTotal = 500 + 1250 + 75;
 
         var total = totalAmount(testArr);
 
-        total.should.equal(total);
+        total.should.equal(expectedTotal);
     })
 
     it('should return total number of bills', function () {
-        var total = totalNumberOfBills();
+        var total = totalNumberOfBills(testArr);
 
-        total.should.equal(16)
+        total.should.equal(3)
     })
 })

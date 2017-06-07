@@ -1,0 +1,17 @@
+.roommate-container{
+    width: 400px;
+    border: 1px solid black;
+}
+
+input{
+    box-sizing: border-box;
+}
+
+.roommate-container{
+    display: inline-block;
+    text-align: center;
+}
+
+.form-container{
+    margin: 50px;
+}

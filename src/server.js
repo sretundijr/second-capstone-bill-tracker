@@ -19,6 +19,10 @@ app.get("/house-stats", (req, res) => {
     res.sendFile(path.join(DIST_DIR, 'house-stats.html'));
 });
 
+app.get("/create-house", (req, res) => {
+    res.sendFile(path.join(DIST_DIR, 'create-house.html'))
+})
+
 let server;
 
 function runServer() {
