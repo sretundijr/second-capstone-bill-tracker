@@ -46,10 +46,10 @@ let watchRoommateBtn = () => {
     let addRoommateBtn = document.getElementById('add-roommate-btn');
 
     addRoommateBtn.addEventListener('click', (e) => {
-        console.log('hello roommmate')
+        console.log('hello roommmate webpack is still watching')
     })
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-
-// })
+document.addEventListener('DOMContentLoaded', () => {
+    watchRoommateBtn();
+})
