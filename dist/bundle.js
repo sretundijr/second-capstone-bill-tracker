@@ -583,9 +583,6 @@ __webpack_require__(87);
 __webpack_require__(88);
 __webpack_require__(86);
 
-// require('./app/client');
-// require('./app/create-house');
-
 var fetch = __webpack_require__(91);
 
 /***/ })

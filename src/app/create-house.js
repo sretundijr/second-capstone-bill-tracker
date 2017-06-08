@@ -34,7 +34,7 @@ let billHtml = `<div class="col-md-4">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <button class="btn" type="button">Add a Bill</button>
+                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>
                                     </div>
                                 </div>
                             </div>
@@ -50,6 +50,15 @@ let watchRoommateBtn = () => {
     })
 }
 
+let watchBillBtn = () => {
+    let addBillBtn = document.getElementById('bill-btn');
+
+    addBillBtn.addEventListener('click', (e) => {
+        console.log("bill button works too")
+    })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     watchRoommateBtn();
+    watchBillBtn();
 })

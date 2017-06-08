@@ -76,7 +76,7 @@
 
 var roommateHtml = '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="household-roommate">Roommate</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="add-roommate-btn" class="btn" type="button">Add a Roommate</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
 
-var billHtml = '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Name</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Amount</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Due Date</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button class="btn" type="button">Add a Bill</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
+var billHtml = '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Name</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Amount</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Due Date</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
 
 var watchRoommateBtn = function watchRoommateBtn() {
     var addRoommateBtn = document.getElementById('add-roommate-btn');
@@ -86,8 +86,17 @@ var watchRoommateBtn = function watchRoommateBtn() {
     });
 };
 
+var watchBillBtn = function watchBillBtn() {
+    var addBillBtn = document.getElementById('bill-btn');
+
+    addBillBtn.addEventListener('click', function (e) {
+        console.log("bill button works too");
+    });
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     watchRoommateBtn();
+    watchBillBtn();
 });
 
 /***/ })
