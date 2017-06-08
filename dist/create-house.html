@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
     <link rel="stylesheet" href="./create-house.css">
+    <script defer src="/bundle.js"></script>
+    <script defer src="/create-house.js">
+
+    </script>
 </head>
 
 <body>
@@ -25,36 +29,13 @@
     <main>
         <div class="fluid-container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="form-container">
-                        <form class="form-horizontal">
+                        <form>
                             <div class="form-group">
                                 <label class="control-label" for="Household-name">Household Name</label>
                                 <input class="form-control" type="text" name="create-house" value="">
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label" for="household-roommate">Roommate</label>
-                                        <input class="form-control" type="text" name="create-house" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="roommate-share">percentage of total bills responsible</label>
-                                        <input type="text" class="form-control" name="roommate-percent" value="">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 col-md-offset-12">
-                                            <div class="form-group">
-                                                <button class="btn" type="button">Add a Roommate</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--<div class="form-group">
-                                <label for="household-"></label>
-                                <input type="" name="create-house" value="">
-                            </div>-->
                         </form>
                     </div>
                 </div>
@@ -62,7 +43,53 @@
 
                 </div>
             </div>
-        </div>
+            <div class="row" id="add-roommate">
+                <div class="col-md-4">
+                    <div class="form-container">
+                        <form action="">
+                            <div class="form-group">
+                                <label class="control-label" for="household-roommate">Roommate</label>
+                                <input class="form-control" type="text" name="create-house" value="">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button class="btn" type="button">Add a Roommate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--change names and stuff-->
+            <div class="row" id="add-bill">
+                <div class="col-md-4">
+                    <div class="form-container">
+                        <form action="">
+                            <div class="form-group">
+                                <label class="control-label" for="bill">Name</label>
+                                <input class="form-control" type="text" name="create-house" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="bill">Amount</label>
+                                <input class="form-control" type="text" name="create-house" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="bill">Due Date</label>
+                                <input class="form-control" type="text" name="create-house" value="">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button class="btn" type="button">Add a Bill</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
     </main>
 </body>
 
