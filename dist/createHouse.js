@@ -107,7 +107,10 @@ var watchRoommateBtn = function watchRoommateBtn() {
 
     addRoommateBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        state.roommates.push(document.getElementsByName('create-roommate')[0].value);
+        var value = document.getElementsByName('create-roommate')[0].value;
+        if (value !== '') {
+            state.roommates.push(value);
+        }
 
         renderRoommateList();
     });

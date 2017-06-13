@@ -57,7 +57,10 @@ let watchRoommateBtn = () => {
 
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        state.roommates.push(document.getElementsByName('create-roommate')[0].value)
+        let value = document.getElementsByName('create-roommate')[0].value;
+        if (value !== '') {
+            state.roommates.push(value)
+        }
 
         renderRoommateList();
     })
