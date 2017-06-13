@@ -1,22 +1,26 @@
-let roommateHtml = `<div class="col-md-4">
-                    <div class="form-container">
-                        <form action="">
-                            <div class="form-group">
-                                <label class="control-label" for="household-roommate">Roommate</label>
-                                <input class="form-control" type="text" name="create-house" value="">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <button id="add-roommate-btn" class="btn" type="button">Add a Roommate</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>`;
+let roommateHtml = (roommate, index) => {
+    return `<li>${roommate} 
+                <button class="btn btn-sm delete-btn-js" id="${index}">Delete</button>
+            </li>`
+};
 
-let billHtml = `<div class="col-md-4">
+let roommateListToString = (roommates) => {
+    let list = roommates.map((item, index) => {
+        return roommateHtml(item, index);
+    })
+    return list.join('');
+};
+
+let renderRoommateList = () => {
+    let roommateContainer = document.getElementById('add-roommate');
+    roommateContainer.innerHTML = roommateListToString(state.roommates);
+    document.getElementById('add-roommate-form').reset();
+
+    watchDeleteRoommate();
+}
+
+let billHtml = () => {
+    return `<div class="col-md-4">
                     <div class="form-container">
                         <form action="">
                             <div class="form-group">
@@ -41,12 +45,33 @@ let billHtml = `<div class="col-md-4">
                         </form>
                     </div>
                 </div>`
+};
+
+let state = {
+    roommates: [],
+    bills: []
+};
 
 let watchRoommateBtn = () => {
-    let addRoommateBtn = document.getElementById('add-roommate-btn');
+    let addRoommateBtn = document.getElementById('add-roommate-form');
 
-    addRoommateBtn.addEventListener('click', (e) => {
-        console.log('hello roommmate webpack is still watching')
+    addRoommateBtn.addEventListener('submit', (e) => {
+        e.preventDefault();
+        state.roommates.push(document.getElementsByName('create-roommate')[0].value)
+
+        renderRoommateList();
+    })
+}
+
+let watchDeleteRoommate = () => {
+    let deleteBtn = document.getElementsByClassName('delete-btn-js');
+
+    Array.from(deleteBtn).forEach((item) => {
+        item.addEventListener('click', (e) => {
+            let index = e.target.id;
+            state.roommates.splice(index, 1);
+            renderRoommateList(state.roommates);
+        })
     })
 }
 

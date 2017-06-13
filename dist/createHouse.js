@@ -74,15 +74,54 @@
 "use strict";
 
 
-var roommateHtml = '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="household-roommate">Roommate</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="add-roommate-btn" class="btn" type="button">Add a Roommate</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
+var roommateHtml = function roommateHtml(roommate, index) {
+    return '<li>' + roommate + ' \n                <button class="btn btn-sm delete-btn-js" id="' + index + '">Delete</button>\n            </li>';
+};
 
-var billHtml = '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Name</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Amount</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Due Date</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
+var roommateListToString = function roommateListToString(roommates) {
+    var list = roommates.map(function (item, index) {
+        return roommateHtml(item, index);
+    });
+    return list.join('');
+};
+
+var renderRoommateList = function renderRoommateList() {
+    var roommateContainer = document.getElementById('add-roommate');
+    roommateContainer.innerHTML = roommateListToString(state.roommates);
+    document.getElementById('add-roommate-form').reset();
+
+    watchDeleteRoommate();
+};
+
+var billHtml = function billHtml() {
+    return '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Name</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Amount</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Due Date</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
+};
+
+var state = {
+    roommates: [],
+    bills: []
+};
 
 var watchRoommateBtn = function watchRoommateBtn() {
-    var addRoommateBtn = document.getElementById('add-roommate-btn');
+    var addRoommateBtn = document.getElementById('add-roommate-form');
 
-    addRoommateBtn.addEventListener('click', function (e) {
-        console.log('hello roommmate webpack is still watching');
+    addRoommateBtn.addEventListener('submit', function (e) {
+        e.preventDefault();
+        state.roommates.push(document.getElementsByName('create-roommate')[0].value);
+
+        renderRoommateList();
+    });
+};
+
+var watchDeleteRoommate = function watchDeleteRoommate() {
+    var deleteBtn = document.getElementsByClassName('delete-btn-js');
+
+    Array.from(deleteBtn).forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            var index = e.target.id;
+            state.roommates.splice(index, 1);
+            renderRoommateList(state.roommates);
+        });
     });
 };
 
