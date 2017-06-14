@@ -1,6 +1,6 @@
 let roommateHtml = (roommate, index) => {
     return `<li>${roommate} 
-                <button class="btn btn-sm delete-btn-js" id="${index}">Delete</button>
+                <button class="btn btn-sm delete-btn-js" id="roommate-${index}">Delete</button>
             </li>`
 };
 
@@ -19,37 +19,26 @@ let renderRoommateList = () => {
     watchDeleteRoommate();
 }
 
-let billHtml = () => {
-    return `<div class="col-md-4">
-                    <div class="form-container">
-                        <form action="">
-                            <div class="form-group">
-                                <label class="control-label" for="bill">Name</label>
-                                <input class="form-control" type="text" name="create-house" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="bill">Amount</label>
-                                <input class="form-control" type="text" name="create-house" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="bill">Due Date</label>
-                                <input class="form-control" type="text" name="create-house" value="">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>`
+let expenseTableHtml = (expense) => {
+    return `<div class="col-md-6">
+                <table class="table table-condensed">
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Due Date</th>
+                    </tr>
+                    <tr>
+                        <td>${expense.name}</td>
+                        <td>${expense.amount}</td>
+                        <td>${expense.dueDate}</td>
+                    </tr>
+                </table>
+            </div>`
 };
 
 let state = {
     roommates: [],
-    bills: []
+    expenses: []
 };
 
 let watchRoommateBtn = () => {
@@ -71,9 +60,9 @@ let watchDeleteRoommate = () => {
 
     Array.from(deleteBtn).forEach((item) => {
         item.addEventListener('click', (e) => {
-            let index = e.target.id;
+            let index = e.target.id.substring(9);
             state.roommates.splice(index, 1);
-            renderRoommateList(state.roommates);
+            renderRoommateList();
         })
     })
 }
@@ -82,7 +71,22 @@ let watchBillBtn = () => {
     let addBillBtn = document.getElementById('bill-btn');
 
     addBillBtn.addEventListener('click', (e) => {
-        console.log("bill button works too")
+        let tableContainer = document.getElementById('table-container');
+        // tableContainer.innerHTML = expenseTable();
+
+        let expenseData = document.getElementsByName('create-expense');
+
+        let expense = {
+            name: expenseData[0].value,
+            amount: expenseData[1].value,
+            dueDate: expenseData[2].value
+        };
+
+        state.expenses.push(expense)
+
+        // tableContainer.innerHTML = listToString(state.expenses.expense, expenseTableHtml)
+
+        console.log(state.expenses)
     })
 }
 

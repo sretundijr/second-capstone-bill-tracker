@@ -75,7 +75,7 @@
 
 
 var roommateHtml = function roommateHtml(roommate, index) {
-    return '<li>' + roommate + ' \n                <button class="btn btn-sm delete-btn-js" id="' + index + '">Delete</button>\n            </li>';
+    return '<li>' + roommate + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
 };
 
 var roommateListToString = function roommateListToString(roommates) {
@@ -93,13 +93,13 @@ var renderRoommateList = function renderRoommateList() {
     watchDeleteRoommate();
 };
 
-var billHtml = function billHtml() {
-    return '<div class="col-md-4">\n                    <div class="form-container">\n                        <form action="">\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Name</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Amount</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="form-group">\n                                <label class="control-label" for="bill">Due Date</label>\n                                <input class="form-control" type="text" name="create-house" value="">\n                            </div>\n                            <div class="row">\n                                <div class="col-md-6">\n                                    <div class="form-group">\n                                        <button id="bill-btn" class="btn" type="button">Add a Bill</button>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>';
+var expenseTableHtml = function expenseTableHtml(expense) {
+    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                    <tr>\n                        <td>' + expense.name + '</td>\n                        <td>' + expense.amount + '</td>\n                        <td>' + expense.dueDate + '</td>\n                    </tr>\n                </table>\n            </div>';
 };
 
 var state = {
     roommates: [],
-    bills: []
+    expenses: []
 };
 
 var watchRoommateBtn = function watchRoommateBtn() {
@@ -121,9 +121,9 @@ var watchDeleteRoommate = function watchDeleteRoommate() {
 
     Array.from(deleteBtn).forEach(function (item) {
         item.addEventListener('click', function (e) {
-            var index = e.target.id;
+            var index = e.target.id.substring(9);
             state.roommates.splice(index, 1);
-            renderRoommateList(state.roommates);
+            renderRoommateList();
         });
     });
 };
@@ -132,7 +132,22 @@ var watchBillBtn = function watchBillBtn() {
     var addBillBtn = document.getElementById('bill-btn');
 
     addBillBtn.addEventListener('click', function (e) {
-        console.log("bill button works too");
+        var tableContainer = document.getElementById('table-container');
+        // tableContainer.innerHTML = expenseTable();
+
+        var expenseData = document.getElementsByName('create-expense');
+
+        var expense = {
+            name: expenseData[0].value,
+            amount: expenseData[1].value,
+            dueDate: expenseData[2].value
+        };
+
+        state.expenses.push(expense);
+
+        // tableContainer.innerHTML = listToString(state.expenses.expense, expenseTableHtml)
+
+        console.log(state.expenses);
     });
 };
 
