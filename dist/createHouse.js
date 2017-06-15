@@ -75,24 +75,27 @@
 
 
 var roommateHtml = function roommateHtml(roommate, index) {
-    return '<li>' + roommate + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
+    console.log(roommate);
+    return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
 };
 
-var roommateListToString = function roommateListToString(roommates) {
-    var list = roommates.map(function (item, index) {
-        return roommateHtml(item, index);
+// used in both expense and roommate render
+var listToString = function listToString(list, callback) {
+    var newList = list.map(function (item, index) {
+        return callback(item, index);
     });
-    return list.join('');
+    return newList.join('');
 };
 
 var renderRoommateList = function renderRoommateList() {
     var roommateContainer = document.getElementById('add-roommate');
-    roommateContainer.innerHTML = roommateListToString(state.roommates);
+    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
 };
 
+// change this
 var expenseTableHtml = function expenseTableHtml(expense) {
     return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                    <tr>\n                        <td>' + expense.name + '</td>\n                        <td>' + expense.amount + '</td>\n                        <td>' + expense.dueDate + '</td>\n                    </tr>\n                </table>\n            </div>';
 };
@@ -107,7 +110,7 @@ var watchRoommateBtn = function watchRoommateBtn() {
 
     addRoommateBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        var value = document.getElementsByName('create-roommate')[0].value;
+        var value = { name: document.getElementsByName('create-roommate')[0].value };
         if (value !== '') {
             state.roommates.push(value);
         }
@@ -145,7 +148,7 @@ var watchBillBtn = function watchBillBtn() {
 
         state.expenses.push(expense);
 
-        // tableContainer.innerHTML = listToString(state.expenses.expense, expenseTableHtml)
+        tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml);
 
         console.log(state.expenses);
     });

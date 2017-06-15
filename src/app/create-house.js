@@ -1,24 +1,27 @@
 let roommateHtml = (roommate, index) => {
-    return `<li>${roommate} 
+    console.log(roommate)
+    return `<li>${roommate.name} 
                 <button class="btn btn-sm delete-btn-js" id="roommate-${index}">Delete</button>
             </li>`
 };
 
-let roommateListToString = (roommates) => {
-    let list = roommates.map((item, index) => {
-        return roommateHtml(item, index);
+// used in both expense and roommate render
+let listToString = (list, callback) => {
+    let newList = list.map((item, index) => {
+        return callback(item, index);
     })
-    return list.join('');
+    return newList.join('');
 };
 
 let renderRoommateList = () => {
     let roommateContainer = document.getElementById('add-roommate');
-    roommateContainer.innerHTML = roommateListToString(state.roommates);
+    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
 }
 
+// change this
 let expenseTableHtml = (expense) => {
     return `<div class="col-md-6">
                 <table class="table table-condensed">
@@ -46,7 +49,7 @@ let watchRoommateBtn = () => {
 
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let value = document.getElementsByName('create-roommate')[0].value;
+        let value = { name: document.getElementsByName('create-roommate')[0].value };
         if (value !== '') {
             state.roommates.push(value)
         }
@@ -84,7 +87,7 @@ let watchBillBtn = () => {
 
         state.expenses.push(expense)
 
-        // tableContainer.innerHTML = listToString(state.expenses.expense, expenseTableHtml)
+        tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml)
 
         console.log(state.expenses)
     })
