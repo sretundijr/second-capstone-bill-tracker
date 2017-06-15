@@ -74,9 +74,19 @@
 "use strict";
 
 
+var state = {
+    roommates: [],
+    expenses: []
+};
+
 var roommateHtml = function roommateHtml(roommate, index) {
     console.log(roommate);
     return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
+};
+
+// change this
+var expenseTableHtml = function expenseTableHtml(expense) {
+    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                    <tr>\n                        <td>' + expense.name + '</td>\n                        <td>' + expense.amount + '</td>\n                        <td>' + expense.dueDate + '</td>\n                    </tr>\n                </table>\n            </div>';
 };
 
 // used in both expense and roommate render
@@ -95,23 +105,13 @@ var renderRoommateList = function renderRoommateList() {
     watchDeleteRoommate();
 };
 
-// change this
-var expenseTableHtml = function expenseTableHtml(expense) {
-    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                    <tr>\n                        <td>' + expense.name + '</td>\n                        <td>' + expense.amount + '</td>\n                        <td>' + expense.dueDate + '</td>\n                    </tr>\n                </table>\n            </div>';
-};
-
-var state = {
-    roommates: [],
-    expenses: []
-};
-
 var watchRoommateBtn = function watchRoommateBtn() {
     var addRoommateBtn = document.getElementById('add-roommate-form');
 
     addRoommateBtn.addEventListener('submit', function (e) {
         e.preventDefault();
         var value = { name: document.getElementsByName('create-roommate')[0].value };
-        if (value !== '') {
+        if (value.name !== '') {
             state.roommates.push(value);
         }
 
@@ -131,13 +131,12 @@ var watchDeleteRoommate = function watchDeleteRoommate() {
     });
 };
 
-var watchBillBtn = function watchBillBtn() {
-    var addBillBtn = document.getElementById('bill-btn');
+var watchExpenseBtn = function watchExpenseBtn() {
+    var addBillBtn = document.getElementById('add-expense-form');
 
-    addBillBtn.addEventListener('click', function (e) {
+    addBillBtn.addEventListener('submit', function (e) {
+        e.preventDefault();
         var tableContainer = document.getElementById('table-container');
-        // tableContainer.innerHTML = expenseTable();
-
         var expenseData = document.getElementsByName('create-expense');
 
         var expense = {
@@ -147,16 +146,13 @@ var watchBillBtn = function watchBillBtn() {
         };
 
         state.expenses.push(expense);
-
         tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml);
-
-        console.log(state.expenses);
     });
 };
 
 document.addEventListener('DOMContentLoaded', function () {
     watchRoommateBtn();
-    watchBillBtn();
+    watchExpenseBtn();
 });
 
 /***/ })

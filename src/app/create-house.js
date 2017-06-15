@@ -1,25 +1,14 @@
+let state = {
+    roommates: [],
+    expenses: []
+};
+
 let roommateHtml = (roommate, index) => {
     console.log(roommate)
     return `<li>${roommate.name} 
                 <button class="btn btn-sm delete-btn-js" id="roommate-${index}">Delete</button>
             </li>`
 };
-
-// used in both expense and roommate render
-let listToString = (list, callback) => {
-    let newList = list.map((item, index) => {
-        return callback(item, index);
-    })
-    return newList.join('');
-};
-
-let renderRoommateList = () => {
-    let roommateContainer = document.getElementById('add-roommate');
-    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
-    document.getElementById('add-roommate-form').reset();
-
-    watchDeleteRoommate();
-}
 
 // change this
 let expenseTableHtml = (expense) => {
@@ -39,10 +28,21 @@ let expenseTableHtml = (expense) => {
             </div>`
 };
 
-let state = {
-    roommates: [],
-    expenses: []
+// used in both expense and roommate render
+let listToString = (list, callback) => {
+    let newList = list.map((item, index) => {
+        return callback(item, index);
+    })
+    return newList.join('');
 };
+
+let renderRoommateList = () => {
+    let roommateContainer = document.getElementById('add-roommate');
+    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
+    document.getElementById('add-roommate-form').reset();
+
+    watchDeleteRoommate();
+}
 
 let watchRoommateBtn = () => {
     let addRoommateBtn = document.getElementById('add-roommate-form');
@@ -50,7 +50,7 @@ let watchRoommateBtn = () => {
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
         let value = { name: document.getElementsByName('create-roommate')[0].value };
-        if (value !== '') {
+        if (value.name !== '') {
             state.roommates.push(value)
         }
 
@@ -70,13 +70,12 @@ let watchDeleteRoommate = () => {
     })
 }
 
-let watchBillBtn = () => {
-    let addBillBtn = document.getElementById('bill-btn');
+let watchExpenseBtn = () => {
+    let addBillBtn = document.getElementById('add-expense-form');
 
-    addBillBtn.addEventListener('click', (e) => {
+    addBillBtn.addEventListener('submit', (e) => {
+        e.preventDefault();
         let tableContainer = document.getElementById('table-container');
-        // tableContainer.innerHTML = expenseTable();
-
         let expenseData = document.getElementsByName('create-expense');
 
         let expense = {
@@ -86,14 +85,11 @@ let watchBillBtn = () => {
         };
 
         state.expenses.push(expense)
-
         tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml)
-
-        console.log(state.expenses)
     })
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     watchRoommateBtn();
-    watchBillBtn();
+    watchExpenseBtn();
 })
