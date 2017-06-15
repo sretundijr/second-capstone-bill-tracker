@@ -10,22 +10,28 @@ let roommateHtml = (roommate, index) => {
             </li>`
 };
 
-// change this
-let expenseTableHtml = (expense) => {
+let partialExpenseTableHtml = () => {
     return `<div class="col-md-6">
                 <table class="table table-condensed">
+                <thead>
                     <tr>
                         <th>Name</th>
                         <th>Amount</th>
                         <th>Due Date</th>
                     </tr>
-                    <tr>
-                        <td>${expense.name}</td>
-                        <td>${expense.amount}</td>
-                        <td>${expense.dueDate}</td>
-                    </tr>
+                </thead>
+                <tbody id="expense-table">
+                </tbody>
                 </table>
             </div>`
+}
+
+let expenseTableHtml = (expense) => {
+    return `<tr>
+                <td>${expense.name}</td>
+                <td>${expense.amount}</td>
+                <td>${expense.dueDate}</td>
+            </tr>`
 };
 
 // used in both expense and roommate render
@@ -72,12 +78,13 @@ let watchDeleteRoommate = () => {
 
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
+    let tableContainer = document.getElementById('table-container');
+    let expenseData = document.getElementsByName('create-expense');
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let tableContainer = document.getElementById('table-container');
-        let expenseData = document.getElementsByName('create-expense');
-
+        tableContainer.innerHTML = partialExpenseTableHtml();
+        let expenseTable = document.getElementById('expense-table')
         let expense = {
             name: expenseData[0].value,
             amount: expenseData[1].value,
@@ -85,7 +92,7 @@ let watchExpenseBtn = () => {
         };
 
         state.expenses.push(expense)
-        tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml)
+        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
     })
 }
 

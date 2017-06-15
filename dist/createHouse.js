@@ -84,9 +84,12 @@ var roommateHtml = function roommateHtml(roommate, index) {
     return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
 };
 
-// change this
+var partialExpenseTableHtml = function partialExpenseTableHtml() {
+    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                <thead>\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                </thead>\n                <tbody id="expense-table">\n                </tbody>\n                </table>\n            </div>';
+};
+
 var expenseTableHtml = function expenseTableHtml(expense) {
-    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                    <tr>\n                        <td>' + expense.name + '</td>\n                        <td>' + expense.amount + '</td>\n                        <td>' + expense.dueDate + '</td>\n                    </tr>\n                </table>\n            </div>';
+    return '<tr>\n                <td>' + expense.name + '</td>\n                <td>' + expense.amount + '</td>\n                <td>' + expense.dueDate + '</td>\n            </tr>';
 };
 
 // used in both expense and roommate render
@@ -133,12 +136,13 @@ var watchDeleteRoommate = function watchDeleteRoommate() {
 
 var watchExpenseBtn = function watchExpenseBtn() {
     var addBillBtn = document.getElementById('add-expense-form');
+    var tableContainer = document.getElementById('table-container');
+    var expenseData = document.getElementsByName('create-expense');
 
     addBillBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        var tableContainer = document.getElementById('table-container');
-        var expenseData = document.getElementsByName('create-expense');
-
+        tableContainer.innerHTML = partialExpenseTableHtml();
+        var expenseTable = document.getElementById('expense-table');
         var expense = {
             name: expenseData[0].value,
             amount: expenseData[1].value,
@@ -146,7 +150,7 @@ var watchExpenseBtn = function watchExpenseBtn() {
         };
 
         state.expenses.push(expense);
-        tableContainer.innerHTML = listToString(state.expenses, expenseTableHtml);
+        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml);
     });
 };
 
