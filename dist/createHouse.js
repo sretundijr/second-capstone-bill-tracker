@@ -79,25 +79,9 @@ var state = {
     expenses: []
 };
 
+// roommate rendered and saved to state
 var roommateHtml = function roommateHtml(roommate, index) {
-    console.log(roommate);
     return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
-};
-
-var partialExpenseTableHtml = function partialExpenseTableHtml() {
-    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                <thead>\n                    <tr>\n                        <th>Name</th>\n                        <th>Amount</th>\n                        <th>Due Date</th>\n                    </tr>\n                </thead>\n                <tbody id="expense-table">\n                </tbody>\n                </table>\n            </div>';
-};
-
-var expenseTableHtml = function expenseTableHtml(expense) {
-    return '<tr>\n                <td>' + expense.name + '</td>\n                <td>' + expense.amount + '</td>\n                <td>' + expense.dueDate + '</td>\n            </tr>';
-};
-
-// used in both expense and roommate render
-var listToString = function listToString(list, callback) {
-    var newList = list.map(function (item, index) {
-        return callback(item, index);
-    });
-    return newList.join('');
 };
 
 var renderRoommateList = function renderRoommateList() {
@@ -134,22 +118,39 @@ var watchDeleteRoommate = function watchDeleteRoommate() {
     });
 };
 
+// used in both expense and roommate render, callback returns html
+var listToString = function listToString(list, callback) {
+    var newList = list.map(function (item, index) {
+        return callback(item, index);
+    });
+    return newList.join('');
+};
+
+// expenses rendered and saved to state
+var partialExpenseTableHtml = function partialExpenseTableHtml() {
+    return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Amount</th>\n                            <th>Due Date</th>\n                        </tr>\n                    </thead>\n                    <tbody id="expense-table">\n\n                    </tbody>\n                </table>\n            </div>';
+};
+
+var expenseTableHtml = function expenseTableHtml(expense) {
+    return '<tr>\n                <td>' + expense.name + '</td>\n                <td>' + expense.amount + '</td>\n                <td>' + expense.dueDate + '</td>\n            </tr>';
+};
+
 var watchExpenseBtn = function watchExpenseBtn() {
     var addBillBtn = document.getElementById('add-expense-form');
-    var tableContainer = document.getElementById('table-container');
     var expenseData = document.getElementsByName('create-expense');
 
     addBillBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        tableContainer.innerHTML = partialExpenseTableHtml();
-        var expenseTable = document.getElementById('expense-table');
         var expense = {
             name: expenseData[0].value,
             amount: expenseData[1].value,
             dueDate: expenseData[2].value
         };
-
         state.expenses.push(expense);
+
+        var tableContainer = document.getElementById('table-container');
+        tableContainer.innerHTML = partialExpenseTableHtml();
+        var expenseTable = document.getElementById('expense-table');
         expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml);
     });
 };
