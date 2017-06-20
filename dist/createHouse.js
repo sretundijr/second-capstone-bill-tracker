@@ -109,6 +109,7 @@ var watchRoommateBtn = function watchRoommateBtn() {
 var watchDeleteRoommate = function watchDeleteRoommate() {
     var deleteBtn = document.getElementsByClassName('delete-btn-js');
 
+    // refactor used in two places
     Array.from(deleteBtn).forEach(function (item) {
         item.addEventListener('click', function (e) {
             var index = e.target.id.substring(9);
@@ -131,8 +132,16 @@ var partialExpenseTableHtml = function partialExpenseTableHtml() {
     return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Amount</th>\n                            <th>Due Date</th>\n                        </tr>\n                    </thead>\n                    <tbody id="expense-table">\n\n                    </tbody>\n                </table>\n            </div>';
 };
 
-var expenseTableHtml = function expenseTableHtml(expense) {
-    return '<tr>\n                <td>' + expense.name + '</td>\n                <td>' + expense.amount + '</td>\n                <td>' + expense.dueDate + '</td>\n            </tr>';
+var expenseTableHtml = function expenseTableHtml(expense, index) {
+    return '<tr>\n                <td>' + expense.name + '</td>\n                <td>' + expense.amount + '</td>\n                <td>' + expense.dueDate + '</td>\n                <td>\n                    <button class="btn btn-sm delete-expense-btn-js" id="expense-' + index + '">Delete</button>\n                </td>\n            </tr>';
+};
+
+var renderExpenseTable = function renderExpenseTable() {
+    var tableContainer = document.getElementById('table-container');
+    tableContainer.innerHTML = partialExpenseTableHtml();
+    var expenseTable = document.getElementById('expense-table');
+    expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml);
+    watchDeleteExpenseBtn();
 };
 
 var watchExpenseBtn = function watchExpenseBtn() {
@@ -148,10 +157,22 @@ var watchExpenseBtn = function watchExpenseBtn() {
         };
         state.expenses.push(expense);
 
-        var tableContainer = document.getElementById('table-container');
-        tableContainer.innerHTML = partialExpenseTableHtml();
-        var expenseTable = document.getElementById('expense-table');
-        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml);
+        renderExpenseTable();
+    });
+};
+
+var watchDeleteExpenseBtn = function watchDeleteExpenseBtn() {
+    var deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
+
+    // refactor this used here and delete roommate btn
+    Array.from(deleteBtn).forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            var index = e.target.id.substring(8);
+            console.log(index);
+            state.roommates.splice(index, 1);
+            console.log(state.expenses.splice(index, 1));
+            renderExpenseTable();
+        });
     });
 };
 

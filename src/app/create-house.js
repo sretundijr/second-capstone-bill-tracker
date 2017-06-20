@@ -35,6 +35,7 @@ let watchRoommateBtn = () => {
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
 
+    // refactor used in two places
     Array.from(deleteBtn).forEach((item) => {
         item.addEventListener('click', (e) => {
             let index = e.target.id.substring(9);
@@ -70,13 +71,24 @@ let partialExpenseTableHtml = () => {
             </div>`
 };
 
-let expenseTableHtml = (expense) => {
+let expenseTableHtml = (expense, index) => {
     return `<tr>
                 <td>${expense.name}</td>
                 <td>${expense.amount}</td>
                 <td>${expense.dueDate}</td>
+                <td>
+                    <button class="btn btn-sm delete-expense-btn-js" id="expense-${index}">Delete</button>
+                </td>
             </tr>`
 };
+
+let renderExpenseTable = () => {
+    let tableContainer = document.getElementById('table-container');
+    tableContainer.innerHTML = partialExpenseTableHtml();
+    let expenseTable = document.getElementById('expense-table')
+    expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
+    watchDeleteExpenseBtn();
+}
 
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
@@ -91,12 +103,24 @@ let watchExpenseBtn = () => {
         };
         state.expenses.push(expense)
 
-        let tableContainer = document.getElementById('table-container');
-        tableContainer.innerHTML = partialExpenseTableHtml();
-        let expenseTable = document.getElementById('expense-table')
-        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
+        renderExpenseTable();
     })
 };
+
+let watchDeleteExpenseBtn = () => {
+    let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
+
+    // refactor this used here and delete roommate btn
+    Array.from(deleteBtn).forEach((item) => {
+        item.addEventListener('click', (e) => {
+            let index = e.target.id.substring(8);
+            console.log(index)
+            state.roommates.splice(index, 1);
+            console.log(state.expenses.splice(index, 1));
+            renderExpenseTable();
+        })
+    })
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     watchRoommateBtn();
