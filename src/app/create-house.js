@@ -34,8 +34,8 @@ let watchRoommateBtn = () => {
 
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
-
-    addListenerByClassName(deleteBtn, 9, state.roommates, renderRoommateList);
+    let trimIdString = 9;
+    addListenerByClassName(deleteBtn, trimIdString, state.roommates, renderRoommateList);
 };
 
 // ***************************************************************
@@ -93,6 +93,8 @@ let renderExpenseTable = () => {
     tableContainer.innerHTML = partialExpenseTableHtml();
     let expenseTable = document.getElementById('expense-table')
     expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
+    document.getElementById('add-expense-form').reset();
+
     watchDeleteExpenseBtn();
 }
 
@@ -115,8 +117,9 @@ let watchExpenseBtn = () => {
 
 let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
+    let trimIdString = 8;
 
-    addListenerByClassName(deleteBtn, 8, state.expenses, renderExpenseTable);
+    addListenerByClassName(deleteBtn, trimIdString, state.expenses, renderExpenseTable);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -108,8 +108,8 @@ var watchRoommateBtn = function watchRoommateBtn() {
 
 var watchDeleteRoommate = function watchDeleteRoommate() {
     var deleteBtn = document.getElementsByClassName('delete-btn-js');
-
-    addListenerByClassName(deleteBtn, 9, state.roommates, renderRoommateList);
+    var trimIdString = 9;
+    addListenerByClassName(deleteBtn, trimIdString, state.roommates, renderRoommateList);
 };
 
 // ***************************************************************
@@ -146,6 +146,8 @@ var renderExpenseTable = function renderExpenseTable() {
     tableContainer.innerHTML = partialExpenseTableHtml();
     var expenseTable = document.getElementById('expense-table');
     expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml);
+    document.getElementById('add-expense-form').reset();
+
     watchDeleteExpenseBtn();
 };
 
@@ -168,8 +170,9 @@ var watchExpenseBtn = function watchExpenseBtn() {
 
 var watchDeleteExpenseBtn = function watchDeleteExpenseBtn() {
     var deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
+    var trimIdString = 8;
 
-    addListenerByClassName(deleteBtn, 8, state.expenses, renderExpenseTable);
+    addListenerByClassName(deleteBtn, trimIdString, state.expenses, renderExpenseTable);
 };
 
 document.addEventListener('DOMContentLoaded', function () {
