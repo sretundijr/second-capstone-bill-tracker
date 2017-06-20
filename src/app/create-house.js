@@ -35,17 +35,11 @@ let watchRoommateBtn = () => {
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
 
-    // refactor used in two places
-    Array.from(deleteBtn).forEach((item) => {
-        item.addEventListener('click', (e) => {
-            let index = e.target.id.substring(9);
-            state.roommates.splice(index, 1);
-            renderRoommateList();
-        })
-    })
+    addListenerByClassName(deleteBtn, 9, state.roommates, renderRoommateList);
 };
 
-// used in both expense and roommate render, callback returns html
+// ***************************************************************
+// used in both expense and roommate render
 let listToString = (list, callback) => {
     let newList = list.map((item, index) => {
         return callback(item, index);
@@ -53,6 +47,18 @@ let listToString = (list, callback) => {
     return newList.join('');
 };
 
+
+let addListenerByClassName = (classNames, trimIndex, list, callback) => {
+    Array.from(classNames).forEach((item) => {
+        item.addEventListener('click', (e) => {
+            let index = e.target.id.substring(trimIndex);
+            list.splice(index, 1);
+            callback();
+        })
+    })
+}
+
+// *******************************************
 // expenses rendered and saved to state
 let partialExpenseTableHtml = () => {
     return `<div class="col-md-6">
@@ -110,16 +116,7 @@ let watchExpenseBtn = () => {
 let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
 
-    // refactor this used here and delete roommate btn
-    Array.from(deleteBtn).forEach((item) => {
-        item.addEventListener('click', (e) => {
-            let index = e.target.id.substring(8);
-            console.log(index)
-            state.roommates.splice(index, 1);
-            console.log(state.expenses.splice(index, 1));
-            renderExpenseTable();
-        })
-    })
+    addListenerByClassName(deleteBtn, 8, state.expenses, renderExpenseTable);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

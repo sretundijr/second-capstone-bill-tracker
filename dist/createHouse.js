@@ -109,17 +109,11 @@ var watchRoommateBtn = function watchRoommateBtn() {
 var watchDeleteRoommate = function watchDeleteRoommate() {
     var deleteBtn = document.getElementsByClassName('delete-btn-js');
 
-    // refactor used in two places
-    Array.from(deleteBtn).forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            var index = e.target.id.substring(9);
-            state.roommates.splice(index, 1);
-            renderRoommateList();
-        });
-    });
+    addListenerByClassName(deleteBtn, 9, state.roommates, renderRoommateList);
 };
 
-// used in both expense and roommate render, callback returns html
+// ***************************************************************
+// used in both expense and roommate render
 var listToString = function listToString(list, callback) {
     var newList = list.map(function (item, index) {
         return callback(item, index);
@@ -127,6 +121,17 @@ var listToString = function listToString(list, callback) {
     return newList.join('');
 };
 
+var addListenerByClassName = function addListenerByClassName(classNames, trimIndex, list, callback) {
+    Array.from(classNames).forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            var index = e.target.id.substring(trimIndex);
+            list.splice(index, 1);
+            callback();
+        });
+    });
+};
+
+// *******************************************
 // expenses rendered and saved to state
 var partialExpenseTableHtml = function partialExpenseTableHtml() {
     return '<div class="col-md-6">\n                <table class="table table-condensed">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Amount</th>\n                            <th>Due Date</th>\n                        </tr>\n                    </thead>\n                    <tbody id="expense-table">\n\n                    </tbody>\n                </table>\n            </div>';
@@ -164,16 +169,7 @@ var watchExpenseBtn = function watchExpenseBtn() {
 var watchDeleteExpenseBtn = function watchDeleteExpenseBtn() {
     var deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
 
-    // refactor this used here and delete roommate btn
-    Array.from(deleteBtn).forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            var index = e.target.id.substring(8);
-            console.log(index);
-            state.roommates.splice(index, 1);
-            console.log(state.expenses.splice(index, 1));
-            renderExpenseTable();
-        });
-    });
+    addListenerByClassName(deleteBtn, 8, state.expenses, renderExpenseTable);
 };
 
 document.addEventListener('DOMContentLoaded', function () {
