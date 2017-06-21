@@ -4,13 +4,11 @@ let state = {
 
     addRoommate: (data) => {
         let validData = isValidRoommate(data)
-        if (validData) {
+        if (validData.isValid) {
             state.roommates.push(data);
         }
         return state;
     },
-
-
 
     removeRoommate: (index) => {
         state.roommates.splice(index, 1);
@@ -18,13 +16,18 @@ let state = {
     },
 
     addExpenseToState: (expenses) => {
-        let expense = {
-            name: expenses[0],
-            amount: expenses[1],
-            dueDate: expenses[2]
-        };
-        state.expenses.push(expense)
-        return state;
+        let name = isValidExpenseName(expenses[0])
+        let number = isValidExpenseAmount(expenses[1]);
+        console.log(number.isValid)
+        if (name.isValid && number.isValid) {
+            let expense = {
+                name: expenses[0],
+                amount: expenses[1],
+                dueDate: expenses[2]
+            };
+            state.expenses.push(expense)
+            return state;
+        }
     },
 
     removeExpense: (index) => {
@@ -33,8 +36,10 @@ let state = {
     }
 }
 
-module.exports = state;
+module.exports = { state };
 
+
+// move validation
 let isValidRoommate = (roommate) => {
     var errors = [];
     if (roommate.name === '') {
@@ -50,3 +55,37 @@ let isValidRoommate = (roommate) => {
         }
     }
 }
+
+let isValidExpenseName = (expense) => {
+    var errors = [];
+    if (expense === '') {
+        errors.push('The expense should have a name')
+    }
+    if (errors.length > 0) {
+        return {
+            isValid: false, errors
+        }
+    } else {
+        return {
+            isValid: true
+        }
+    }
+};
+
+let isValidExpenseAmount = (expense) => {
+    let amount = parseFloat(expense);
+    if (!(Number.isNaN(amount))) {
+        return {
+            isValid: true
+        }
+    } else {
+        return {
+            isValid: false
+        }
+    }
+}
+
+let isValidExpenseDate = (expense) => {
+
+}
+

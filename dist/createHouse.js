@@ -80,7 +80,7 @@ var state = {
 
     addRoommate: function addRoommate(data) {
         var validData = isValidRoommate(data);
-        if (validData) {
+        if (validData.isValid) {
             state.roommates.push(data);
         }
         return state;
@@ -92,13 +92,18 @@ var state = {
     },
 
     addExpenseToState: function addExpenseToState(expenses) {
-        var expense = {
-            name: expenses[0],
-            amount: expenses[1],
-            dueDate: expenses[2]
-        };
-        state.expenses.push(expense);
-        return state;
+        var name = isValidExpenseName(expenses[0]);
+        var number = isValidExpenseAmount(expenses[1]);
+        console.log(number.isValid);
+        if (name.isValid && number.isValid) {
+            var expense = {
+                name: expenses[0],
+                amount: expenses[1],
+                dueDate: expenses[2]
+            };
+            state.expenses.push(expense);
+            return state;
+        }
     },
 
     removeExpense: function removeExpense(index) {
@@ -107,8 +112,9 @@ var state = {
     }
 };
 
-module.exports = state;
+module.exports = { state: state };
 
+// move validation
 var isValidRoommate = function isValidRoommate(roommate) {
     var errors = [];
     if (roommate.name === '') {
@@ -125,6 +131,37 @@ var isValidRoommate = function isValidRoommate(roommate) {
     }
 };
 
+var isValidExpenseName = function isValidExpenseName(expense) {
+    var errors = [];
+    if (expense === '') {
+        errors.push('The expense should have a name');
+    }
+    if (errors.length > 0) {
+        return {
+            isValid: false, errors: errors
+        };
+    } else {
+        return {
+            isValid: true
+        };
+    }
+};
+
+var isValidExpenseAmount = function isValidExpenseAmount(expense) {
+    var amount = parseFloat(expense);
+    if (!Number.isNaN(amount)) {
+        return {
+            isValid: true
+        };
+    } else {
+        return {
+            isValid: false
+        };
+    }
+};
+
+var isValidExpenseDate = function isValidExpenseDate(expense) {};
+
 /***/ }),
 
 /***/ 94:
@@ -133,9 +170,12 @@ var isValidRoommate = function isValidRoommate(roommate) {
 "use strict";
 
 
-var state = __webpack_require__(84);
+var _require = __webpack_require__(84),
+    state = _require.state;
 
 // roommate rendered and saved to state
+
+
 var roommateHtml = function roommateHtml(roommate, index) {
     return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
 };
@@ -161,7 +201,6 @@ var watchRoommateBtn = function watchRoommateBtn() {
     });
 };
 
-//change this
 var watchDeleteRoommate = function watchDeleteRoommate() {
     var deleteBtn = document.getElementsByClassName('delete-btn-js');
     var trimIdString = 9;
@@ -177,7 +216,6 @@ var listToString = function listToString(list, callback) {
     return newList.join('');
 };
 
-//change this
 var addListenerByClassName = function addListenerByClassName(classNames, trimIndex, list, callback) {
     Array.from(classNames).forEach(function (item) {
         item.addEventListener('click', function (e) {
@@ -214,7 +252,7 @@ var watchExpenseBtn = function watchExpenseBtn() {
 
     addBillBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        //state management
+
         state.addExpenseToState(Array.from(expenseData).map(function (item) {
             return item.value;
         }));

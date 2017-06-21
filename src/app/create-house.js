@@ -1,4 +1,4 @@
-let state = require('./manage-state')
+let { state } = require('./manage-state')
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
@@ -28,7 +28,6 @@ let watchRoommateBtn = () => {
     })
 };
 
-//change this
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
     let trimIdString = 9;
@@ -44,7 +43,6 @@ let listToString = (list, callback) => {
     return newList.join('');
 };
 
-//change this
 let addListenerByClassName = (classNames, trimIndex, list, callback) => {
     Array.from(classNames).forEach((item) => {
         item.addEventListener('click', (e) => {
@@ -101,7 +99,7 @@ let watchExpenseBtn = () => {
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        //state management
+
         state.addExpenseToState(Array.from(expenseData).map(item => item.value));
 
         renderExpenseTable();
