@@ -2875,6 +2875,7 @@ module.exports = function(module) {
 
 
 var htmlString = function htmlString(item, index) {
+    //replace with object and or simplify
     var inputReadOnly = item.editable ? ['', '', 'Save'] : ['readonly', '', 'Edit'];
     return '<div class="row">\n                <div class="col-md-10 col-md-offset-1">\n                    <div class="row main-container-style">\n                    <form action="#" class="form-inline">\n\n                        <div class="col-md-2">\n                        <label for="bill">Name</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.name + '">\n                        </div>\n                        <div class="col-md-2">\n                        <label for="bill"> Date Due</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.dueDate + '">\n                        </div>\n                       \n                        <div class="col-md-2">\n                         <label for="bill">Amount</label>\n                            <input class="form-control" name="bill" type="text" ' + inputReadOnly[0] + ' value="' + item.amount + '">\n                        </div>\n                        \n                        <div class="col-md-2">\n                        <label for="bill">Who paid it:</label>\n                            <input class="form-control" name="bill" type="text" value="' + item.users[0].roommates_id + '">\n                        </div>\n                        \n                        <div  class="col-md-2">\n                        <label for="bill">Paid On:</label>\n                            <input class="form-control" name="bill" type="date" ' + inputReadOnly[0] + ' value="' + item.lastPaidOn + '">\n                        </div>\n\n                        <div class="col-md-2">\n                            <div></div>\n                            <input value="' + inputReadOnly[2] + '" name="bill" id="edit-bill-' + index + '" ' + inputReadOnly[1] + ' class="edit-btn-style watch-js btn btn-primary btn-sm">\n                           \n                            </input>\n                        </div>\n                    </form>\n                    </div>\n                    <hr class=\'hr-style\'>\n                </div>                \n            </div>';
 };
@@ -3046,15 +3047,32 @@ var watchEdit = function watchEdit() {
         });
     });
 };
+var updateBill = function updateBill(values) {
+    var defaultDate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Date.now();
 
+
+    var bill = {
+        name: values[0],
+        dueDate: values[1],
+        lastPaidOn: values[4] === '' ? defaultDate : data[4].value
+    };
+    var checkResult = isValidBill(bill);
+    if (checkResult.isValid) {} else {}
+    //lotsOfBills[i].amount = data[2].value
+    // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
+
+    //Bill.update({id:"123" },{"$set": {name: values[0]}})
+};
 var setEditedRow = function setEditedRow(e, i) {
     var data = e.target.parentNode.parentNode.getElementsByTagName('input');
 
+    //compose(saveBill,validateBill,createBill)(values)
+    //updateBill(data.map((x) => x.value));
     lotsOfBills[i].name = data[0].value;
     lotsOfBills[i].dueDate = data[1].value;
     lotsOfBills[i].amount = data[2].value;
     // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
-    lotsOfBills[i].lastPaidOn = data[4].value;
+    lotsOfBills[i].lastPaidOn = data[4].value === '' ? Date.now() : data[4].value;
 };
 
 var isEditable = function isEditable(index) {

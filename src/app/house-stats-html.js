@@ -1,4 +1,5 @@
 let htmlString = (item, index) => {
+    //replace with object and or simplify
     let inputReadOnly = item.editable ? ['', '', 'Save'] : ['readonly', '', 'Edit'];
     return `<div class="row">
                 <div class="col-md-10 col-md-offset-1">

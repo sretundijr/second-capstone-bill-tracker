@@ -18,14 +18,33 @@ let renderRoommateList = () => {
     watchDeleteRoommate();
 };
 
+const isValidRoommate = (roommate) => {
+    var errors = [];
+    if (roommate.name === '') {
+        errors.push('The roommate should have a name')
+    }
+    if (errors.length > 0) {
+        return {
+            isValid: false, errors
+        }
+    } else {
+        return {
+            isValid: true
+        }
+    }
+
+}
 let watchRoommateBtn = () => {
     let addRoommateBtn = document.getElementById('add-roommate-form');
 
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
         let value = { name: document.getElementsByName('create-roommate')[0].value };
-        if (value.name !== '') {
+        var checkResult = isValidRoommate(value)
+        if (checkResult.isValid) {
             state.roommates.push(value)
+        } else {
+            alert(checkResult.errors.join(" "));
         }
 
         renderRoommateList();
@@ -98,18 +117,23 @@ let renderExpenseTable = () => {
     watchDeleteExpenseBtn();
 }
 
+let saveExpenseToState = (expenses) => {
+    let expense = {
+        name: expenses[0].value,
+        amount: expenses[1].value,
+        dueDate: expenses[2].value
+    };
+    state.expenses.push(expense)
+}
+
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
     let expenseData = document.getElementsByName('create-expense');
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let expense = {
-            name: expenseData[0].value,
-            amount: expenseData[1].value,
-            dueDate: expenseData[2].value
-        };
-        state.expenses.push(expense)
+        //state management
+        saveExpenseToState(expenseData);
 
         renderExpenseTable();
     })
