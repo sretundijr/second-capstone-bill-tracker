@@ -21,6 +21,14 @@ let renderTableData = (bills) => {
     return watchEdit();
 }
 
+let isEditable = (index) => {
+    if (lotsOfBills[index].editable) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 let watchEdit = () => {
     let editButton = document.getElementsByClassName("watch-js");
 
@@ -36,24 +44,29 @@ let watchEdit = () => {
         });
     });
 }
-const updateBill = (values, defaultDate = Date.now()) => {
+// const updateBill = (values, defaultDate = Date.now()) => {
 
-    let bill = {
-        name: values[0],
-        dueDate: values[1],
-        lastPaidOn: values[4] === '' ? defaultDate : data[4].value
-    }
-    let checkResult = isValidBill(bill);
-    if (checkResult.isValid) {
+//     let bill = {
+//         name: values[0],
+//         dueDate: values[1],
+//         lastPaidOn: values[4] === '' ? defaultDate : data[4].value
+//     }
+//     let checkResult = isValidBill(bill);
+//     if (checkResult.isValid) {
 
-    } else {
+//     } else {
 
-    }
-    //lotsOfBills[i].amount = data[2].value
-    // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
+//     }
+//     //lotsOfBills[i].amount = data[2].value
+//     // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
 
-    //Bill.update({id:"123" },{"$set": {name: values[0]}})
+//     //Bill.update({id:"123" },{"$set": {name: values[0]}})
+// }
+
+const saveEditData = (data) => {
+
 }
+
 let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input')
 
@@ -64,14 +77,6 @@ let setEditedRow = (e, i) => {
     lotsOfBills[i].amount = data[2].value
     // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
     lotsOfBills[i].lastPaidOn = data[4].value === '' ? Date.now() : data[4].value
-}
-
-let isEditable = (index) => {
-    if (lotsOfBills[index].editable) {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 let watchNextBtn = () => {

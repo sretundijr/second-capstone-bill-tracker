@@ -1,7 +1,4 @@
-let state = {
-    roommates: [],
-    expenses: []
-};
+let state = require('./manage-state')
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
@@ -18,43 +15,24 @@ let renderRoommateList = () => {
     watchDeleteRoommate();
 };
 
-const isValidRoommate = (roommate) => {
-    var errors = [];
-    if (roommate.name === '') {
-        errors.push('The roommate should have a name')
-    }
-    if (errors.length > 0) {
-        return {
-            isValid: false, errors
-        }
-    } else {
-        return {
-            isValid: true
-        }
-    }
-
-}
 let watchRoommateBtn = () => {
     let addRoommateBtn = document.getElementById('add-roommate-form');
 
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
         let value = { name: document.getElementsByName('create-roommate')[0].value };
-        var checkResult = isValidRoommate(value)
-        if (checkResult.isValid) {
-            state.roommates.push(value)
-        } else {
-            alert(checkResult.errors.join(" "));
-        }
+
+        state.addRoommate(value);
 
         renderRoommateList();
     })
 };
 
+//change this
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
     let trimIdString = 9;
-    addListenerByClassName(deleteBtn, trimIdString, state.roommates, renderRoommateList);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, renderRoommateList);
 };
 
 // ***************************************************************
@@ -66,12 +44,12 @@ let listToString = (list, callback) => {
     return newList.join('');
 };
 
-
+//change this
 let addListenerByClassName = (classNames, trimIndex, list, callback) => {
     Array.from(classNames).forEach((item) => {
         item.addEventListener('click', (e) => {
             let index = e.target.id.substring(trimIndex);
-            list.splice(index, 1);
+            list(index);
             callback();
         })
     })
@@ -117,15 +95,6 @@ let renderExpenseTable = () => {
     watchDeleteExpenseBtn();
 }
 
-let saveExpenseToState = (expenses) => {
-    let expense = {
-        name: expenses[0].value,
-        amount: expenses[1].value,
-        dueDate: expenses[2].value
-    };
-    state.expenses.push(expense)
-}
-
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
     let expenseData = document.getElementsByName('create-expense');
@@ -133,7 +102,7 @@ let watchExpenseBtn = () => {
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
         //state management
-        saveExpenseToState(expenseData);
+        state.addExpenseToState(Array.from(expenseData).map(item => item.value));
 
         renderExpenseTable();
     })
@@ -143,7 +112,7 @@ let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     let trimIdString = 8;
 
-    addListenerByClassName(deleteBtn, trimIdString, state.expenses, renderExpenseTable);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, renderExpenseTable);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

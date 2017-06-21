@@ -63,12 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 93:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76,21 +76,38 @@
 
 var state = {
     roommates: [],
-    expenses: []
+    expenses: [],
+
+    addRoommate: function addRoommate(data) {
+        var validData = isValidRoommate(data);
+        if (validData) {
+            state.roommates.push(data);
+        }
+        return state;
+    },
+
+    removeRoommate: function removeRoommate(index) {
+        state.roommates.splice(index, 1);
+        return state;
+    },
+
+    addExpenseToState: function addExpenseToState(expenses) {
+        var expense = {
+            name: expenses[0],
+            amount: expenses[1],
+            dueDate: expenses[2]
+        };
+        state.expenses.push(expense);
+        return state;
+    },
+
+    removeExpense: function removeExpense(index) {
+        state.expenses.splice(index, 1);
+        return state;
+    }
 };
 
-// roommate rendered and saved to state
-var roommateHtml = function roommateHtml(roommate, index) {
-    return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
-};
-
-var renderRoommateList = function renderRoommateList() {
-    var roommateContainer = document.getElementById('add-roommate');
-    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
-    document.getElementById('add-roommate-form').reset();
-
-    watchDeleteRoommate();
-};
+module.exports = state;
 
 var isValidRoommate = function isValidRoommate(roommate) {
     var errors = [];
@@ -107,27 +124,48 @@ var isValidRoommate = function isValidRoommate(roommate) {
         };
     }
 };
+
+/***/ }),
+
+/***/ 94:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var state = __webpack_require__(84);
+
+// roommate rendered and saved to state
+var roommateHtml = function roommateHtml(roommate, index) {
+    return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
+};
+
+var renderRoommateList = function renderRoommateList() {
+    var roommateContainer = document.getElementById('add-roommate');
+    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
+    document.getElementById('add-roommate-form').reset();
+
+    watchDeleteRoommate();
+};
+
 var watchRoommateBtn = function watchRoommateBtn() {
     var addRoommateBtn = document.getElementById('add-roommate-form');
 
     addRoommateBtn.addEventListener('submit', function (e) {
         e.preventDefault();
         var value = { name: document.getElementsByName('create-roommate')[0].value };
-        var checkResult = isValidRoommate(value);
-        if (checkResult.isValid) {
-            state.roommates.push(value);
-        } else {
-            alert(checkResult.errors.join(" "));
-        }
+
+        state.addRoommate(value);
 
         renderRoommateList();
     });
 };
 
+//change this
 var watchDeleteRoommate = function watchDeleteRoommate() {
     var deleteBtn = document.getElementsByClassName('delete-btn-js');
     var trimIdString = 9;
-    addListenerByClassName(deleteBtn, trimIdString, state.roommates, renderRoommateList);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, renderRoommateList);
 };
 
 // ***************************************************************
@@ -139,11 +177,12 @@ var listToString = function listToString(list, callback) {
     return newList.join('');
 };
 
+//change this
 var addListenerByClassName = function addListenerByClassName(classNames, trimIndex, list, callback) {
     Array.from(classNames).forEach(function (item) {
         item.addEventListener('click', function (e) {
             var index = e.target.id.substring(trimIndex);
-            list.splice(index, 1);
+            list(index);
             callback();
         });
     });
@@ -169,15 +208,6 @@ var renderExpenseTable = function renderExpenseTable() {
     watchDeleteExpenseBtn();
 };
 
-var saveExpenseToState = function saveExpenseToState(expenses) {
-    var expense = {
-        name: expenses[0].value,
-        amount: expenses[1].value,
-        dueDate: expenses[2].value
-    };
-    state.expenses.push(expense);
-};
-
 var watchExpenseBtn = function watchExpenseBtn() {
     var addBillBtn = document.getElementById('add-expense-form');
     var expenseData = document.getElementsByName('create-expense');
@@ -185,7 +215,9 @@ var watchExpenseBtn = function watchExpenseBtn() {
     addBillBtn.addEventListener('submit', function (e) {
         e.preventDefault();
         //state management
-        saveExpenseToState(expenseData);
+        state.addExpenseToState(Array.from(expenseData).map(function (item) {
+            return item.value;
+        }));
 
         renderExpenseTable();
     });
@@ -195,7 +227,7 @@ var watchDeleteExpenseBtn = function watchDeleteExpenseBtn() {
     var deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     var trimIdString = 8;
 
-    addListenerByClassName(deleteBtn, trimIdString, state.expenses, renderExpenseTable);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, renderExpenseTable);
 };
 
 document.addEventListener('DOMContentLoaded', function () {

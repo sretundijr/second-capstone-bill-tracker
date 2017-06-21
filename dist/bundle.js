@@ -63,47 +63,47 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 94);
+/******/ 	return __webpack_require__(__webpack_require__.s = 95);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 86:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "create-house.css";
 
 /***/ }),
 
-/***/ 87:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "create-house.html";
 
 /***/ }),
 
-/***/ 88:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "house-stats.css";
 
 /***/ }),
 
-/***/ 89:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "house-stats.html";
 
 /***/ }),
 
-/***/ 90:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
 
-/***/ 91:
+/***/ 92:
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -571,19 +571,19 @@ module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+__webpack_require__(91);
 __webpack_require__(90);
+__webpack_require__(88);
 __webpack_require__(89);
 __webpack_require__(87);
-__webpack_require__(88);
-__webpack_require__(86);
 
-var fetch = __webpack_require__(91);
+var fetch = __webpack_require__(92);
 
 /***/ })
 
