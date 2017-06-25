@@ -1,17 +1,13 @@
 
 const HouseHolds = require('./mock-model');
+const HOUSE_HTML = require('./house-stats-html');
+const state = require('./manage-state')
+const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
+
 let bills = HouseHolds[0].bills;
 let doubleIt = (bills) => bills.concat(bills.slice(0))
 let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
-
-const ARRAY = require('lodash/array');
-const billsPerPage = 4
-const fiveResultsEach = (bills) => ARRAY.chunk(BillsTripled, billsPerPage);
-
-const HOUSE_HTML = require('./house-stats-html');
-const state = require('./manage-state')
-const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 
 let lotsOfBills = getFirstPage(BillsTripled);
 

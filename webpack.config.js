@@ -8,7 +8,7 @@ module.exports = {
 
     entry: {
         bundle: "./main",
-        client: "./app/client.js",
+        houseStats: "./app/house-stats.js",
         createHouse: "./app/create-house.js"
     },
     output: {

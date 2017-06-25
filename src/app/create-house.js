@@ -1,5 +1,7 @@
-let { state } = require('./manage-state')
+let { updateState } = require('./manage-state')
 let HouseHold = require('./mock-model')
+
+let state = updateState();
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
@@ -10,7 +12,7 @@ let roommateHtml = (roommate, index) => {
 
 let renderRoommateList = () => {
     let roommateContainer = document.getElementById('add-roommate');
-    roommateContainer.innerHTML = listToString(state.roommates, roommateHtml);
+    roommateContainer.innerHTML = listToString(state.getRoommates(), roommateHtml);
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
@@ -87,10 +89,10 @@ let expenseTableHtml = (expense, index) => {
 let renderExpenseTable = () => {
     let tableContainer = document.getElementById('table-container');
 
-    if (state.expenses.length >= 1) {
+    if (state.getExpenses().length >= 1) {
         tableContainer.innerHTML = partialExpenseTableHtml();
         let expenseTable = document.getElementById('expense-table')
-        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
+        expenseTable.innerHTML = listToString(state.getExpenses(), expenseTableHtml)
         document.getElementById('add-expense-form').reset();
 
         watchDeleteExpenseBtn();
@@ -131,11 +133,11 @@ let watchSubmitHousehold = () => {
     let submitHouseBtn = document.getElementById('submit-household-btn');
     submitHouseBtn.addEventListener('click', (e) => {
         let householdName = document.getElementById('household-name');
-        state.name = householdName.value;
+        state.setHouseName(householdName.value);
 
-        HouseHold.name = state.name;
-        HouseHold.roommates = state.roommates;
-        HouseHold.expenses = state.expenses;
+        HouseHold.name = state.getHouseName();
+        HouseHold.roommates = state.getRoommates();
+        HouseHold.expenses = state.getExpenses();
 
         console.log(HouseHold);
     })
