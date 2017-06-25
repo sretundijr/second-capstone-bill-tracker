@@ -14,7 +14,6 @@ let renderRoommateList = () => {
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
-    renderSubmitHousehold();
 };
 
 let watchRoommateBtn = () => {
@@ -26,14 +25,14 @@ let watchRoommateBtn = () => {
 
         state.addRoommate(value);
 
-        renderRoommateList();
+        render(e);
     })
 };
 
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
     let trimIdString = 9;
-    addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, renderRoommateList);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, render);
 };
 
 // ***************************************************************
@@ -50,7 +49,7 @@ let addListenerByClassName = (classNames, trimIndex, list, callback) => {
         item.addEventListener('click', (e) => {
             let index = e.target.id.substring(trimIndex);
             list(index);
-            callback();
+            callback(e);
         })
     })
 }
@@ -93,7 +92,6 @@ let renderExpenseTable = () => {
     document.getElementById('add-expense-form').reset();
 
     watchDeleteExpenseBtn();
-    renderSubmitHousehold();
 }
 
 let watchExpenseBtn = () => {
@@ -105,14 +103,14 @@ let watchExpenseBtn = () => {
 
         state.addExpenseToState(Array.from(expenseData).map(item => item.value));
 
-        renderExpenseTable();
+        render(e);
     })
 };
 
 let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     let trimIdString = 8;
-    addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, renderExpenseTable);
+    addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, render);
 }
 
 // ****************************************
@@ -144,6 +142,15 @@ let renderSubmitHousehold = () => {
         submitHouseContainer.innerHTML = submitHtml();
         watchSubmitHousehold();
     }
+}
+
+let render = () => {
+
+    renderRoommateList();
+
+    renderExpenseTable();
+
+    renderSubmitHousehold();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
