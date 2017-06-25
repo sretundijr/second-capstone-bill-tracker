@@ -1,4 +1,5 @@
-
+var moment = require('moment');
+// moment().format();
 // fix paging
 let state = {
     name: '',
@@ -24,7 +25,8 @@ let state = {
     addExpenseToState: (expenses) => {
         let name = isValidExpenseName(expenses[0])
         let number = isValidExpenseAmount(expenses[1]);
-        if (name.isValid && number.isValid) {
+        let date = isValidExpenseDate(expenses[2]);
+        if (name.isValid && number.isValid && date.isValid) {
             let expense = {
                 name: expenses[0],
                 amount: expenses[1],
@@ -98,7 +100,16 @@ let isValidExpenseAmount = (expense) => {
     }
 }
 
-let isValidExpenseDate = (expense) => {
-
+let isValidExpenseDate = (expenseDate) => {
+    let validDate = moment(expenseDate, 'MM/DD/YYYY', true).isValid();
+    if (validDate) {
+        return {
+            isValid: true
+        }
+    } else {
+        return {
+            isValid: false
+        }
+    }
 }
 
