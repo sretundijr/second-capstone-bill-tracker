@@ -86,12 +86,18 @@ let expenseTableHtml = (expense, index) => {
 
 let renderExpenseTable = () => {
     let tableContainer = document.getElementById('table-container');
-    tableContainer.innerHTML = partialExpenseTableHtml();
-    let expenseTable = document.getElementById('expense-table')
-    expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
-    document.getElementById('add-expense-form').reset();
 
-    watchDeleteExpenseBtn();
+    if (state.expenses.length >= 1) {
+        tableContainer.innerHTML = partialExpenseTableHtml();
+        let expenseTable = document.getElementById('expense-table')
+        expenseTable.innerHTML = listToString(state.expenses, expenseTableHtml)
+        document.getElementById('add-expense-form').reset();
+
+        watchDeleteExpenseBtn();
+    } else {
+        tableContainer.innerHTML = '';
+    }
+
 }
 
 let watchExpenseBtn = () => {

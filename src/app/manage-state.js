@@ -31,13 +31,13 @@ let state = {
                 dueDate: expenses[2]
             };
             state.expenses.push(expense)
-            return state;
+            return state.expenses;
         }
     },
 
     removeExpense: (index) => {
         state.expenses.splice(index, 1)
-        return state;
+        return state.expenses.length;
     },
 
     readyForSubmit: () => {
