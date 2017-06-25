@@ -1,4 +1,5 @@
 let state = {
+    name: '',
     roommates: [],
     expenses: [],
 
@@ -18,7 +19,6 @@ let state = {
     addExpenseToState: (expenses) => {
         let name = isValidExpenseName(expenses[0])
         let number = isValidExpenseAmount(expenses[1]);
-        console.log(number.isValid)
         if (name.isValid && number.isValid) {
             let expense = {
                 name: expenses[0],
@@ -33,6 +33,14 @@ let state = {
     removeExpense: (index) => {
         state.expenses.splice(index, 1)
         return state;
+    },
+
+    readyForSubmit: () => {
+        if (state.roommates.length >= 1 && state.expenses.length >= 1) {
+            return true
+        } else {
+            return false;
+        }
     }
 }
 

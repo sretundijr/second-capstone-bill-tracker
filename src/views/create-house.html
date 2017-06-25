@@ -32,16 +32,18 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="form-container">
-                        <form>
+                        <form onsubmit="event.preventDefault()">
                             <div class="form-group">
                                 <label class="control-label" for="Household-name">Household Name</label>
-                                <input class="form-control" type="text" name="create-house" value="">
+                                <input class="form-control" id="household-name" type="text" name="create-house">
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="col-md-3">
+                    <div id="submit-household">
 
+                    </div>
                 </div>
             </div>
             <!--add roommate-->

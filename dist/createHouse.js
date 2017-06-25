@@ -75,6 +75,7 @@
 
 
 var state = {
+    name: '',
     roommates: [],
     expenses: [],
 
@@ -94,7 +95,6 @@ var state = {
     addExpenseToState: function addExpenseToState(expenses) {
         var name = isValidExpenseName(expenses[0]);
         var number = isValidExpenseAmount(expenses[1]);
-        console.log(number.isValid);
         if (name.isValid && number.isValid) {
             var expense = {
                 name: expenses[0],
@@ -109,6 +109,14 @@ var state = {
     removeExpense: function removeExpense(index) {
         state.expenses.splice(index, 1);
         return state;
+    },
+
+    readyForSubmit: function readyForSubmit() {
+        if (state.roommates.length >= 1 && state.expenses.length >= 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
@@ -186,6 +194,7 @@ var renderRoommateList = function renderRoommateList() {
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
+    renderSubmitHousehold();
 };
 
 var watchRoommateBtn = function watchRoommateBtn() {
@@ -244,6 +253,7 @@ var renderExpenseTable = function renderExpenseTable() {
     document.getElementById('add-expense-form').reset();
 
     watchDeleteExpenseBtn();
+    renderSubmitHousehold();
 };
 
 var watchExpenseBtn = function watchExpenseBtn() {
@@ -264,8 +274,31 @@ var watchExpenseBtn = function watchExpenseBtn() {
 var watchDeleteExpenseBtn = function watchDeleteExpenseBtn() {
     var deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     var trimIdString = 8;
-
     addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, renderExpenseTable);
+};
+
+// ****************************************
+// rendering for household submission
+var submitHtml = function submitHtml() {
+    return '<button class="btn" id="submit-household-btn">\n                Submit Houshold\n            </button>';
+};
+
+var watchSubmitHousehold = function watchSubmitHousehold() {
+    var submitHouseBtn = document.getElementById('submit-household-btn');
+    submitHouseBtn.addEventListener('click', function (e) {
+        var householdName = document.getElementById('household-name');
+        state.name = householdName.value;
+        console.log(state.name);
+    });
+};
+
+var renderSubmitHousehold = function renderSubmitHousehold() {
+    var submitHouseContainer = document.getElementById('submit-household');
+    submitHouseContainer.innerHTML = '';
+    if (state.readyForSubmit()) {
+        submitHouseContainer.innerHTML = submitHtml();
+        watchSubmitHousehold();
+    }
 };
 
 document.addEventListener('DOMContentLoaded', function () {

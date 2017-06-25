@@ -13,6 +13,7 @@ let renderRoommateList = () => {
     document.getElementById('add-roommate-form').reset();
 
     watchDeleteRoommate();
+    renderSubmitHousehold();
 };
 
 let watchRoommateBtn = () => {
@@ -91,6 +92,7 @@ let renderExpenseTable = () => {
     document.getElementById('add-expense-form').reset();
 
     watchDeleteExpenseBtn();
+    renderSubmitHousehold();
 }
 
 let watchExpenseBtn = () => {
@@ -109,8 +111,33 @@ let watchExpenseBtn = () => {
 let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     let trimIdString = 8;
-
     addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, renderExpenseTable);
+}
+
+// ****************************************
+// rendering for household submission
+let submitHtml = () => {
+    return `<button class="btn" id="submit-household-btn">
+                Submit Houshold
+            </button>`
+}
+
+let watchSubmitHousehold = () => {
+    let submitHouseBtn = document.getElementById('submit-household-btn');
+    submitHouseBtn.addEventListener('click', (e) => {
+        let householdName = document.getElementById('household-name');
+        state.name = householdName.value;
+        console.log(state.name);
+    })
+}
+
+let renderSubmitHousehold = () => {
+    let submitHouseContainer = document.getElementById('submit-household')
+    submitHouseContainer.innerHTML = '';
+    if (state.readyForSubmit()) {
+        submitHouseContainer.innerHTML = submitHtml();
+        watchSubmitHousehold();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
