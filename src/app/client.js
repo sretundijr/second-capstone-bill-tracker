@@ -5,8 +5,13 @@ let doubleIt = (bills) => bills.concat(bills.slice(0))
 let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
+const ARRAY = require('lodash/array');
+const billsPerPage = 4
+const fiveResultsEach = (bills) => ARRAY.chunk(BillsTripled, billsPerPage);
+
 const HOUSE_HTML = require('./house-stats-html');
-const { getFirstPage, forwardOnePage, backOnePage, state } = require('./pagination');
+const state = require('./manage-state')
+const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 
 let lotsOfBills = getFirstPage(BillsTripled);
 
@@ -44,34 +49,11 @@ let watchEdit = () => {
         });
     });
 }
-// const updateBill = (values, defaultDate = Date.now()) => {
 
-//     let bill = {
-//         name: values[0],
-//         dueDate: values[1],
-//         lastPaidOn: values[4] === '' ? defaultDate : data[4].value
-//     }
-//     let checkResult = isValidBill(bill);
-//     if (checkResult.isValid) {
-
-//     } else {
-
-//     }
-//     //lotsOfBills[i].amount = data[2].value
-//     // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
-
-//     //Bill.update({id:"123" },{"$set": {name: values[0]}})
-// }
-
-const saveEditData = (data) => {
-
-}
-
+//todo
 let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input')
 
-    //compose(saveBill,validateBill,createBill)(values)
-    //updateBill(data.map((x) => x.value));
     lotsOfBills[i].name = data[0].value
     lotsOfBills[i].dueDate = data[1].value
     lotsOfBills[i].amount = data[2].value

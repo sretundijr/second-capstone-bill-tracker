@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 95);
+/******/ 	return __webpack_require__(__webpack_require__.s = 96);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -103,7 +103,7 @@ module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
 
-/***/ 92:
+/***/ 93:
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -571,7 +571,7 @@ module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -583,7 +583,7 @@ __webpack_require__(88);
 __webpack_require__(89);
 __webpack_require__(87);
 
-var fetch = __webpack_require__(92);
+var fetch = __webpack_require__(93);
 
 /***/ })
 

@@ -63,12 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 94);
+/******/ 	return __webpack_require__(__webpack_require__.s = 95);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 84:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76,20 +76,25 @@
 
 var state = {
     name: '',
+    firstPage: 0,
+    currentPage: 0,
+    lastPage: function lastPage(list) {
+        return list.length;
+    },
     roommates: [],
     expenses: [],
 
     addRoommate: function addRoommate(data) {
         var validData = isValidRoommate(data);
         if (validData.isValid) {
-            state.roommates.push(data);
+            state.roommates.push({ name: data });
         }
-        return state;
+        return state.roommates.length;
     },
 
     removeRoommate: function removeRoommate(index) {
         state.roommates.splice(index, 1);
-        return state;
+        return state.roommates.length;
     },
 
     addExpenseToState: function addExpenseToState(expenses) {
@@ -172,18 +177,65 @@ var isValidExpenseDate = function isValidExpenseDate(expense) {};
 
 /***/ }),
 
-/***/ 94:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _require = __webpack_require__(84),
+var households = [{
+    _id: "steve-christina-house",
+    name: 'steve christina house',
+    bills: [{
+        name: 'electric',
+        amount: 100.33,
+        dueDate: '2017-11-15',
+        lastPaidOn: '2017-11-12',
+        users: [{
+            roommates_id: 'steve-2',
+            amountPaid: 100.33
+        }, {
+            roommates_id: 'christina',
+            amountPaid: 0
+        }]
+    }, {
+        name: 'mortgage',
+        amount: 886.78,
+        dueDate: '2017-11-15',
+        lastPaidOn: '2017-11-15',
+        users: [{
+            roommates_id: 'steve-2',
+            amountPaid: 450
+        }, {
+            roommates_id: 'christina',
+            amountPaid: 436.78
+        }]
+    }],
+    roommates: [{
+        _id: 'steve-2',
+        name: 'steve 2'
+    }, {
+        _id: 'christina',
+        name: 'christina'
+    }]
+}];
+
+module.exports = households;
+
+/***/ }),
+
+/***/ 95:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _require = __webpack_require__(22),
     state = _require.state;
 
+var HouseHold = __webpack_require__(23);
+
 // roommate rendered and saved to state
-
-
 var roommateHtml = function roommateHtml(roommate, index) {
     return '<li>' + roommate.name + ' \n                <button class="btn btn-sm delete-btn-js" id="roommate-' + index + '">Delete</button>\n            </li>';
 };
@@ -202,7 +254,7 @@ var watchRoommateBtn = function watchRoommateBtn() {
 
     addRoommateBtn.addEventListener('submit', function (e) {
         e.preventDefault();
-        var value = { name: document.getElementsByName('create-roommate')[0].value };
+        var value = document.getElementsByName('create-roommate')[0].value;
 
         state.addRoommate(value);
 
@@ -288,7 +340,12 @@ var watchSubmitHousehold = function watchSubmitHousehold() {
     submitHouseBtn.addEventListener('click', function (e) {
         var householdName = document.getElementById('household-name');
         state.name = householdName.value;
-        console.log(state.name);
+
+        HouseHold.name = state.name;
+        HouseHold.roommates = state.roommates;
+        HouseHold.expenses = state.expenses;
+
+        console.log(HouseHold);
     });
 };
 

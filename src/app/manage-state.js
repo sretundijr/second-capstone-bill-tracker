@@ -1,19 +1,22 @@
 let state = {
     name: '',
+    firstPage: 0,
+    currentPage: 0,
+    lastPage: (list) => { return list.length },
     roommates: [],
     expenses: [],
 
     addRoommate: (data) => {
         let validData = isValidRoommate(data)
         if (validData.isValid) {
-            state.roommates.push(data);
+            state.roommates.push({ name: data });
         }
-        return state;
+        return state.roommates.length;
     },
 
     removeRoommate: (index) => {
         state.roommates.splice(index, 1);
-        return state;
+        return state.roommates.length;
     },
 
     addExpenseToState: (expenses) => {

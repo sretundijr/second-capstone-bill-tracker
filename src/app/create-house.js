@@ -1,4 +1,5 @@
 let { state } = require('./manage-state')
+let HouseHold = require('./mock-model')
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
@@ -21,7 +22,7 @@ let watchRoommateBtn = () => {
 
     addRoommateBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let value = { name: document.getElementsByName('create-roommate')[0].value };
+        let value = document.getElementsByName('create-roommate')[0].value;
 
         state.addRoommate(value);
 
@@ -127,7 +128,12 @@ let watchSubmitHousehold = () => {
     submitHouseBtn.addEventListener('click', (e) => {
         let householdName = document.getElementById('household-name');
         state.name = householdName.value;
-        console.log(state.name);
+
+        HouseHold.name = state.name;
+        HouseHold.roommates = state.roommates;
+        HouseHold.expenses = state.expenses;
+
+        console.log(HouseHold);
     })
 }
 
