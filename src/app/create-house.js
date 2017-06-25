@@ -25,7 +25,7 @@ let watchRoommateBtn = () => {
 
         state.addRoommate(value);
 
-        render(e);
+        render();
     })
 };
 
@@ -49,7 +49,7 @@ let addListenerByClassName = (classNames, trimIndex, list, callback) => {
         item.addEventListener('click', (e) => {
             let index = e.target.id.substring(trimIndex);
             list(index);
-            callback(e);
+            callback();
         })
     })
 }
@@ -103,7 +103,7 @@ let watchExpenseBtn = () => {
 
         state.addExpenseToState(Array.from(expenseData).map(item => item.value));
 
-        render(e);
+        render();
     })
 };
 
