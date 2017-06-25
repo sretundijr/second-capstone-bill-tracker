@@ -1,9 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
 
-const { state } = require('../src/app/manage-state')
+const { updateState } = require('../src/app/manage-state')
 
 describe("Testing state management", function () {
+
+    let state = updateState();
+
     it('should add a roommate object and return the length roommate array', function () {
         var nameObj = 'hello testing';
         var newState = state.addRoommate(nameObj);
