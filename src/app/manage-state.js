@@ -1,5 +1,6 @@
-var moment = require('moment');
-// moment().format();
+const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate }
+    = require('./validation')
+
 // fix paging
 let state = {
     name: '',
@@ -52,64 +53,4 @@ let state = {
 }
 
 module.exports = { state };
-
-
-// move validation
-let isValidRoommate = (roommate) => {
-    var errors = [];
-    if (roommate.name === '') {
-        errors.push('The roommate should have a name')
-    }
-    if (errors.length > 0) {
-        return {
-            isValid: false, errors
-        }
-    } else {
-        return {
-            isValid: true
-        }
-    }
-}
-
-let isValidExpenseName = (expense) => {
-    var errors = [];
-    if (expense === '') {
-        errors.push('The expense should have a name')
-    }
-    if (errors.length > 0) {
-        return {
-            isValid: false, errors
-        }
-    } else {
-        return {
-            isValid: true
-        }
-    }
-};
-
-let isValidExpenseAmount = (expense) => {
-    let amount = parseFloat(expense);
-    if (!(Number.isNaN(amount))) {
-        return {
-            isValid: true
-        }
-    } else {
-        return {
-            isValid: false
-        }
-    }
-}
-
-let isValidExpenseDate = (expenseDate) => {
-    let validDate = moment(expenseDate, 'MM/DD/YYYY', true).isValid();
-    if (validDate) {
-        return {
-            isValid: true
-        }
-    } else {
-        return {
-            isValid: false
-        }
-    }
-}
 

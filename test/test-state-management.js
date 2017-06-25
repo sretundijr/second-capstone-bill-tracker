@@ -12,7 +12,7 @@ describe("Testing state management", function () {
 
     it('should remove a roommate', function () {
         state.addRoommate('hello testing')
-
+        // there are currently two roommates after the previous call
         newState = state.removeRoommate(0);
 
         newState.should.equal(1);
