@@ -111,7 +111,7 @@ let watchExpenseBtn = () => {
         let expenseObject = {}
         let expenseData = new FormData(e.currentTarget);
 
-        // find a better solution this iterates three times per one object
+        // todo find a better solution this iterates three times per one object
         for ([key, value] of expenseData) {
             expenseObject[key] = value;
         }
