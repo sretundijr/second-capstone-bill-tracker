@@ -47,15 +47,16 @@ let updateState = () => {
         },
 
         addExpenseToState: (expenses) => {
-            let name = isValidExpenseName(expenses[0])
-            let number = isValidExpenseAmount(expenses[1]);
-            let date = isValidExpenseDate(expenses[2]);
+            let name = isValidExpenseName(expenses.name.toString())
+            let number = isValidExpenseAmount(expenses.amount);
+            let date = isValidExpenseDate(expenses.dueDate.toString());
             if (name.isValid && number.isValid && date.isValid) {
                 let expense = {
-                    name: expenses[0],
-                    amount: expenses[1],
-                    dueDate: expenses[2]
+                    name: expenses.name,
+                    amount: expenses.amount,
+                    dueDate: expenses.dueDate
                 };
+
                 state.expenses.push(expense)
                 return state.expenses;
             }

@@ -31,7 +31,7 @@ let isValidExpenseName = (expense) => {
         }
     }
 };
-
+// perform conversion on manage state
 let isValidExpenseAmount = (expense) => {
     let amount = parseFloat(expense);
     if (!(Number.isNaN(amount))) {

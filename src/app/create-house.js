@@ -104,12 +104,20 @@ let renderExpenseTable = () => {
 
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
-    let expenseData = document.getElementsByName('create-expense');
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
+        let expenseInfo = []
+        let expenseObject = {}
+        let expenseData = new FormData(e.currentTarget);
 
-        state.addExpenseToState(Array.from(expenseData).map(item => item.value));
+        // find a better solution this iterates three times per one object
+        for ([key, value] of expenseData) {
+            expenseObject[key] = value;
+        }
+        expenseInfo.push(expenseObject);
+
+        state.addExpenseToState(expenseInfo[0]);
 
         render();
     })
