@@ -116,7 +116,6 @@ let watchExpenseBtn = () => {
             expenseObject[key] = value;
         }
         expenseInfo.push(expenseObject);
-
         state.addExpenseToState(expenseInfo[0]);
 
         render();

@@ -22,15 +22,15 @@ describe("Testing state management", function () {
     })
 
     it('should add a new expense', function () {
-        let expense = ['steve', 1000.01, '01/30/2017'];
+        let expense = { name: 'steve', amount: '1000.01', dueDate: '01/30/2017' };
 
-        let correctOutput = [{ name: 'steve', amount: 1000.01, dueDate: '01/30/2017' }]
+        let correctOutput = { name: 'steve', amount: '1000.01', dueDate: '01/30/2017' };
 
         let newState = state.addExpenseToState(expense);
 
-        newState[0].name.should.equal(correctOutput[0].name);
-        newState[0].amount.should.equal(correctOutput[0].amount);
-        newState[0].dueDate.should.equal(correctOutput[0].dueDate);
+        newState.name.should.equal(correctOutput.name);
+        newState.amount.should.equal(correctOutput.amount);
+        newState.dueDate.should.equal(correctOutput.dueDate);
     })
 
     it('should test ready submit, both expense and roommate have 1 item', function () {
