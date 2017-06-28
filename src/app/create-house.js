@@ -1,7 +1,7 @@
-let { updateState } = require('./manage-state')
+let CreateHouseState = require('./manage-state')
 let HouseHold = require('./mock-model')
 
-let state = updateState();
+let state = new CreateHouseState()
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
@@ -107,16 +107,13 @@ let watchExpenseBtn = () => {
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let expenseInfo = []
         let expenseObject = {}
         let expenseData = new FormData(e.currentTarget);
 
-        // todo find a better solution this iterates three times per one object
         for ([key, value] of expenseData) {
             expenseObject[key] = value;
         }
-        expenseInfo.push(expenseObject);
-        state.addExpenseToState(expenseInfo[0]);
+        state.addExpenseToState(expenseObject);
 
         render();
     })
@@ -142,9 +139,14 @@ let watchSubmitHousehold = () => {
         let householdName = document.getElementById('household-name');
         state.setHouseName(householdName.value);
 
+        /* 
+        saveHouseHold(state.getHouseHold());
+        */
         HouseHold.name = state.getHouseName();
         HouseHold.roommates = state.getRoommates();
         HouseHold.expenses = state.getExpenses();
+
+
 
         console.log(HouseHold);
     })

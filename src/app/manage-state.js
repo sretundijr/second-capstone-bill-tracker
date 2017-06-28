@@ -1,84 +1,78 @@
 const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate }
     = require('./validation')
 
-const ARRAY = require('lodash/array');
-const billsPerPage = 4
-const pagedResultsArray = (bills) => ARRAY.chunk(bills, billsPerPage);
-
-let manageState = () => {
-    return {
-        name: '',
-        firstPage: 0,
-        currentPage: 0,
-        lastPage: pagedResultsArray.length,
-        roommates: [],
-        expenses: []
-    }
-}
+// const ARRAY = require('lodash/array');
+// const billsPerPage = 4
+// const pagedResultsArray = (bills) => ARRAY.chunk(bills, billsPerPage);
 
 // fix paging
-let updateState = () => {
-    let state = manageState();
+class CreateHouseState {
+    constructor() {
+        this.state = {
+            name: '',
+            roommates: [],
+            expenses: []
+        }
+    }
 
-    return {
-        setHouseName: (data) => {
-            state.name = data;
-        },
+    setHouseName(data) {
+        this.state.name = data;
+    }
 
-        getHouseName: () => {
-            return state.name;
-        },
+    getHouseName() {
+        return this.state.name;
+    }
 
-        addRoommate: (data) => {
-            let validData = isValidRoommate(data)
-            if (validData.isValid) {
-                state.roommates.push({ name: data });
-            }
-            return state.roommates.length;
-        },
+    addRoommate(data) {
+        let validData = isValidRoommate(data)
+        if (validData.isValid) {
+            this.state.roommates.push({ name: data });
+        }
+        return this.state.roommates.length;
+    }
 
-        removeRoommate: (index) => {
-            state.roommates.splice(index, 1);
-            return state.roommates.length;
-        },
+    removeRoommate(index) {
+        this.state.roommates.splice(index, 1);
+        return this.state.roommates.length;
+    }
 
-        getRoommates: () => {
-            return state.roommates
-        },
+    getRoommates() {
+        return this.state.roommates
+    }
 
-        addExpenseToState: (expenses) => {
-            let name = isValidExpenseName(expenses.name)
-            let number = isValidExpenseAmount(expenses.amount);
-            let date = isValidExpenseDate(expenses.dueDate);
-            if (name.isValid && number.isValid && date.isValid) {
-                let expense = {
-                    name: expenses.name,
-                    amount: expenses.amount,
-                    dueDate: expenses.dueDate
-                };
-                state.expenses.push(expense)
-                return expense;
-            }
-        },
+    addExpenseToState(expenses) {
+        let name = isValidExpenseName(expenses.name)
+        let number = isValidExpenseAmount(expenses.amount);
+        let date = isValidExpenseDate(expenses.dueDate);
+        if (name.isValid && number.isValid && date.isValid) {
+            let expense = {
+                name: expenses.name,
+                amount: expenses.amount,
+                dueDate: expenses.dueDate
 
-        removeExpense: (index) => {
-            state.expenses.splice(index, 1)
-            return state.expenses.length;
-        },
+            };
+            this.state.expenses.push(expense)
+            return expense;
+        }
+    }
 
-        getExpenses: () => {
-            return state.expenses
-        },
+    removeExpense(index) {
+        this.state.expenses.splice(index, 1)
+        return this.state.expenses.length;
+    }
 
-        readyForSubmit: () => {
-            if (state.roommates.length >= 1 && state.expenses.length >= 1) {
-                return true
-            } else {
-                return false;
-            }
+    getExpenses() {
+        return this.state.expenses
+    }
+
+    readyForSubmit() {
+        if (this.state.roommates.length >= 1 && this.state.expenses.length >= 1) {
+            return true
+        } else {
+            return false;
         }
     }
 }
 
-module.exports = { updateState };
+module.exports = CreateHouseState;
 
