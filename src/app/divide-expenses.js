@@ -7,24 +7,26 @@ var lodashPullall = require('lodash.pullall');
 // rounding errors occur at 3 roommates or most likely all odd numbers
 // needs cleaning up 
 
-let bills = () => { return [110.00, 2000.00, 350.00, 60.00, 75.00, 1220.00, 200.00, 50.00, 73.00, 82.00, 190.00, 90.00]; };
-// let bills = () => {return [1000, 180, 200, 50, 40];};
+// let bills = () => {return [110.00, 2000.00, 350.00, 60.00, 75.00, 1220.00, 200.00, 50.00, 73.00, 82.00, 190.00, 90.00];};
+let bills = () => { return ['1000.00', '180.53', '200.00', '50.00', '40.00']; };
 
 let billsTotalAmount = () => {
-    let overallTotal = "0";
-    let totalAmountDue = bills().forEach((item) => {
-
-        overallTotal = moneyMath.add(overallTotal, item.toString());
+    let overallTotal = '0';
+    // console.log(bills())
+    let billsToString = bills()
+    let totalAmountDue = billsToString.forEach((item) => {
+        // console.log(overallTotal)
+        overallTotal = moneyMath.add(overallTotal, item);
 
     });
-    overallTotal *= 100;
+    // overallTotal *= 100;
     return overallTotal;
 };
 
 // ************************************
 // adjust the amount of roommates here 
 // *************************************
-let numberOfRoommates = 4;
+let numberOfRoommates = '2.00';
 
 //overall total before any divisions are made
 let totalAmountDuePerRoommate = (bills) => {
@@ -36,7 +38,7 @@ let totalAmountDuePerRoommate = (bills) => {
 };
 
 // build an array of bills that have an amount less then 300 from largest to smallest this occurs after the lodashPullall
-// this also sorts the bills array from smallest to largests
+// this also sorts the bills array from largest to smallest 
 let smallBills = bills().sort((a, b) => {
     return b - a;
 });
@@ -96,21 +98,20 @@ let distributeSmallBills = (smallBills) => {
 
 
 // equalize the differential by adding and subtracting the difference from the largest bill
-// currently this only adds the bills
 let equalizeBills = () => {
 
     let roommateTotals = [];
     dividedBills.forEach((arr, index) => {
-        let total = 0;
+        let total = '0';
         arr.forEach((item) => {
 
-            total = moneyMath.add(total.toString(), item);
+            total = moneyMath.add(total, item);
 
         });
         roommateTotals.push(total);
     });
 
-    let evenlyDivided = moneyMath.div(billsTotalAmount().toString(), numberOfRoommates.toString());
+    let evenlyDivided = moneyMath.div(billsTotalAmount(), numberOfRoommates);
 
     let runningTotal = 0;
 
