@@ -7,8 +7,8 @@ var lodashPullall = require('lodash.pullall');
 // rounding errors occur at 3 roommates or most likely all odd numbers
 // needs cleaning up 
 
-// let bills = () => {return [110.00, 2000.00, 350.00, 60.00, 75.00, 1220.00, 200.00, 50.00, 73.00, 82.00, 190.00, 90.00];};
-let bills = () => { return ['1000.00', '180.53', '200.00', '50.00', '40.00']; };
+let bills = () => { return ['110.00', '2000.00', '350.00', '60.00', '75.00', '1220.00', '200.00', '50.00', '73.00', '82.00', '190.00', '90.00']; };
+// let bills = () => {return ['1000.00', '180.53', '200.00', '50.00', '40.00'];};
 
 let billsTotalAmount = () => {
     let overallTotal = '0';
@@ -26,7 +26,7 @@ let billsTotalAmount = () => {
 // ************************************
 // adjust the amount of roommates here 
 // *************************************
-let numberOfRoommates = '2.00';
+let numberOfRoommates = '3.00';
 
 //overall total before any divisions are made
 let totalAmountDuePerRoommate = (bills) => {
