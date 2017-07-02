@@ -1,61 +1,41 @@
-// install npm packages
 
 var moneyMath = require('money-math');
-var lodashPullall = require('lodash.pullall');
 
 // there are some small rounding errors under certain scenarios that need to be solved but seems to work
 // rounding errors occur at 3 roommates or most likely all odd numbers
 // needs cleaning up 
 
-let bills = () => { return ['110.00', '2000.00', '350.00', '60.00', '75.00', '1220.00', '200.00', '50.00', '73.00', '82.00', '190.00', '90.00']; };
-// let bills = () => {return ['1000.00', '180.53', '200.00', '50.00', '40.00'];};
+// helper for divide bills between roommates
+const sortBillsLargestToSmallest = (bills) => {
+    return bills.sort((a, b) => {
+        return parseFloat(b) - parseFloat(a);
+    })
+}
 
-let billsTotalAmount = () => {
-    let overallTotal = '0';
-    // console.log(bills())
-    let billsToString = bills()
-    let totalAmountDue = billsToString.forEach((item) => {
-        // console.log(overallTotal)
-        overallTotal = moneyMath.add(overallTotal, item);
-
-    });
-    // overallTotal *= 100;
-    return overallTotal;
-};
-
-// ************************************
-// adjust the amount of roommates here 
-// *************************************
-let numberOfRoommates = '3.00';
-
-//overall total before any divisions are made
-let totalAmountDuePerRoommate = (bills) => {
-    let total = 0;
+// helper for divide bills between roommates
+const removeBillsOverCertainAmount = (bills, amount) => {
+    let splitBills = [];
     bills.forEach((item) => {
-        total += item;
+        if (parseFloat(item) >= parseFloat(amount)) {
+            splitBills.push(item);
+        }
     });
-    return total / numberOfRoommates;
-};
+    return splitBills
+}
 
-// build an array of bills that have an amount less then 300 from largest to smallest this occurs after the lodashPullall
-// this also sorts the bills array from largest to smallest 
-let smallBills = bills().sort((a, b) => {
-    return b - a;
-});
+// helper for divide bills between roommates
+const removeBillsUnderCertainAmount = (bills, amount) => {
+    let splitBills = [];
+    bills.forEach((item) => {
+        if (parseFloat(item) < parseFloat(amount)) {
+            splitBills.push(item);
+        }
+    });
+    return splitBills
+}
 
-// build an array that contains all bills greater then 300
-let splitBills = [];
-bills().forEach((item) => {
-    if (item >= 300) {
-        splitBills.push(item);
-    }
-});
-
-// remove bills that are to be split into its own array
-lodashPullall(smallBills, splitBills);
-
-// builds an array with an array at each index to represent the number of roommates
-let eachRoommateArray = (numRoommates) => {
+// helper for divide bills between roommates
+let eachRoommateArrayEmpty = (numRoommates) => {
     let dividedBills = [];
     for (let i = 0; i < numRoommates; i++) {
         dividedBills.push([]);
@@ -63,19 +43,8 @@ let eachRoommateArray = (numRoommates) => {
     return dividedBills;
 };
 
-// build the array representing the number of roommates
-let dividedBills = eachRoommateArray(numberOfRoommates);
-
-// divides the large bills by the number of roommates and push to each array index representing
-// the roommate
-splitBills.map((bill) => {
-    dividedBills.forEach((item) => {
-        item.push(moneyMath.div(bill.toString(), numberOfRoommates.toString()));
-    });
-});
-
-// distribute the small bills array to each roommate
-let distributeSmallBills = (smallBills) => {
+// helper for divide bills between roommates
+let distributeSmallBills = (smallBills, dividedBills, numberOfRoommates) => {
 
     let dividedBillsIndex = 0;
     let reverseDirection = numberOfRoommates - 1;
@@ -95,32 +64,62 @@ let distributeSmallBills = (smallBills) => {
     return dividedBills;
 };
 
+// used to compose the final summary
+const divideBillsBetweenRoommates = (bills, amount, numRoommates) => {
+    bills = sortBillsLargestToSmallest(bills);
 
+    const dividedLargeBills = eachRoommateArrayEmpty(numRoommates);
 
-// equalize the differential by adding and subtracting the difference from the largest bill
-let equalizeBills = () => {
+    const onlyLargeBills = removeBillsOverCertainAmount(bills, amount);
 
+    const onlySmallBills = removeBillsUnderCertainAmount(bills, amount);
+
+    onlyLargeBills.map((bill) => {
+        dividedLargeBills.forEach((item) => {
+            item.push(moneyMath.div(bill, numRoommates));
+        })
+    })
+
+    const dividedBills = distributeSmallBills(onlySmallBills, dividedLargeBills, numRoommates);
+
+    return dividedBills;
+}
+
+// helper used in equalize
+const findCurrentTotalsForEachRoommate = (dividedBills) => {
     let roommateTotals = [];
     dividedBills.forEach((arr, index) => {
-        let total = '0';
+        let total = '0.00';
         arr.forEach((item) => {
-
             total = moneyMath.add(total, item);
-
         });
         roommateTotals.push(total);
     });
+    return roommateTotals
+}
 
-    let evenlyDivided = moneyMath.div(billsTotalAmount(), numberOfRoommates);
+// helper for equalize
+let billsTotalAmount = (bills) => {
+    let overallTotal = '0.00';
+    bills.forEach((item) => {
+        overallTotal = moneyMath.add(overallTotal, item);
+    });
+    return overallTotal;
+};
 
-    let runningTotal = 0;
+// equalize the differential by adding and subtracting the difference from the largest bill
+let equalizeBills = (dividedBills, bills, numberOfRoommates) => {
+
+    const roommateTotals = findCurrentTotalsForEachRoommate(dividedBills)
+
+    let totalAmount = billsTotalAmount(bills);
+    let evenlyDivided = moneyMath.div(totalAmount, numberOfRoommates);
 
     roommateTotals.map((item, index) => {
-        let overage = 0;
+        let overage = '0.00';
         if (item > evenlyDivided) {
             overage = moneyMath.subtract(item, evenlyDivided);
-            runningTotal = moneyMath.add(overage, runningTotal.toString())
-            dividedBills[index][0] = moneyMath.subtract(dividedBills[index][0], overage.toString())
+            dividedBills[index][0] = moneyMath.subtract(dividedBills[index][0], overage)
         }
         if (item < evenlyDivided) {
             let shortage = moneyMath.subtract(evenlyDivided, item);
@@ -128,16 +127,28 @@ let equalizeBills = () => {
         }
     })
 
-    console.log('each roommates final payment amount')
-    console.log(dividedBills)
-
+    return dividedBills;
 };
 
-distributeSmallBills(smallBills);
+// composes the total functionality
+const billingSummary = (bills, amount, numberOfRoommates) => {
+    const dividedBills = divideBillsBetweenRoommates(bills, amount, numberOfRoommates);
 
-equalizeBills();
+    const finalBillingAmount = equalizeBills(dividedBills, bills, numberOfRoommates);
 
+    return finalBillingAmount;
+}
 
-
-
+module.exports = {
+    equalizeBills,
+    billsTotalAmount,
+    sortBillsLargestToSmallest,
+    removeBillsOverCertainAmount,
+    removeBillsUnderCertainAmount,
+    eachRoommateArrayEmpty,
+    distributeSmallBills,
+    divideBillsBetweenRoommates,
+    findCurrentTotalsForEachRoommate,
+    billingSummary
+}
 
