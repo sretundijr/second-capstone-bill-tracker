@@ -9,7 +9,8 @@ let doubleIt = (bills) => bills.concat(bills.slice(0))
 let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
-let lotsOfBills = getFirstPage(BillsTripled);
+// let lotsOfBills = getFirstPage(BillsTripled);
+const lotsOfBills = BillsTripled;
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 
@@ -57,24 +58,24 @@ let setEditedRow = (e, i) => {
     lotsOfBills[i].lastPaidOn = data[4].value === '' ? Date.now() : data[4].value
 }
 
-let watchNextBtn = () => {
-    let nextBtn = document.getElementById('next-js');
-    nextBtn.addEventListener('click', (e) => {
-        lotsOfBills = forwardOnePage(state.currentPage);
-        renderTableData(lotsOfBills)
-    })
-}
+// let watchNextBtn = () => {
+//     let nextBtn = document.getElementById('next-js');
+//     nextBtn.addEventListener('click', (e) => {
+//         lotsOfBills = forwardOnePage(state.currentPage);
+//         renderTableData(lotsOfBills)
+//     })
+// }
 
-let watchPreviousBtn = () => {
-    let previousBtn = document.getElementById('previous-js');
-    previousBtn.addEventListener('click', (e) => {
-        lotsOfBills = backOnePage(state.currentPage);
-        renderTableData(lotsOfBills);
-    })
-}
+// let watchPreviousBtn = () => {
+//     let previousBtn = document.getElementById('previous-js');
+//     previousBtn.addEventListener('click', (e) => {
+//         lotsOfBills = backOnePage(state.currentPage);
+//         renderTableData(lotsOfBills);
+//     })
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
-    watchNextBtn();
-    watchPreviousBtn();
+    // watchNextBtn();
+    // watchPreviousBtn();
 });
