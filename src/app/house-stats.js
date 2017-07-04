@@ -2,6 +2,8 @@
 const HouseHolds = require('./mock-model');
 const HOUSE_HTML = require('./house-stats-html');
 const state = require('./manage-state')
+const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
+const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 
 let bills = HouseHolds[0].bills;
@@ -74,8 +76,22 @@ let setEditedRow = (e, i) => {
 //     })
 // }
 
+const testing = () => {
+    const expenses = lotsOfBills.map((item) => {
+        return item.amount;
+    })
+    console.log(billingSummary(lotsOfBills, '300.00', '2.00'))
+}
+
+const renderExpenseSummary = () => {
+    const summaryContainer = document.getElementById('expense-summary-container');
+    summaryContainer.innerHTML = EXPENSE_DIVIDED_HTML();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
+    renderExpenseSummary();
+    testing();
     // watchNextBtn();
     // watchPreviousBtn();
 });

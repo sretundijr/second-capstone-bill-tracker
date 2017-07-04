@@ -5,7 +5,7 @@ const households = [
         bills: [
             {
                 name: 'electric',
-                amount: 100.33,
+                amount: '100.33',
                 dueDate: '2017-11-15',
                 lastPaidOn: '2017-11-12',
                 users: [
@@ -21,7 +21,7 @@ const households = [
             },
             {
                 name: 'mortgage',
-                amount: 886.78,
+                amount: '886.78',
                 dueDate: '2017-11-15',
                 lastPaidOn: '2017-11-15',
                 users: [

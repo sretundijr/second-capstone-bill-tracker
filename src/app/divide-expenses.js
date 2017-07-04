@@ -1,5 +1,5 @@
 
-var moneyMath = require('money-math');
+const moneyMath = require('money-math');
 
 // there are some small rounding errors under certain scenarios that need to be solved but seems to work
 // rounding errors occur at 3 roommates or most likely all odd numbers
@@ -8,7 +8,7 @@ var moneyMath = require('money-math');
 // helper for divide bills between roommates
 const sortBillsLargestToSmallest = (bills) => {
     return bills.sort((a, b) => {
-        return parseFloat(b) - parseFloat(a);
+        return parseFloat(b.amount) - parseFloat(a.amount);
     })
 }
 
@@ -16,7 +16,7 @@ const sortBillsLargestToSmallest = (bills) => {
 const removeBillsOverCertainAmount = (bills, amount) => {
     let splitBills = [];
     bills.forEach((item) => {
-        if (parseFloat(item) >= parseFloat(amount)) {
+        if (parseFloat(item.amount) >= parseFloat(amount)) {
             splitBills.push(item);
         }
     });
@@ -27,7 +27,7 @@ const removeBillsOverCertainAmount = (bills, amount) => {
 const removeBillsUnderCertainAmount = (bills, amount) => {
     let splitBills = [];
     bills.forEach((item) => {
-        if (parseFloat(item) < parseFloat(amount)) {
+        if (parseFloat(item.amount) < parseFloat(amount)) {
             splitBills.push(item);
         }
     });
@@ -50,10 +50,12 @@ let distributeSmallBills = (smallBills, dividedBills, numberOfRoommates) => {
     let reverseDirection = numberOfRoommates - 1;
     smallBills.forEach((item) => {
         if (dividedBillsIndex < numberOfRoommates) {
-            dividedBills[dividedBillsIndex].push(moneyMath.floatToAmount(item));
+            item.roommateAmountDue = item.amount;
+            dividedBills[dividedBillsIndex].push(item);
             dividedBillsIndex++;
         } else {
-            dividedBills[reverseDirection].push(moneyMath.floatToAmount(item));
+            item.roommateAmountDue = item.amount;
+            dividedBills[reverseDirection].push(item);
             reverseDirection--;
             if (reverseDirection < 0) {
                 dividedBillsIndex = 0;
@@ -76,7 +78,8 @@ const divideBillsBetweenRoommates = (bills, amount, numRoommates) => {
 
     onlyLargeBills.map((bill) => {
         dividedLargeBills.forEach((item) => {
-            item.push(moneyMath.div(bill, numRoommates));
+            bill.roommateAmountDue = moneyMath.div(bill.amount, numRoommates)
+            item.push(bill);
         })
     })
 
@@ -91,7 +94,7 @@ const findCurrentTotalsForEachRoommate = (dividedBills) => {
     dividedBills.forEach((arr, index) => {
         let total = '0.00';
         arr.forEach((item) => {
-            total = moneyMath.add(total, item);
+            total = moneyMath.add(total, item.roommateAmountDue);
         });
         roommateTotals.push(total);
     });
@@ -102,7 +105,7 @@ const findCurrentTotalsForEachRoommate = (dividedBills) => {
 let billsTotalAmount = (bills) => {
     let overallTotal = '0.00';
     bills.forEach((item) => {
-        overallTotal = moneyMath.add(overallTotal, item);
+        overallTotal = moneyMath.add(overallTotal, item.amount);
     });
     return overallTotal;
 };
@@ -119,11 +122,11 @@ let equalizeBills = (dividedBills, bills, numberOfRoommates) => {
         let overage = '0.00';
         if (item > evenlyDivided) {
             overage = moneyMath.subtract(item, evenlyDivided);
-            dividedBills[index][0] = moneyMath.subtract(dividedBills[index][0], overage)
+            dividedBills[index][0].roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage)
         }
         if (item < evenlyDivided) {
             let shortage = moneyMath.subtract(evenlyDivided, item);
-            dividedBills[index][0] = moneyMath.add(dividedBills[index][0], shortage)
+            dividedBills[index][0].roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage)
         }
     })
 
@@ -140,8 +143,6 @@ const billingSummary = (bills, amount, numberOfRoommates) => {
 }
 
 module.exports = {
-    equalizeBills,
-    billsTotalAmount,
     sortBillsLargestToSmallest,
     removeBillsOverCertainAmount,
     removeBillsUnderCertainAmount,
@@ -149,6 +150,10 @@ module.exports = {
     distributeSmallBills,
     divideBillsBetweenRoommates,
     findCurrentTotalsForEachRoommate,
+    billsTotalAmount,
+
+    equalizeBills,
+
     billingSummary
 }
 
