@@ -76,22 +76,29 @@ let setEditedRow = (e, i) => {
 //     })
 // }
 
-const testing = () => {
+const divideTheExpenses = () => {
     const expenses = lotsOfBills.map((item) => {
         return item.amount;
     })
-    console.log(billingSummary(lotsOfBills, '300.00', '2.00'))
+    const dividedBills = billingSummary(lotsOfBills, '300.00', '2.00')
+    return dividedBills;
+}
+
+const createHtml = () => {
+    return divideTheExpenses().map((arr) => {
+        return EXPENSE_DIVIDED_HTML(arr);
+    })
 }
 
 const renderExpenseSummary = () => {
     const summaryContainer = document.getElementById('expense-summary-container');
-    summaryContainer.innerHTML = EXPENSE_DIVIDED_HTML();
+    summaryContainer.innerHTML = createHtml().join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderTableData(lotsOfBills);
     renderExpenseSummary();
-    testing();
+
     // watchNextBtn();
     // watchPreviousBtn();
 });
