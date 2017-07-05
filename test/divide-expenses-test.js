@@ -9,10 +9,8 @@ const {
     distributeSmallBills,
     divideBillsBetweenRoommates,
     findCurrentTotalsForEachRoommate,
-
     equalizeBills,
     billsTotalAmount,
-
     billingSummary
 } = require('../src/app/divide-expenses');
 
@@ -143,14 +141,59 @@ describe('equalize bill function', function () {
     })
 
     it('divide one bill by two roommates', function () {
-        const bills = [{ amount: '300.00' }]
-        const dividedBills = [[{ roommateAmountDue: '100.00' }], [{ roommateAmountDue: '200.00' }]]
-        const correctOutput = [[{ roommateAmountDue: '150.00' }], [{ roommateAmountDue: '150.00' }]]
+        const bills = [{ amount: '300.00' }, { amount: '75.00' }, { amount: '50.00' }]
+        const dividedBills = [
+            [
+                { roommateAmountDue: '200.00' }, { roommateAmountDue: '75.00' }
+            ],
+            [
+                { roommateAmountDue: '100.00' }, { roommateAmountDue: '50.00' }
+            ]
+        ]
+        const correctOutput = [
+            [
+                { roommateAmountDue: '137.50' }, { roommateAmountDue: '75.00' }
+            ],
+            [
+                { roommateAmountDue: '162.50' }, { roommateAmountDue: '50.00' }
+            ]
+        ]
         const numberOfRoommates = '2.00';
 
         const divided = equalizeBills(dividedBills, bills, numberOfRoommates);
 
         divided.should.eql(correctOutput);
+    })
+})
+
+describe('test bills summary function', function () {
+    it('should return a final bill equally divided', function () {
+        const bills = [
+            { amount: '450.00' },
+            { amount: '500.00' },
+            { amount: '250.00' },
+            { amount: '100.00' },
+            { amount: '50.00' }
+        ];
+        const correctOutput = [
+            [
+                { amount: '500.00', roommateAmountDue: '200.00' },
+                { amount: '450.00', roommateAmountDue: '225.00' },
+                { amount: '250.00', roommateAmountDue: '250.00' },
+            ],
+            [
+                { amount: '500.00', roommateAmountDue: '300.00' },
+                { amount: '450.00', roommateAmountDue: '225.00' },
+                { amount: '100.00', roommateAmountDue: '100.00' },
+                { amount: '50.00', roommateAmountDue: '50.00' }
+            ]
+        ]
+        const amount = '300.00';
+        const numberOfRoommates = '2.00';
+
+        const returnedResults = billingSummary(bills, amount, numberOfRoommates)
+
+        returnedResults.should.eql(correctOutput)
     })
 })
 

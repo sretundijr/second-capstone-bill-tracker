@@ -70,19 +70,19 @@ let distributeSmallBills = (smallBills, dividedBills, numberOfRoommates) => {
 const divideBillsBetweenRoommates = (bills, amount, numRoommates) => {
     bills = sortBillsLargestToSmallest(bills);
 
-    const dividedLargeBills = eachRoommateArrayEmpty(numRoommates);
+    let dividedLargeBills = eachRoommateArrayEmpty(numRoommates);
 
-    const onlyLargeBills = removeBillsOverCertainAmount(bills, amount);
+    let onlyLargeBills = removeBillsOverCertainAmount(bills, amount);
 
     const onlySmallBills = removeBillsUnderCertainAmount(bills, amount);
 
     onlyLargeBills.map((bill) => {
         dividedLargeBills.forEach((item) => {
-            bill.roommateAmountDue = moneyMath.div(bill.amount, numRoommates)
-            item.push(bill);
+            let roommateTotaldue = moneyMath.div(bill.amount, numRoommates)
+            let shallowCopyWithExtraProp = Object.assign(bill, { roommateAmountDue: roommateTotaldue })
+            item.push(JSON.parse(JSON.stringify(shallowCopyWithExtraProp)));
         })
     })
-
     const dividedBills = distributeSmallBills(onlySmallBills, dividedLargeBills, numRoommates);
 
     return dividedBills;
@@ -112,14 +112,13 @@ let billsTotalAmount = (bills) => {
 
 // equalize the differential by adding and subtracting the difference from the largest bill
 let equalizeBills = (dividedBills, bills, numberOfRoommates) => {
-
     const roommateTotals = findCurrentTotalsForEachRoommate(dividedBills)
-
-    let totalAmount = billsTotalAmount(bills);
-    let evenlyDivided = moneyMath.div(totalAmount, numberOfRoommates);
+    const totalAmount = billsTotalAmount(bills);
+    const evenlyDivided = moneyMath.div(totalAmount, numberOfRoommates);
 
     roommateTotals.map((item, index) => {
         let overage = '0.00';
+        let amountDue = '0.00';
         if (item > evenlyDivided) {
             overage = moneyMath.subtract(item, evenlyDivided);
             dividedBills[index][0].roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage)
@@ -129,16 +128,13 @@ let equalizeBills = (dividedBills, bills, numberOfRoommates) => {
             dividedBills[index][0].roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage)
         }
     })
-
     return dividedBills;
 };
 
 // composes the total functionality
 const billingSummary = (bills, amount, numberOfRoommates) => {
-    const dividedBills = divideBillsBetweenRoommates(bills, amount, numberOfRoommates);
-
-    const finalBillingAmount = equalizeBills(dividedBills, bills, numberOfRoommates);
-
+    let dividedExpenses = divideBillsBetweenRoommates(bills, amount, numberOfRoommates);
+    const finalBillingAmount = equalizeBills(dividedExpenses, bills, numberOfRoommates);
     return finalBillingAmount;
 }
 

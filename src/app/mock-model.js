@@ -34,6 +34,54 @@ const households = [
                         amountPaid: 436.78
                     }
                 ]
+            },
+            {
+                name: 'Internet',
+                amount: '86.00',
+                dueDate: '2017-11-11',
+                lastPaidOn: '2017-11-11',
+                users: [
+                    {
+                        roommates_id: 'steve-2',
+                        amountPaid: 450
+                    },
+                    {
+                        roommates_id: 'christina',
+                        amountPaid: 436.78
+                    }
+                ]
+            },
+            {
+                name: 'Ferrari payment',
+                amount: '1331.56',
+                dueDate: '2017-11-11',
+                lastPaidOn: '2017-11-11',
+                users: [
+                    {
+                        roommates_id: 'steve-2',
+                        amountPaid: 450
+                    },
+                    {
+                        roommates_id: 'christina',
+                        amountPaid: 436.78
+                    }
+                ]
+            },
+            {
+                name: 'yacht payment',
+                amount: '8872.00',
+                dueDate: '2017-11-11',
+                lastPaidOn: '2017-11-11',
+                users: [
+                    {
+                        roommates_id: 'steve-2',
+                        amountPaid: 450
+                    },
+                    {
+                        roommates_id: 'christina',
+                        amountPaid: 436.78
+                    }
+                ]
             }
         ],
         roommates: [

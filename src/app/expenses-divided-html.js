@@ -7,14 +7,14 @@ const dividedExpensesHtml = (list) => {
 
     return `<div class="col-md-4">
             <h6>a roommate</h6>
-             <ol>
+             <ol class="list-group">
                 ${htmlListItems.join('')}
             </ol>
             </div>`
 }
 
 const createListItemHtml = (name, amount) => {
-    return `<li>${name}: ${amount}</li>`
+    return `<li class="list-group-item">${name}: ${amount}</li>`
 }
 
 module.exports = dividedExpensesHtml;

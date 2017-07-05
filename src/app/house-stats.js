@@ -12,7 +12,8 @@ let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
     .map((e) => Object.assign({}, e, { editable: false }));
 
 // let lotsOfBills = getFirstPage(BillsTripled);
-const lotsOfBills = BillsTripled;
+// const lotsOfBills = doubleIt(bills);
+const lotsOfBills = bills;
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
 

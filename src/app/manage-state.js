@@ -5,7 +5,6 @@ const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpens
 // const billsPerPage = 4
 // const pagedResultsArray = (bills) => ARRAY.chunk(bills, billsPerPage);
 
-// fix paging
 class CreateHouseState {
     constructor() {
         this.state = {
