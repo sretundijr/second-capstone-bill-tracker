@@ -147,9 +147,7 @@ module.exports = {
     divideBillsBetweenRoommates,
     findCurrentTotalsForEachRoommate,
     billsTotalAmount,
-
     equalizeBills,
-
     billingSummary
 }
 

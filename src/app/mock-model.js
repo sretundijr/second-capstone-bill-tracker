@@ -9,14 +9,14 @@ const households = [
                 dueDate: '2017-11-15',
                 lastPaidOn: '2017-11-12',
                 users: [
-                    {
-                        roommates_id: 'steve-2',
-                        amountPaid: 100.33
-                    },
-                    {
-                        roommates_id: 'christina',
-                        amountPaid: 0
-                    }
+                    // {
+                    //     roommates_id: 'steve-2',
+                    //     amountPaid: 100.33
+                    // },
+                    // {
+                    //     roommates_id: 'christina',
+                    //     amountPaid: 0
+                    // }
                 ]
             },
             {
@@ -25,14 +25,14 @@ const households = [
                 dueDate: '2017-11-15',
                 lastPaidOn: '2017-11-15',
                 users: [
-                    {
-                        roommates_id: 'steve-2',
-                        amountPaid: 450
-                    },
-                    {
-                        roommates_id: 'christina',
-                        amountPaid: 436.78
-                    }
+                    // {
+                    //     roommates_id: 'steve-2',
+                    //     amountPaid: 450
+                    // },
+                    // {
+                    //     roommates_id: 'christina',
+                    //     amountPaid: 436.78
+                    // }
                 ]
             },
             {
@@ -41,14 +41,14 @@ const households = [
                 dueDate: '2017-11-11',
                 lastPaidOn: '2017-11-11',
                 users: [
-                    {
-                        roommates_id: 'steve-2',
-                        amountPaid: 450
-                    },
-                    {
-                        roommates_id: 'christina',
-                        amountPaid: 436.78
-                    }
+                    // {
+                    //     roommates_id: 'steve-2',
+                    //     amountPaid: 450
+                    // },
+                    // {
+                    //     roommates_id: 'christina',
+                    //     amountPaid: 436.78
+                    // }
                 ]
             },
             {
@@ -57,14 +57,14 @@ const households = [
                 dueDate: '2017-11-11',
                 lastPaidOn: '2017-11-11',
                 users: [
-                    {
-                        roommates_id: 'steve-2',
-                        amountPaid: 450
-                    },
-                    {
-                        roommates_id: 'christina',
-                        amountPaid: 436.78
-                    }
+                    // {
+                    //     roommates_id: 'steve-2',
+                    //     amountPaid: 450
+                    // },
+                    // {
+                    //     roommates_id: 'christina',
+                    //     amountPaid: 436.78
+                    // }
                 ]
             },
             {
@@ -73,14 +73,14 @@ const households = [
                 dueDate: '2017-11-11',
                 lastPaidOn: '2017-11-11',
                 users: [
-                    {
-                        roommates_id: 'steve-2',
-                        amountPaid: 450
-                    },
-                    {
-                        roommates_id: 'christina',
-                        amountPaid: 436.78
-                    }
+                    // {
+                    //     roommates_id: 'steve-2',
+                    //     amountPaid: 450
+                    // },
+                    // {
+                    //     roommates_id: 'christina',
+                    //     amountPaid: 436.78
+                    // }
                 ]
             }
         ],

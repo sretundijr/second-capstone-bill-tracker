@@ -39,6 +39,23 @@ class CreateHouseState {
         return this.state.roommates
     }
 
+    saveExpensesToRoommate(list) {
+
+
+        this.addRoommate('steve');
+        this.addRoommate('christina')
+
+        this.state.roommates.map((obj, index) => {
+            obj.bills = [];
+            list[index].map((item) => {
+                obj.bills.push(item);
+            })
+        })
+
+        return this.state.roommates;
+
+    }
+
     addExpenseToState(expenses) {
         let name = isValidExpenseName(expenses.name)
         let number = isValidExpenseAmount(expenses.amount);

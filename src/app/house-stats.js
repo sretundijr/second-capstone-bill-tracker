@@ -1,15 +1,18 @@
 
 const HouseHolds = require('./mock-model');
 const HOUSE_HTML = require('./house-stats-html');
-const state = require('./manage-state')
+const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
 const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 
+let state = new CreateHouseState();
+
 let bills = HouseHolds[0].bills;
-let doubleIt = (bills) => bills.concat(bills.slice(0))
-let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
-    .map((e) => Object.assign({}, e, { editable: false }));
+// console.log(HouseHolds)
+// let doubleIt = (bills) => bills.concat(bills.slice(0))
+// let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
+//     .map((e) => Object.assign({}, e, { editable: false }));
 
 // let lotsOfBills = getFirstPage(BillsTripled);
 // const lotsOfBills = doubleIt(bills);
@@ -82,12 +85,13 @@ const divideTheExpenses = () => {
         return item.amount;
     })
     const dividedBills = billingSummary(lotsOfBills, '300.00', '2.00')
-    return dividedBills;
+    let saved = state.saveExpensesToRoommate(dividedBills);
+    return saved;
 }
 
 const createHtml = () => {
     return divideTheExpenses().map((arr) => {
-        return EXPENSE_DIVIDED_HTML(arr);
+        return EXPENSE_DIVIDED_HTML(arr.bills, arr.name);
     })
 }
 

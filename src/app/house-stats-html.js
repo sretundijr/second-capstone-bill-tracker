@@ -22,7 +22,7 @@ let htmlString = (item, index) => {
                         
                         <div class="col-md-2">
                         <label for="bill">Who paid it:</label>
-                            <input class="form-control" name="bill" type="text" value="${item.users[0].roommates_id}">
+                            <input class="form-control" name="bill" type="text" value="${'coming soon'}">
                         </div>
                         
                         <div  class="col-md-2">
