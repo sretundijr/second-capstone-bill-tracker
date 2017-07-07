@@ -12,26 +12,24 @@ const sortBillsLargestToSmallest = (bills) => {
     })
 }
 
+const filterBillsArray = (bills, callback) => {
+    return bills.filter(callback)
+}
+
 // helper for divide bills between roommates
 const removeBillsOverCertainAmount = (bills, amount) => {
-    let splitBills = [];
-    bills.forEach((item) => {
-        if (parseFloat(item.amount) >= parseFloat(amount)) {
-            splitBills.push(item);
-        }
-    });
-    return splitBills
+    const overAmount = (item) => {
+        return parseFloat(item.amount) >= parseFloat(amount)
+    }
+    return filterBillsArray(bills, overAmount)
 }
 
 // helper for divide bills between roommates
 const removeBillsUnderCertainAmount = (bills, amount) => {
-    let splitBills = [];
-    bills.forEach((item) => {
-        if (parseFloat(item.amount) < parseFloat(amount)) {
-            splitBills.push(item);
-        }
-    });
-    return splitBills
+    const underAmount = (item) => {
+        return parseFloat(item.amount) < parseFloat(amount)
+    }
+    return filterBillsArray(bills, underAmount)
 }
 
 // helper for divide bills between roommates
