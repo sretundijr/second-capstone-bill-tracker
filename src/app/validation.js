@@ -2,7 +2,7 @@ var moment = require('moment');
 
 let isValidRoommate = (roommate) => {
     var errors = [];
-    if (roommate.name === '') {
+    if (roommate === '') {
         errors.push('The roommate should have a name')
     }
     if (errors.length > 0) {
@@ -58,4 +58,11 @@ let isValidExpenseDate = (expenseDate) => {
     }
 }
 
-module.exports = { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate }
+const validateAnExpense = (expense) => {
+    return (isValidExpenseAmount(expense.amount)
+        && isValidExpenseDate(expense.dueDate)
+        && isValidExpenseName(expense.name))
+}
+
+module.exports =
+    { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate, validateAnExpense }

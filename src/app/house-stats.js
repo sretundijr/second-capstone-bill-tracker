@@ -12,15 +12,10 @@ const { getHousHold, saveHouseHold } = require('./api')
 let state = new CreateHouseState();
 
 state.setHouseHold(getHousHold());
+// state.setHouseHold(HouseHolds);
 
-let bills = state.getExpenses();;
-// console.log(HouseHolds)
-// let doubleIt = (bills) => bills.concat(bills.slice(0))
-// let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
-//     .map((e) => Object.assign({}, e, { editable: false }));
 
-// let lotsOfBills = getFirstPage(BillsTripled);
-// const lotsOfBills = doubleIt(bills);
+let bills = state.getExpenses();
 const lotsOfBills = bills;
 
 let buildTable = (bills) => bills.map((item, index) => HOUSE_HTML(item, index));
@@ -53,7 +48,7 @@ let watchEdit = () => {
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
             setEditedRow(e, index);
-            renderTableData(lotsOfBills);
+            renderPage(lotsOfBills);
         });
     });
 }
@@ -61,12 +56,14 @@ let watchEdit = () => {
 //todo
 let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input')
+    const dataObj = {
+        name: data.name.value,
+        dueDate: data.dueDate.value,
+        amount: data.amount.value
+    }
+    state.editExpense(dataObj, i)
 
-    lotsOfBills[i].name = data[0].value
-    lotsOfBills[i].dueDate = data[1].value
-    lotsOfBills[i].amount = data[2].value
-    // lotsOfBills[i].users.push(lotsOfBills[i].users.find((data[3].value)))
-    lotsOfBills[i].lastPaidOn = data[4].value === '' ? Date.now() : data[4].value
+    renderPage(state.getExpenses());
 }
 
 // let watchNextBtn = () => {
@@ -108,9 +105,13 @@ const renderExpenseSummary = () => {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const renderPage = () => {
     renderTableData(lotsOfBills);
     renderExpenseSummary();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderPage();
 
     // watchNextBtn();
     // watchPreviousBtn();

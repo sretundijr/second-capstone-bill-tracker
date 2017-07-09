@@ -4,20 +4,20 @@ let htmlString = (item, index) => {
     return `<div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="row main-container-style">
-                    <form action="#" class="form-inline">
+                    <form action="#" class="form-inline" id="house-expense">
 
                         <div class="col-md-2">
                         <label for="bill">Name</label>
-                            <input class="form-control" name="bill" type="text" ${inputReadOnly[0]} value="${item.name}">
+                            <input class="form-control" name="name" type="text" ${inputReadOnly[0]} value="${item.name}">
                         </div>
                         <div class="col-md-2">
                         <label for="bill"> Date Due</label>
-                            <input class="form-control" name="bill" type="date" ${inputReadOnly[0]} value="${item.dueDate}">
+                            <input class="form-control" name="dueDate" type="date" ${inputReadOnly[0]} value="${item.dueDate}">
                         </div>
                        
                         <div class="col-md-2">
                          <label for="bill">Amount</label>
-                            <input class="form-control" name="bill" type="text" ${inputReadOnly[0]} value="${item.amount}">
+                            <input class="form-control" name="amount" type="text" ${inputReadOnly[0]} value="${item.amount}">
                         </div>
                         
                         <div class="col-md-2">

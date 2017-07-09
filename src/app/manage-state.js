@@ -1,5 +1,6 @@
-const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate }
+const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate, validateAnExpense }
     = require('./validation')
+const moneyMath = require('money-math')
 
 // const ARRAY = require('lodash/array');
 // const billsPerPage = 4
@@ -65,13 +66,22 @@ class CreateHouseState {
         if (name.isValid && number.isValid && date.isValid) {
             let expense = {
                 name: expenses.name,
-                amount: expenses.amount,
+                amount: formatTheMoneyInput(expenses.amount),
                 dueDate: expenses.dueDate
 
             };
             this.state.expenses.push(expense)
             return expense;
         }
+    }
+
+    editExpense(expense, index) {
+        if (validateAnExpense(expense)) {
+            this.state.expenses[index].name = expense.name;
+            this.state.expenses[index].dueDate = expense.dueDate;
+            this.state.expenses[index].amount = formatTheMoneyInput(expense.amount)
+        }
+        return this.state.expenses[index];
     }
 
     removeExpense(index) {
@@ -90,6 +100,11 @@ class CreateHouseState {
             return false;
         }
     }
+}
+
+const formatTheMoneyInput = (numString) => {
+    let num = parseFloat(numString);
+    return moneyMath.floatToAmount(num);
 }
 
 module.exports = CreateHouseState;
