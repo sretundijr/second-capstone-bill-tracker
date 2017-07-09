@@ -5,10 +5,15 @@ const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
 const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
+const { getHousHold, saveHouseHold } = require('./api')
 
+
+// need better names
 let state = new CreateHouseState();
 
-let bills = HouseHolds[0].bills;
+state.setHouseHold(getHousHold());
+
+let bills = state.getExpenses();;
 // console.log(HouseHolds)
 // let doubleIt = (bills) => bills.concat(bills.slice(0))
 // let BillsTripled = doubleIt(doubleIt(doubleIt(bills)))
@@ -84,6 +89,7 @@ const divideTheExpenses = () => {
     const expenses = lotsOfBills.map((item) => {
         return item.amount;
     })
+    // make dynamic
     const dividedBills = billingSummary(lotsOfBills, '300.00', '2.00')
     let saved = state.saveExpensesToRoommate(dividedBills);
     return saved;
@@ -96,8 +102,10 @@ const createHtml = () => {
 }
 
 const renderExpenseSummary = () => {
-    const summaryContainer = document.getElementById('expense-summary-container');
-    summaryContainer.innerHTML = createHtml().join('');
+    if (state.getExpenses().length > 1 && state.getRoommates().length > 1) {
+        const summaryContainer = document.getElementById('expense-summary-container');
+        summaryContainer.innerHTML = createHtml().join('');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -46,7 +46,7 @@ let isValidExpenseAmount = (expense) => {
 }
 
 let isValidExpenseDate = (expenseDate) => {
-    let validDate = moment(expenseDate, 'MM/DD/YYYY', true).isValid();
+    let validDate = moment(expenseDate, 'YYYY-MM-DD', true).isValid();
     if (validDate) {
         return {
             isValid: true

@@ -27,7 +27,7 @@ let htmlString = (item, index) => {
                         
                         <div  class="col-md-2">
                         <label for="bill">Paid On:</label>
-                            <input class="form-control" name="bill" type="date" ${inputReadOnly[0]} value="${item.lastPaidOn}">
+                            <input class="form-control" name="bill" type="text" ${inputReadOnly[0]} value="${'coming soon'}">
                         </div>
 
                         <div class="col-md-2">

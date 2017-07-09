@@ -14,6 +14,14 @@ class CreateHouseState {
         }
     }
 
+    getHouseHold() {
+        return this.state;
+    }
+
+    setHouseHold(obj) {
+        this.state = obj;
+    }
+
     setHouseName(data) {
         this.state.name = data;
     }
@@ -40,22 +48,16 @@ class CreateHouseState {
     }
 
     saveExpensesToRoommate(list) {
-
-
-        this.addRoommate('steve');
-        this.addRoommate('christina')
-
         this.state.roommates.map((obj, index) => {
             obj.bills = [];
             list[index].map((item) => {
                 obj.bills.push(item);
             })
         })
-
         return this.state.roommates;
-
     }
 
+    // reformat money to "00.00"
     addExpenseToState(expenses) {
         let name = isValidExpenseName(expenses.name)
         let number = isValidExpenseAmount(expenses.amount);

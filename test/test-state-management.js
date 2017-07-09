@@ -22,9 +22,9 @@ describe("Testing state management", function () {
     })
 
     it('should add a new expense', function () {
-        let expense = { name: 'steve', amount: '1000.01', dueDate: '01/30/2017' };
+        let expense = { name: 'steve', amount: '1000.01', dueDate: '2017-12-22' };
 
-        let correctOutput = { name: 'steve', amount: '1000.01', dueDate: '01/30/2017' };
+        let correctOutput = { name: 'steve', amount: '1000.01', dueDate: '2017-12-22' };
 
         let newState = state.addExpenseToState(expense);
 

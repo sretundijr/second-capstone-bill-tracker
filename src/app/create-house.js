@@ -1,5 +1,6 @@
 let CreateHouseState = require('./manage-state')
 let HouseHold = require('./mock-model')
+let { saveHouseHold } = require('./api')
 
 let state = new CreateHouseState()
 
@@ -139,16 +140,11 @@ let watchSubmitHousehold = () => {
         let householdName = document.getElementById('household-name');
         state.setHouseName(householdName.value);
 
-        /* 
+        console.log(state.getHouseHold())
+
         saveHouseHold(state.getHouseHold());
-        */
-        HouseHold.name = state.getHouseName();
-        HouseHold.roommates = state.getRoommates();
-        HouseHold.expenses = state.getExpenses();
 
-
-
-        console.log(HouseHold);
+        location.href = '/house-stats';
     })
 }
 
