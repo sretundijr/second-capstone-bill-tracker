@@ -1,6 +1,8 @@
 
 let expenses = require('./mock-model');
 
+let localObj = 'localObj'
+
 const getHousHold = () => {
     // console.log(expenses);
     // return expenses;

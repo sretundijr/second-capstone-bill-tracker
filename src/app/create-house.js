@@ -35,7 +35,15 @@ let watchRoommateBtn = () => {
 let watchDeleteRoommate = () => {
     let deleteBtn = document.getElementsByClassName('delete-btn-js');
     let trimIdString = 9;
-    addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, render);
+
+    Array.from(deleteBtn).forEach((item) => {
+        item.addEventListener('click', (e) => {
+            let index = e.target.id.substring(trimIdString);
+            state.removeRoommate(index);
+            render();
+        })
+    })
+    // addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, render);
 };
 
 // ***************************************************************
@@ -51,7 +59,8 @@ let addListenerByClassName = (classNames, trimIndex, list, callback) => {
     Array.from(classNames).forEach((item) => {
         item.addEventListener('click', (e) => {
             let index = e.target.id.substring(trimIndex);
-            list(index);
+            // list(index)
+            // state.removeRoommate(index);
             callback();
         })
     })
@@ -123,7 +132,14 @@ let watchExpenseBtn = () => {
 let watchDeleteExpenseBtn = () => {
     let deleteBtn = document.getElementsByClassName('delete-expense-btn-js');
     let trimIdString = 8;
-    addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, render);
+    Array.from(deleteBtn).forEach((item) => {
+        item.addEventListener('click', (e) => {
+            let index = e.target.id.substring(trimIdString);
+            state.removeExpense(index);
+            render();
+        })
+    })
+    // addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, render);
 }
 
 // ****************************************
@@ -139,8 +155,6 @@ let watchSubmitHousehold = () => {
     submitHouseBtn.addEventListener('click', (e) => {
         let householdName = document.getElementById('household-name');
         state.setHouseName(householdName.value);
-
-        console.log(state.getHouseHold())
 
         saveHouseHold(state.getHouseHold());
 

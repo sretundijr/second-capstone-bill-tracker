@@ -1,6 +1,7 @@
 const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate, validateAnExpense }
     = require('./validation')
-const moneyMath = require('money-math')
+
+const { formatTheMoneyInput } = require('./formatting')
 
 // const ARRAY = require('lodash/array');
 // const billsPerPage = 4
@@ -100,11 +101,6 @@ class CreateHouseState {
             return false;
         }
     }
-}
-
-const formatTheMoneyInput = (numString) => {
-    let num = parseFloat(numString);
-    return moneyMath.floatToAmount(num);
 }
 
 module.exports = CreateHouseState;
