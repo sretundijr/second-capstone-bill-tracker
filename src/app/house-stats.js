@@ -47,13 +47,15 @@ let watchEdit = () => {
             let index = element.id.substring(10);
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
-            setEditedRow(e, index);
             renderPage(lotsOfBills);
+            document.getElementById(element.id).addEventListener('click', (event) => {
+                // needs to be called from the save event listener
+                setEditedRow(event, index);
+            })
         });
     });
 }
 
-//todo
 let setEditedRow = (e, i) => {
     let data = e.target.parentNode.parentNode.getElementsByTagName('input')
     const dataObj = {
@@ -106,8 +108,8 @@ const renderExpenseSummary = () => {
 }
 
 const renderPage = () => {
-    renderTableData(lotsOfBills);
     renderExpenseSummary();
+    renderTableData(lotsOfBills);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
