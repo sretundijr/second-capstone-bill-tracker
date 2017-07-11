@@ -1,11 +1,12 @@
 
-const HouseHolds = require('./mock-model');
+// const HouseHolds = require('./mock-model');
 const HOUSE_HTML = require('./house-stats-html');
 const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
 const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 const { getHousHold, saveHouseHold } = require('./api')
+const { formatTheMoneyInput } = require('./formatting')
 
 
 // need better names
@@ -48,8 +49,8 @@ let watchEdit = () => {
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
             renderPage(lotsOfBills);
+            // listens for the save event, after the edit event
             document.getElementById(element.id).addEventListener('click', (event) => {
-                // needs to be called from the save event listener
                 setEditedRow(event, index);
             })
         });
@@ -89,7 +90,13 @@ const divideTheExpenses = () => {
         return item.amount;
     })
     // make dynamic
-    const dividedBills = billingSummary(lotsOfBills, '300.00', '2.00')
+    const divideAt300Dollars = '300.00'
+    const dividedBills = billingSummary(lotsOfBills,
+        divideAt300Dollars,
+        formatTheMoneyInput(state.getRoommates().length)
+    )
+    // change the structure to save a roommate to the bill
+    // currently saves a duplicate of the bills for each roommate
     let saved = state.saveExpensesToRoommate(dividedBills);
     return saved;
 }

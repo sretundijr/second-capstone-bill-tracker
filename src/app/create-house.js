@@ -6,8 +6,8 @@ let state = new CreateHouseState()
 
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
-    return `<li>${roommate.name} 
-                <button class="btn btn-sm delete-btn-js" id="roommate-${index}">Delete</button>
+    return `<li class="rendered-list">${roommate.name} 
+                <button class="btn btn-sm btn-primary delete-btn-js rendered-roommate-btn" id="roommate-${index}">Delete</button>
             </li>`
 };
 
@@ -69,7 +69,7 @@ let addListenerByClassName = (classNames, trimIndex, list, callback) => {
 // *******************************************
 // expenses rendered and saved to state
 let partialExpenseTableHtml = () => {
-    return `<div class="col-md-6">
+    return `<div>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -91,7 +91,7 @@ let expenseTableHtml = (expense, index) => {
                 <td>${expense.amount}</td>
                 <td>${expense.dueDate}</td>
                 <td>
-                    <button class="btn btn-sm delete-expense-btn-js" id="expense-${index}">Delete</button>
+                    <button class="btn btn-sm btn-primary delete-expense-btn-js" id="expense-${index}">Delete</button>
                 </td>
             </tr>`
 };
@@ -112,6 +112,7 @@ let renderExpenseTable = () => {
 
 }
 
+// does not work in safari with html date picker
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
 
@@ -145,7 +146,7 @@ let watchDeleteExpenseBtn = () => {
 // ****************************************
 // rendering for household submission
 let submitHtml = () => {
-    return `<button class="btn" id="submit-household-btn">
+    return `<button class="btn btn-primary" id="submit-household-btn">
                 Submit Houshold
             </button>`
 }

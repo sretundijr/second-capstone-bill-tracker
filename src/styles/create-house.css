@@ -13,5 +13,34 @@ input{
 }
 
 .form-container{
-    margin: 50px;
+    margin: 20px;
+    border: 2px solid rgb(228, 228, 228);
+    background: rgb(247, 248, 251);
+    padding: 20px;
 }
+
+.main-header{
+    text-align: center;
+}
+
+.rendered-area{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.rendered-list{
+    margin-bottom: 10px;
+    text-align: center;
+    list-style-position: inside;
+}
+
+.rendered-roommate-btn{
+    margin-left: 20px;
+}
+
+hr{
+    border-top: 2px solid rgb(228, 228, 228);
+}
+
+/*body{*/
+/*}*/

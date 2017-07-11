@@ -59,7 +59,6 @@ class CreateHouseState {
         return this.state.roommates;
     }
 
-    // reformat money to "00.00"
     addExpenseToState(expenses) {
         let name = isValidExpenseName(expenses.name)
         let number = isValidExpenseAmount(expenses.amount);

@@ -6,4 +6,9 @@ const formatTheMoneyInput = (numString) => {
     return moneyMath.floatToAmount(num);
 }
 
+const formatNumberOfRoommates = (numRoommates) => {
+    let num = parseFloat(numRoommates)
+    return moneyMath.floatToAmount(num);
+}
+
 module.exports = { formatTheMoneyInput }
