@@ -23,6 +23,7 @@
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
+    "pikaday": "^1.6.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -31,8 +32,10 @@
     "babel-preset-env": "^1.5.1",
     "chai": "^4.0.0",
     "chai-http": "^3.0.0",
+    "css-loader": "^0.28.4",
     "file-loader": "^0.11.1",
     "mocha": "^3.4.2",
+    "style-loader": "^0.18.2",
     "webpack": "^2.6.1"
   }
 }

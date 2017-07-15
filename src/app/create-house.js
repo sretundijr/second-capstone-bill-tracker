@@ -1,4 +1,7 @@
 let CreateHouseState = require('./manage-state')
+const Pikaday = require('pikaday');
+require('pikaday/css/pikaday.css');
+require('../styles/create-house.css')
 let HouseHold = require('./mock-model')
 let { saveHouseHold } = require('./api')
 
@@ -112,18 +115,19 @@ let renderExpenseTable = () => {
 
 }
 
-// does not work in safari with html date picker
 let watchExpenseBtn = () => {
     let addBillBtn = document.getElementById('add-expense-form');
+    var picker = new Pikaday({ field: document.querySelector('[name=dueDate]') });
 
     addBillBtn.addEventListener('submit', (e) => {
         e.preventDefault();
-        let expenseObject = {}
-        let expenseData = new FormData(e.currentTarget);
 
-        for ([key, value] of expenseData) {
-            expenseObject[key] = value;
+        const expenseObject = {
+            name: e.target.name.value,
+            dueDate: e.target.dueDate.value,
+            amount: e.target.amount.value
         }
+
         state.addExpenseToState(expenseObject);
 
         render();

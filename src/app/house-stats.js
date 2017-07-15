@@ -1,5 +1,5 @@
 
-// const HouseHolds = require('./mock-model');
+require('../styles/house-stats.css')
 const HOUSE_HTML = require('./house-stats-html');
 const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
