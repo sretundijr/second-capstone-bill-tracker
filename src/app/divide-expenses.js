@@ -132,9 +132,9 @@ let equalizeBills = (dividedBills, bills, numberOfRoommates) => {
 
 // composes the total functionality
 const billingSummary = (bills, amount, numberOfRoommates) => {
-
-    let dividedExpenses = divideBillsBetweenRoommates(bills, amount, numberOfRoommates);
-    const finalBillingAmount = equalizeBills(dividedExpenses, bills, numberOfRoommates);
+    const newBills = bills.slice(0)
+    let dividedExpenses = divideBillsBetweenRoommates(newBills, amount, numberOfRoommates);
+    const finalBillingAmount = equalizeBills(dividedExpenses, newBills, numberOfRoommates);
     return finalBillingAmount;
 }
 

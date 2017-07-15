@@ -7,7 +7,7 @@ const getHousHold = () => {
     // console.log(expenses);
     // return expenses;
     const retrieve = localStorage.getItem('localObj')
-    removeHouseHold();
+    // removeHouseHold();
     return JSON.parse(retrieve);
 }
 
