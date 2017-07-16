@@ -5,7 +5,7 @@ const dividedExpensesHtml = (list, name) => {
         return createListItemHtml(item.name, item.roommateAmountDue)
     })
 
-    return `<div class="col-md-4">
+    return `<div class="col-md-6">
             <h6>${name}</h6>
              <ol class="list-group">
                 ${htmlListItems.join('')}

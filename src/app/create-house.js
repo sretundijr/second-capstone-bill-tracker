@@ -3,7 +3,7 @@ const Pikaday = require('pikaday');
 require('pikaday/css/pikaday.css');
 require('../styles/create-house.css');
 let HouseHold = require('./mock-model')
-let { saveHouseHold } = require('./api')
+let { saveHouseHold, createDemoHouse } = require('./api')
 
 let state = new CreateHouseState()
 
@@ -186,6 +186,8 @@ let render = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    state.setHouseHold(createDemoHouse());
+    render();
     watchRoommateBtn();
     watchExpenseBtn();
 });

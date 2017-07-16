@@ -1,18 +1,14 @@
 
-let expenses = require('./mock-model');
+let house = require('./mock-model');
 
 let localObj = 'localObj'
 
 const getHousHold = () => {
-    // console.log(expenses);
-    // return expenses;
     const retrieve = localStorage.getItem('localObj')
-    // removeHouseHold();
     return JSON.parse(retrieve);
 }
 
 const saveHouseHold = (obj) => {
-    expenses.push(obj);
     localStorage.setItem('localObj', JSON.stringify(obj));
 }
 
@@ -20,4 +16,14 @@ const removeHouseHold = () => {
     localStorage.removeItem('localObj');
 }
 
-module.exports = { getHousHold, saveHouseHold };
+const createDemoHouse = () => {
+    const obj = {
+        name: house[0].name,
+        roommates: house[0].roommates.slice(0),
+        expenses: house[0].expenses.slice(0)
+    }
+    saveHouseHold(obj);
+    return obj;
+}
+
+module.exports = { getHousHold, saveHouseHold, createDemoHouse };
