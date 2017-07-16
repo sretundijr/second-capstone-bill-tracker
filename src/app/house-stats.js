@@ -101,17 +101,44 @@ const renderExpenseSummary = () => {
 }
 
 const renderPage = (lotsOfBills, mobile = '') => {
-    if (window.innerWidth <= '375') {
+    if (window.innerWidth <= '1000') {
         renderMenuBtn();
         if (mobile === 'summary') {
+            renderExpenseExplained();
             renderExpenseSummary();
         } else {
+            renderAllExpensesExplained();
             renderTableData(lotsOfBills)
         }
     } else {
+        renderExpenseExplained();
+        renderAllExpensesExplained();
         renderExpenseSummary();
         renderTableData(lotsOfBills);
     }
+}
+
+const renderAllExpensesExplained = () => {
+    const allExpensesExplained = document.getElementById('all-expenses-explained');
+    allExpensesExplained.innerHTML = allExpensesExplainedHtml();
+}
+
+const allExpensesExplainedHtml = () => {
+    return `<h4 class="all-expenses-rendering">All Monthly Expenses</h4>
+            <h5 class="all-expenses-rendering">Each monthly expense can be edited as some bills and due dates may vary</h5>`
+}
+
+const renderExpenseExplained = () => {
+    const expenseExplained = document.getElementById('roommate-expense-explained');
+    expenseExplained.innerHTML = roommateAmountExplainedHtml();
+}
+
+const roommateAmountExplainedHtml = () => {
+    return `<h4 class="each-roommate-expense-js">Each Roommates total amount due</h4>
+            <h5 class="each-roommate-expense-js">*Each expense over $300.00 is evenly divided amongst roommates. Any expense below $300.00 is passed out
+                        one at time to each roommate. If there is a difference in overall payment, that difference is made
+                        even in the largest amount due by each roommate.
+            </h5>`
 }
 
 // for mobile users
@@ -131,6 +158,7 @@ const watchMobileSummaryBtn = () => {
     const roommateSummaryBtn = document.getElementById('roommate-summary');
     const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
     roommateSummaryBtn.addEventListener('click', (e) => {
+        // removes all expenses html
         Array.from(allBillsContentArea).forEach((item) => {
             item.parentNode.removeChild(item);
         })
@@ -143,6 +171,8 @@ const watchMobileAllExpenseBtn = () => {
     const allExpensesBtn = document.getElementById('all-expenses');
     const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js')
     allExpensesBtn.addEventListener('click', (e) => {
+        // removes the headers used to explain the ui content
+        // removes expense per roommate html
         Array.from(expensesByRoommateArea).forEach((item) => {
             item.parentNode.removeChild(item);
         })
