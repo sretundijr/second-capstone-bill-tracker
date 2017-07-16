@@ -101,8 +101,49 @@ const renderExpenseSummary = () => {
 }
 
 const renderPage = (lotsOfBills) => {
-    renderExpenseSummary();
-    renderTableData(lotsOfBills);
+    if (window.innerWidth <= '375') {
+        renderMenuBtn();
+        watchMobileSummaryBtn();
+        watchMobileAllExpenseBtn();
+    } else {
+        renderExpenseSummary();
+        renderTableData(lotsOfBills);
+
+    }
+}
+
+// for mobile users
+const renderMenuBtn = () => {
+    const mobileMenuDiv = document.getElementById('mobile-menu')
+    mobileMenuDiv.innerHTML = menuBtnHtml();
+}
+
+const menuBtnHtml = () => {
+    return `<button type="button" id="all-expenses" class="btn">${'All Expenses'}</button>
+            <button typ="button" id="roommate-summary" class="btn">${'Amount Due'}</button>`
+}
+
+const watchMobileSummaryBtn = () => {
+    const roommateSummaryBtn = document.getElementById('roommate-summary');
+    const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
+    console.log(allBillsContentArea)
+    roommateSummaryBtn.addEventListener('click', (e) => {
+        Array.from(allBillsContentArea).forEach((item) => {
+            item.parentNode.removeChild(item);
+        })
+        renderExpenseSummary();
+    })
+}
+
+const watchMobileAllExpenseBtn = () => {
+    const allExpensesBtn = document.getElementById('all-expenses');
+    const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js')
+    allExpensesBtn.addEventListener('click', (e) => {
+        Array.from(expensesByRoommateArea).forEach((item) => {
+            item.parentNode.removeChild(item);
+        })
+        renderTableData(lotsOfBills);
+    })
 }
 
 document.addEventListener('DOMContentLoaded', () => {

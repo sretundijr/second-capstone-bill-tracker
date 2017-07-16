@@ -1,7 +1,7 @@
 let htmlString = (item, index) => {
     //replace with object and or simplify
     let inputReadOnly = item.editable ? ['', '', 'Save'] : ['readonly', '', 'Edit'];
-    return `<div class="row">
+    return `<div class="row all-expenses-rendering">
                 <div class="col-md-12">
                 <div class="form-container>
                     <form action="#" class="form-inline" id="house-expense">
