@@ -100,15 +100,17 @@ const renderExpenseSummary = () => {
     }
 }
 
-const renderPage = (lotsOfBills) => {
+const renderPage = (lotsOfBills, mobile = '') => {
     if (window.innerWidth <= '375') {
         renderMenuBtn();
-        watchMobileSummaryBtn();
-        watchMobileAllExpenseBtn();
+        if (mobile === 'summary') {
+            renderExpenseSummary();
+        } else {
+            renderTableData(lotsOfBills)
+        }
     } else {
         renderExpenseSummary();
         renderTableData(lotsOfBills);
-
     }
 }
 
@@ -116,6 +118,8 @@ const renderPage = (lotsOfBills) => {
 const renderMenuBtn = () => {
     const mobileMenuDiv = document.getElementById('mobile-menu')
     mobileMenuDiv.innerHTML = menuBtnHtml();
+    watchMobileSummaryBtn();
+    watchMobileAllExpenseBtn();
 }
 
 const menuBtnHtml = () => {
@@ -126,12 +130,12 @@ const menuBtnHtml = () => {
 const watchMobileSummaryBtn = () => {
     const roommateSummaryBtn = document.getElementById('roommate-summary');
     const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
-    console.log(allBillsContentArea)
     roommateSummaryBtn.addEventListener('click', (e) => {
         Array.from(allBillsContentArea).forEach((item) => {
             item.parentNode.removeChild(item);
         })
-        renderExpenseSummary();
+        const mobile = 'summary';
+        renderPage(lotsOfBills, mobile);
     })
 }
 
@@ -142,7 +146,7 @@ const watchMobileAllExpenseBtn = () => {
         Array.from(expensesByRoommateArea).forEach((item) => {
             item.parentNode.removeChild(item);
         })
-        renderTableData(lotsOfBills);
+        renderPage(lotsOfBills);
     })
 }
 
