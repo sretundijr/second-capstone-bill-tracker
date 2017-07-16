@@ -1,7 +1,7 @@
 const households = [
     {
         _id: "steve-christina-house",
-        name: 'steve christina house',
+        name: 'Steve and Christina\'s house',
         expenses: [
             {
                 name: 'electric',
@@ -19,12 +19,12 @@ const households = [
                 dueDate: '2017-11-11',
             },
             {
-                name: 'Ferrari payment',
+                name: 'Ferrari',
                 amount: '1331.56',
                 dueDate: '2017-11-11',
             },
             {
-                name: 'yacht payment',
+                name: 'yacht',
                 amount: '8872.00',
                 dueDate: '2017-11-11',
             }

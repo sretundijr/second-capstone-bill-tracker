@@ -7,6 +7,13 @@ let { saveHouseHold, createDemoHouse } = require('./api')
 
 let state = new CreateHouseState()
 
+const renderHouseName = () => {
+    const houseHoldName = document.getElementById('household-name');
+    if (state.getHouseName() !== '') {
+        houseHoldName.value = state.getHouseName();
+    }
+}
+
 // roommate rendered and saved to state
 let roommateHtml = (roommate, index) => {
     return `<li class="rendered-list">${roommate.name} 
@@ -183,6 +190,8 @@ let render = () => {
     renderExpenseTable();
 
     renderSubmitHousehold();
+
+    renderHouseName();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
