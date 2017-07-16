@@ -150,15 +150,15 @@ const renderMenuBtn = () => {
 }
 
 const menuBtnHtml = () => {
-    return `<button type="button" id="all-expenses" class="btn">${'All Expenses'}</button>
-            <button typ="button" id="roommate-summary" class="btn">${'Amount Due'}</button>`
+    return `<button type="button" id="all-expenses" class="btn btn-primary">${'All Expenses'}</button>
+            <button typ="button" id="roommate-summary" class="btn btn-primary">${'Amount Due'}</button>`
 }
 
 const watchMobileSummaryBtn = () => {
     const roommateSummaryBtn = document.getElementById('roommate-summary');
     const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
     roommateSummaryBtn.addEventListener('click', (e) => {
-        // removes all expenses html
+        // removes all expenses html and the header content
         Array.from(allBillsContentArea).forEach((item) => {
             item.parentNode.removeChild(item);
         })
