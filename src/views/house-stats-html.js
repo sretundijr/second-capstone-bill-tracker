@@ -2,6 +2,8 @@ let htmlString = (item, index) => {
     //replace with object and or simplify
     let inputReadOnly = item.editable ? ['', '', 'Save'] : ['readonly', '', 'Edit'];
     return `<div class="row">
+                <div class="col-md-12">
+                <div class="form-container>
                     <form action="#" class="form-inline" id="house-expense">
 
                         <div class="col-sm-2 form-group">
@@ -34,7 +36,9 @@ let htmlString = (item, index) => {
                             </input>
                         </div>
                     </form>
-                </div>`
+                </div>
+                </div>
+            </div>`
 }
 
 module.exports = htmlString;

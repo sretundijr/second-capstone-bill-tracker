@@ -2,7 +2,7 @@ let CreateHouseState = require('./manage-state')
 const Pikaday = require('pikaday');
 require('pikaday/css/pikaday.css');
 require('../styles/create-house.css');
-let HouseHold = require('./mock-model')
+let HouseHold = require('./mock-model');
 let { saveHouseHold, createDemoHouse } = require('./api')
 
 let state = new CreateHouseState()
@@ -72,7 +72,7 @@ let addListenerByClassName = (classNames, trimIndex, list, callback) => {
 // *******************************************
 // expenses rendered and saved to state
 let partialExpenseTableHtml = () => {
-    return `<div>
+    return `<div class="expense-table-container">
                 <table class="table table-condensed">
                     <thead>
                         <tr>

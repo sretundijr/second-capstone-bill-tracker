@@ -43,6 +43,12 @@ hr{
     border-top: 2px solid rgb(228, 228, 228);
 }
 
+.expense-table-container{
+    margin: 20px;
+    border: 2px solid rgb(228, 228, 228);
+    background: rgb(247, 248, 251);
+    padding: 20px;
+}
 
 /*body{*/
 /*}*/
