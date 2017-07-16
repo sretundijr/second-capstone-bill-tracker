@@ -91,7 +91,7 @@ const createHtml = () => {
 }
 
 const renderExpenseSummary = () => {
-    if (state.getExpenses().length > 1 && state.getRoommates().length > 1) {
+    if (state.getExpenses().length >= 1 && state.getRoommates().length > 1) {
         const summaryContainer = document.getElementById('expense-summary-container');
         summaryContainer.innerHTML = createHtml().join('');
     }
