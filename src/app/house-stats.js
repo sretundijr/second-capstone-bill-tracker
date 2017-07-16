@@ -6,6 +6,8 @@ const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 const { getHousHold, saveHouseHold } = require('./api')
 const { formatTheMoneyInput } = require('./formatting')
+const Pikaday = require('pikaday');
+require('pikaday/css/pikaday.css');
 require('../styles/house-stats.css')
 
 
@@ -48,6 +50,7 @@ let watchEdit = () => {
             index = parseInt(index);
             lotsOfBills[index].editable = isEditable(index);
             renderPage(lotsOfBills);
+            var picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
             // listens for the save event, after the edit event
             document.getElementById(element.id).addEventListener('click', (event) => {
                 setEditedRow(event, index);
@@ -97,11 +100,11 @@ const renderExpenseSummary = () => {
     }
 }
 
-const renderPage = () => {
+const renderPage = (lotsOfBills) => {
     renderExpenseSummary();
     renderTableData(lotsOfBills);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderPage();
+    renderPage(lotsOfBills);
 });

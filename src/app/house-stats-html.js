@@ -10,7 +10,7 @@ let htmlString = (item, index) => {
                         </div>
                         <div class="col-sm-2 form-group">
                         <label for="bill"> Date Due</label>
-                            <input class="form-control input-style" name="dueDate" type="date" ${inputReadOnly[0]} value="${item.dueDate}">
+                            <input id="datePicker${index}" class="form-control input-style" name="dueDate" type="text" ${inputReadOnly[0]} value="${item.dueDate}">
                         </div>
                        
                         <div class="col-sm-2 form-group">
