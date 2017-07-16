@@ -1,7 +1,7 @@
 let CreateHouseState = require('./manage-state')
 const Pikaday = require('pikaday');
 require('pikaday/css/pikaday.css');
-require('../styles/create-house.css')
+require('../styles/create-house.css');
 let HouseHold = require('./mock-model')
 let { saveHouseHold } = require('./api')
 

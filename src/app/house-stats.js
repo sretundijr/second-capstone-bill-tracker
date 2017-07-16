@@ -1,5 +1,4 @@
 
-require('../styles/house-stats.css')
 const HOUSE_HTML = require('./house-stats-html');
 const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('./expenses-divided-html')
@@ -7,6 +6,7 @@ const { billingSummary } = require('./divide-expenses')
 const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 const { getHousHold, saveHouseHold } = require('./api')
 const { formatTheMoneyInput } = require('./formatting')
+require('../styles/house-stats.css')
 
 
 // need better names
@@ -14,7 +14,6 @@ let state = new CreateHouseState();
 
 state.setHouseHold(getHousHold());
 // state.setHouseHold(HouseHolds);
-
 
 let bills = state.getExpenses();
 const lotsOfBills = bills;
@@ -69,22 +68,6 @@ let setEditedRow = (e, i) => {
     renderPage(state.getExpenses());
 }
 
-// let watchNextBtn = () => {
-//     let nextBtn = document.getElementById('next-js');
-//     nextBtn.addEventListener('click', (e) => {
-//         lotsOfBills = forwardOnePage(state.currentPage);
-//         renderTableData(lotsOfBills)
-//     })
-// }
-
-// let watchPreviousBtn = () => {
-//     let previousBtn = document.getElementById('previous-js');
-//     previousBtn.addEventListener('click', (e) => {
-//         lotsOfBills = backOnePage(state.currentPage);
-//         renderTableData(lotsOfBills);
-//     })
-// }
-
 const divideTheExpenses = () => {
     const expenses = lotsOfBills.map((item) => {
         return item.amount;
@@ -121,7 +104,4 @@ const renderPage = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     renderPage();
-
-    // watchNextBtn();
-    // watchPreviousBtn();
 });
