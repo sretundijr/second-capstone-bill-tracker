@@ -136,8 +136,8 @@ let watchExpenseBtn = () => {
         }
 
         state.addExpenseToState(expenseObject);
-
-        render();
+        const mobile = 'expenses';
+        render(mobile);
     })
 };
 
@@ -303,12 +303,10 @@ let render = (mobile = '') => {
             renderAddExpenseContainer();
             renderExpenseTable();
             watchExpenseBtn();
-            // renderSubmitHousehold();
         } else {
             renderAddRoommateContainer();
             renderRoommateList();
             watchRoommateBtn();
-            // renderSubmitHousehold();
         }
         renderHouseName();
         renderSubmitHousehold();
