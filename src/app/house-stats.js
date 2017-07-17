@@ -3,7 +3,6 @@ const HOUSE_HTML = require('../views/house-stats-html');
 const CreateHouseState = require('./manage-state')
 const EXPENSE_DIVIDED_HTML = require('../views/expenses-divided-html')
 const { billingSummary } = require('./divide-expenses')
-const { getFirstPage, forwardOnePage, backOnePage } = require('./pagination');
 const { getHousHold, saveHouseHold } = require('./api')
 const { formatTheMoneyInput } = require('./formatting')
 const Pikaday = require('pikaday');
