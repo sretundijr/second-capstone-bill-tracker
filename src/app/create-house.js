@@ -259,9 +259,6 @@ const addExpenseContainerHtml = () => {
                         <div id="table-container">
 
                         </div>
-                        <div class="col-md-3" id="submit-household">
-
-                        </div>
                     </div>
                 </div>
             </div>`
@@ -305,13 +302,16 @@ let render = (mobile = '') => {
         if (mobile === 'expenses') {
             renderAddExpenseContainer();
             renderExpenseTable();
+            watchExpenseBtn();
             // renderSubmitHousehold();
         } else {
             renderAddRoommateContainer();
             renderRoommateList();
+            watchRoommateBtn();
             // renderSubmitHousehold();
         }
         renderHouseName();
+        renderSubmitHousehold();
     } else {
         renderAddExpenseContainer();
         renderAddRoommateContainer();
