@@ -183,20 +183,148 @@ let renderSubmitHousehold = () => {
     }
 }
 
-let render = () => {
+const renderAddRoommateContainer = () => {
+    const roommateRow = document.getElementById('roommate-row');
+    roommateRow.innerHTML = addRoommateContainerHtml();
+}
 
-    renderRoommateList();
+const addRoommateContainerHtml = () => {
+    return `<div id="roommate-form"> 
+            <div class="col-md-4">
+                <h6 class="text-center">Add a Roommate Below</h6>
+                    <div class="form-container">
+                        <form action="" id="add-roommate-form">
+                            <div class="form-group">
+                                <label class="control-label" for="create-roommate">Roommate</label>
+                                <input class="form-control input-style" type="text" name="create-roommate">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input id="add-roommate-btn input-style" name="create-roommate" class="btn btn-primary" type="submit" value="Add a Roommate">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6 rendered-area">
+                    <h5>Roommates</h5>
+                    <hr>
+                    <ol id="add-roommate">
+                    </ol>
+                </div>
+            </div>`
+}
 
-    renderExpenseTable();
+const renderAddExpenseContainer = () => {
+    const addExpenseRow = document.getElementById('add-expense-row');
+    addExpenseRow.innerHTML = addExpenseContainerHtml();
+}
 
-    renderSubmitHousehold();
+const addExpenseContainerHtml = () => {
+    return `<div id="expense-form">
+            <div class="col-md-4">
+                <h6 class="text-center">Enter a new Expense below</h6>
+                    <div class="form-container">
+                        <form action="" id="add-expense-form">
+                            <div class="form-group">
+                                <label class="control-label" for="name">Name</label>
+                                <input class="form-control input-style" type="text" name="name" placeholder="electric">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="due-date">Due Date</label>
+                                <input class="form-control input-style" type="text" name="dueDate" placeholder="MM/DD/YYYY">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="amount">Amount</label>
+                                <input class="form-control input-style" type="text" name="amount" placeholder="100.32">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input id="expense-btn" name="create-expense" class="btn btn-primary input-style" type="submit" value="Add an Expense">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="rendered-area">
+                            <h5>Expenses</h5>
+                            <hr>
+                        </div>
+                        <div id="table-container">
 
-    renderHouseName();
+                        </div>
+                        <div class="col-md-3" id="submit-household">
+
+                        </div>
+                    </div>
+                </div>
+            </div>`
+}
+
+// mobile rendering
+const mobileNavButtonsHtml = () => {
+    return `<button id="add-roommates-btn" class="btn btn-primary" type="button">Add Roommates</button>
+            <button id="add-expenses-btn" class="btn btn-primary" type="button">Add Expenses</button>`;
+}
+
+const renderMobileNav = () => {
+    const mobileNavRenderArea = document.getElementById('mobile-nav-render-area');
+    mobileNavRenderArea.innerHTML = mobileNavButtonsHtml();
+}
+
+const watchAddRoommatesBtn = () => {
+    const addRoommates = document.getElementById('add-roommates-btn');
+    addRoommates.addEventListener('click', (e) => {
+        const addExpenses = document.getElementById('expense-form');
+        addExpenses.parentNode.removeChild(addExpenses);
+        render();
+    })
+}
+
+const watchAddExpensesBtn = () => {
+    const addExpenses = document.getElementById('add-expenses-btn');
+    addExpenses.addEventListener('click', (e) => {
+        const addRoommate = document.getElementById('roommate-form');
+        addRoommate.parentNode.removeChild(addRoommate);
+        const mobile = 'expenses';
+        render(mobile);
+    })
+}
+
+let render = (mobile = '') => {
+    if (window.innerWidth <= '1000') {
+        renderMobileNav();
+        watchAddRoommatesBtn();
+        watchAddExpensesBtn();
+        if (mobile === 'expenses') {
+            renderAddExpenseContainer();
+            renderExpenseTable();
+            // renderSubmitHousehold();
+        } else {
+            renderAddRoommateContainer();
+            renderRoommateList();
+            // renderSubmitHousehold();
+        }
+        renderHouseName();
+    } else {
+        renderAddExpenseContainer();
+        renderAddRoommateContainer();
+        renderRoommateList();
+        renderExpenseTable();
+        renderSubmitHousehold();
+        renderHouseName();
+        watchRoommateBtn();
+        watchExpenseBtn();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     state.setHouseHold(createDemoHouse());
     render();
-    watchRoommateBtn();
-    watchExpenseBtn();
 });
