@@ -151,7 +151,7 @@ const renderMenuBtn = () => {
 
 const menuBtnHtml = () => {
     return `<button type="button" id="all-expenses" class="btn btn-primary">${'All Expenses'}</button>
-            <button typ="button" id="roommate-summary" class="btn btn-primary">${'Amount Due'}</button>`
+            <button typ="button" id="roommate-summary" class="btn btn-primary">Expenses divided by Roommate</button>`
 }
 
 const watchMobileSummaryBtn = () => {

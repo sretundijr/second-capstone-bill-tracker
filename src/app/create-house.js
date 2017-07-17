@@ -53,7 +53,6 @@ let watchDeleteRoommate = () => {
             render();
         })
     })
-    // addListenerByClassName(deleteBtn, trimIdString, state.removeRoommate, render);
 };
 
 // ***************************************************************
@@ -64,17 +63,6 @@ let listToString = (list, callback) => {
     })
     return newList.join('');
 };
-
-let addListenerByClassName = (classNames, trimIndex, list, callback) => {
-    Array.from(classNames).forEach((item) => {
-        item.addEventListener('click', (e) => {
-            let index = e.target.id.substring(trimIndex);
-            // list(index)
-            // state.removeRoommate(index);
-            callback();
-        })
-    })
-}
 
 // *******************************************
 // expenses rendered and saved to state
@@ -151,7 +139,6 @@ let watchDeleteExpenseBtn = () => {
             render();
         })
     })
-    // addListenerByClassName(deleteBtn, trimIdString, state.removeExpense, render);
 }
 
 // ****************************************
@@ -201,7 +188,7 @@ const addRoommateContainerHtml = () => {
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input id="add-roommate-btn input-style" name="create-roommate" class="btn btn-primary" type="submit" value="Add a Roommate">
+                                        <input id="add-roommate-btn input-style" name="create-roommate" class="btn btn-primary" type="submit" value="Save">
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +230,7 @@ const addExpenseContainerHtml = () => {
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input id="expense-btn" name="create-expense" class="btn btn-primary input-style" type="submit" value="Add an Expense">
+                                        <input id="expense-btn" name="create-expense" class="btn btn-primary input-style" type="submit" value="Save">
                                     </div>
                                 </div>
                             </div>
@@ -294,6 +281,7 @@ const watchAddExpensesBtn = () => {
     })
 }
 
+// check calls to mobile, refactor this
 let render = (mobile = '') => {
     if (window.innerWidth <= '1000') {
         renderMobileNav();
