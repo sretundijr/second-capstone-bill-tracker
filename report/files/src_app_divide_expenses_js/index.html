@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">75.98</p>
+      <p class="stat">76.84</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">151</p>
+      <p class="stat">141</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">39.10</p>
+      <p class="stat">39.26</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.13</p>
+      <p class="stat">1.10</p>
     </div>
   </div>
 </div>
@@ -91,155 +91,145 @@
   <div class="row">
     <textarea id="file-source" class="col-md-12">const moneyMath = require(&#039;money-math&#039;);
 
-// there are some small rounding errors under certain scenarios that need to be solved but seems to work
+// there are some small rounding errors under certain scenarios that need to
+// be solved but seems to work
 // rounding errors occur at 3 roommates or most likely all odd numbers
-// needs cleaning up 
+// needs cleaning up
 
 // helper for divide bills between roommates
-const sortBillsLargestToSmallest = (bills) =&gt; {
-    return bills.sort((a, b) =&gt; {
-        return parseFloat(b.amount) - parseFloat(a.amount);
-    })
-}
+const sortBillsLargestToSmallest = bills =&gt; bills.sort((a, b) =&gt;
+  parseFloat(b.amount) - parseFloat(a.amount));
 
-const filterBillsArray = (bills, callback) =&gt; {
-    return bills.filter(callback)
-}
+const filterBillsArray = (bills, callback) =&gt; bills.filter(callback);
 
 // helper for divide bills between roommates
 const removeBillsOverCertainAmount = (bills, amount) =&gt; {
-    const overAmount = (item) =&gt; {
-        return parseFloat(item.amount) &gt;= parseFloat(amount)
-    }
-    return filterBillsArray(bills, overAmount)
-}
-
-// helper for divide bills between roommates
-const removeBillsUnderCertainAmount = (bills, amount) =&gt; {
-    const underAmount = (item) =&gt; {
-        return parseFloat(item.amount) &lt; parseFloat(amount)
-    }
-    return filterBillsArray(bills, underAmount)
-}
-
-// helper for divide bills between roommates
-let eachRoommateArrayEmpty = (numRoommates) =&gt; {
-    let dividedBills = [];
-    for (let i = 0; i &lt; numRoommates; i++) {
-        dividedBills.push([]);
-    }
-    return dividedBills;
+  const overAmount = item =&gt; parseFloat(item.amount) &gt;= parseFloat(amount);
+  return filterBillsArray(bills, overAmount);
 };
 
 // helper for divide bills between roommates
-let distributeSmallBills = (smallBills, dividedBills, numberOfRoommates) =&gt; {
+const removeBillsUnderCertainAmount = (bills, amount) =&gt; {
+  const underAmount = item =&gt; parseFloat(item.amount) &lt; parseFloat(amount);
+  return filterBillsArray(bills, underAmount);
+};
 
-    let dividedBillsIndex = 0;
-    let reverseDirection = numberOfRoommates - 1;
-    smallBills.forEach((item) =&gt; {
-        if (dividedBillsIndex &lt; numberOfRoommates) {
-            item.roommateAmountDue = item.amount;
-            dividedBills[dividedBillsIndex].push(item);
-            dividedBillsIndex++;
-        } else {
-            item.roommateAmountDue = item.amount;
-            dividedBills[reverseDirection].push(item);
-            reverseDirection--;
-            if (reverseDirection &lt; 0) {
-                dividedBillsIndex = 0;
-                reverseDirection = numberOfRoommates - 1;
-            }
-        }
-    });
+// helper for divide bills between roommates
+const eachRoommateArrayEmpty = (numRoommates) =&gt; {
+  const dividedBills = [];
+  for (let i = 0; i &lt; numRoommates; i++) {
+    dividedBills.push([]);
+  }
+  return dividedBills;
+};
 
-    return dividedBills;
+// helper for divide bills between roommates
+const distributeSmallBills = (smallBills, dividedBills, numberOfRoommates) =&gt; {
+  let dividedBillsIndex = 0;
+  let reverseDirection = numberOfRoommates - 1;
+  smallBills.forEach((item) =&gt; {
+    if (dividedBillsIndex &lt; numberOfRoommates) {
+      item.roommateAmountDue = item.amount;
+      dividedBills[dividedBillsIndex].push(item);
+      dividedBillsIndex++;
+    } else {
+      item.roommateAmountDue = item.amount;
+      dividedBills[reverseDirection].push(item);
+      reverseDirection--;
+      if (reverseDirection &lt; 0) {
+        dividedBillsIndex = 0;
+        reverseDirection = numberOfRoommates - 1;
+      }
+    }
+  });
+
+  return dividedBills;
 };
 
 // used to compose the final summary
 const divideBillsBetweenRoommates = (bills, amount, numRoommates) =&gt; {
-    bills = sortBillsLargestToSmallest(bills);
+  bills = sortBillsLargestToSmallest(bills);
 
-    let dividedLargeBills = eachRoommateArrayEmpty(numRoommates);
+  const dividedLargeBills = eachRoommateArrayEmpty(numRoommates);
 
-    let onlyLargeBills = removeBillsOverCertainAmount(bills, amount);
+  const onlyLargeBills = removeBillsOverCertainAmount(bills, amount);
 
-    const onlySmallBills = removeBillsUnderCertainAmount(bills, amount);
+  const onlySmallBills = removeBillsUnderCertainAmount(bills, amount);
 
-    onlyLargeBills.map((bill) =&gt; {
-        dividedLargeBills.forEach((item) =&gt; {
-            let roommateTotaldue = moneyMath.div(bill.amount, numRoommates)
-            let shallowCopyWithExtraProp = Object.assign(bill, { roommateAmountDue: roommateTotaldue })
-            item.push(JSON.parse(JSON.stringify(shallowCopyWithExtraProp)));
-        })
-    })
-    const dividedBills = distributeSmallBills(onlySmallBills, dividedLargeBills, numRoommates);
+  onlyLargeBills.map((bill) =&gt; {
+    dividedLargeBills.forEach((item) =&gt; {
+      const roommateTotaldue = moneyMath.div(bill.amount, numRoommates);
+      const shallowCopyWithExtraProp = Object.assign(bill, { roommateAmountDue: roommateTotaldue });
+      item.push(JSON.parse(JSON.stringify(shallowCopyWithExtraProp)));
+    });
+  });
+  const dividedBills = distributeSmallBills(onlySmallBills, dividedLargeBills, numRoommates);
 
-    return dividedBills;
-}
+  return dividedBills;
+};
 
 // helper used in equalize
 const findCurrentTotalsForEachRoommate = (dividedBills) =&gt; {
-    let roommateTotals = [];
-    dividedBills.forEach((arr, index) =&gt; {
-        let total = &#039;0.00&#039;;
-        arr.forEach((item) =&gt; {
-            total = moneyMath.add(total, item.roommateAmountDue);
-        });
-        roommateTotals.push(total);
+  const roommateTotals = [];
+  dividedBills.forEach((arr) =&gt; {
+    let total = &#039;0.00&#039;;
+    arr.forEach((item) =&gt; {
+      total = moneyMath.add(total, item.roommateAmountDue);
     });
-    return roommateTotals
-}
+    roommateTotals.push(total);
+  });
+  return roommateTotals;
+};
 
 // helper for equalize
-let billsTotalAmount = (bills) =&gt; {
-    let overallTotal = &#039;0.00&#039;;
-    bills.forEach((item) =&gt; {
-        overallTotal = moneyMath.add(overallTotal, item.amount);
-    });
-    return overallTotal;
+const billsTotalAmount = (bills) =&gt; {
+  let overallTotal = &#039;0.00&#039;;
+  bills.forEach((item) =&gt; {
+    overallTotal = moneyMath.add(overallTotal, item.amount);
+  });
+  return overallTotal;
 };
 
 // equalize the differential by adding and subtracting the difference from the largest bill
-let equalizeBills = (dividedBills, bills, numberOfRoommates) =&gt; {
-    const roommateTotals = findCurrentTotalsForEachRoommate(dividedBills)
-    const totalAmount = billsTotalAmount(bills);
-    const evenlyDivided = moneyMath.div(totalAmount, numberOfRoommates);
+const equalizeBills = (dividedBills, bills, numberOfRoommates) =&gt; {
+  const roommateTotals = findCurrentTotalsForEachRoommate(dividedBills);
+  const totalAmount = billsTotalAmount(bills);
+  const evenlyDivided = moneyMath.div(totalAmount, numberOfRoommates);
 
-    roommateTotals.map((item, index) =&gt; {
-        let overage = &#039;0.00&#039;;
-        let amountDue = &#039;0.00&#039;;
-        if (item &gt; evenlyDivided) {
-            overage = moneyMath.subtract(item, evenlyDivided);
-            dividedBills[index][0].roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage)
-        }
-        if (item &lt; evenlyDivided) {
-            let shortage = moneyMath.subtract(evenlyDivided, item);
-            dividedBills[index][0].roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage)
-        }
-    })
-    return dividedBills;
+  roommateTotals.map((item, index) =&gt; {
+    let overage = &#039;0.00&#039;;
+    if (item &gt; evenlyDivided) {
+      overage = moneyMath.subtract(item, evenlyDivided);
+      dividedBills[index][0].roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage);
+    }
+    if (item &lt; evenlyDivided) {
+      const shortage = moneyMath.subtract(evenlyDivided, item);
+      dividedBills[index][0].roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage);
+    }
+  });
+  return dividedBills;
 };
 
 // composes the total functionality
 const billingSummary = (bills, amount, numberOfRoommates) =&gt; {
-    const newBills = bills.slice(0)
-    let dividedExpenses = divideBillsBetweenRoommates(newBills, amount, numberOfRoommates);
-    const finalBillingAmount = equalizeBills(dividedExpenses, newBills, numberOfRoommates);
-    return finalBillingAmount;
-}
+  const newBills = bills.slice(0);
+  const dividedExpenses = divideBillsBetweenRoommates(newBills, amount, numberOfRoommates);
+  const finalBillingAmount = equalizeBills(dividedExpenses, newBills, numberOfRoommates);
+  return finalBillingAmount;
+};
 
 module.exports = {
-    sortBillsLargestToSmallest,
-    removeBillsOverCertainAmount,
-    removeBillsUnderCertainAmount,
-    eachRoommateArrayEmpty,
-    distributeSmallBills,
-    divideBillsBetweenRoommates,
-    findCurrentTotalsForEachRoommate,
-    billsTotalAmount,
-    equalizeBills,
-    billingSummary
-}</textarea>
+  sortBillsLargestToSmallest,
+  removeBillsOverCertainAmount,
+  removeBillsUnderCertainAmount,
+  eachRoommateArrayEmpty,
+  distributeSmallBills,
+  divideBillsBetweenRoommates,
+  findCurrentTotalsForEachRoommate,
+  billsTotalAmount,
+  equalizeBills,
+  billingSummary,
+};</textarea>
   </div>
 </div>
 

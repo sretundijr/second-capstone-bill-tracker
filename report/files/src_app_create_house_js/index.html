@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">77.73</p>
+      <p class="stat">78.49</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">316</p>
+      <p class="stat">300</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">21.92</p>
+      <p class="stat">20.52</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.85</p>
+      <p class="stat">1.82</p>
     </div>
   </div>
 </div>
@@ -89,76 +89,72 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">let CreateHouseState = require(&#039;./manage-state&#039;)
+    <textarea id="file-source" class="col-md-12">const CreateHouseState = require(&#039;./manage-state&#039;);
 const Pikaday = require(&#039;pikaday&#039;);
 require(&#039;pikaday/css/pikaday.css&#039;);
 require(&#039;../styles/create-house.css&#039;);
-let HouseHold = require(&#039;./mock-model&#039;);
-let { saveHouseHold, createDemoHouse } = require(&#039;./api&#039;)
+const HouseHold = require(&#039;./mock-model&#039;);
+const { saveHouseHold, createDemoHouse } = require(&#039;./api&#039;);
+/* global document, window, location */
 
-let state = new CreateHouseState()
+const state = new CreateHouseState();
 
 const renderHouseName = () =&gt; {
-    const houseHoldName = document.getElementById(&#039;household-name&#039;);
-    if (state.getHouseName() !== &#039;&#039;) {
-        houseHoldName.value = state.getHouseName();
-    }
-}
+  const houseHoldName = document.getElementById(&#039;household-name&#039;);
+  if (state.getHouseName() !== &#039;&#039;) {
+    houseHoldName.value = state.getHouseName();
+  }
+};
 
 // roommate rendered and saved to state
-let roommateHtml = (roommate, index) =&gt; {
-    return `&lt;li class=&quot;rendered-list&quot;&gt;${roommate.name} 
+const roommateHtml = (roommate, index) =&gt; `&lt;li class=&quot;rendered-list&quot;&gt;${roommate.name} 
                 &lt;button class=&quot;btn btn-sm btn-primary delete-btn-js rendered-roommate-btn&quot; id=&quot;roommate-${index}&quot;&gt;Delete&lt;/button&gt;
-            &lt;/li&gt;`
+            &lt;/li&gt;`;
+
+const renderRoommateList = () =&gt; {
+  const roommateContainer = document.getElementById(&#039;add-roommate&#039;);
+  roommateContainer.innerHTML = listToString(state.getRoommates(), roommateHtml);
+  document.getElementById(&#039;add-roommate-form&#039;).reset();
+
+  watchDeleteRoommate();
 };
 
-let renderRoommateList = () =&gt; {
-    let roommateContainer = document.getElementById(&#039;add-roommate&#039;);
-    roommateContainer.innerHTML = listToString(state.getRoommates(), roommateHtml);
-    document.getElementById(&#039;add-roommate-form&#039;).reset();
+const watchRoommateBtn = () =&gt; {
+  const addRoommateBtn = document.getElementById(&#039;add-roommate-form&#039;);
 
-    watchDeleteRoommate();
-};
+  addRoommateBtn.addEventListener(&#039;submit&#039;, (e) =&gt; {
+    e.preventDefault();
+    const value = document.getElementsByName(&#039;create-roommate&#039;)[0].value;
 
-let watchRoommateBtn = () =&gt; {
-    let addRoommateBtn = document.getElementById(&#039;add-roommate-form&#039;);
+    state.addRoommate(value);
 
-    addRoommateBtn.addEventListener(&#039;submit&#039;, (e) =&gt; {
-        e.preventDefault();
-        let value = document.getElementsByName(&#039;create-roommate&#039;)[0].value;
-
-        state.addRoommate(value);
-
-        render();
-    })
+    render();
+  });
 };
 
 let watchDeleteRoommate = () =&gt; {
-    let deleteBtn = document.getElementsByClassName(&#039;delete-btn-js&#039;);
-    let trimIdString = 9;
+  const deleteBtn = document.getElementsByClassName(&#039;delete-btn-js&#039;);
+  const trimIdString = 9;
 
-    Array.from(deleteBtn).forEach((item) =&gt; {
-        item.addEventListener(&#039;click&#039;, (e) =&gt; {
-            let index = e.target.id.substring(trimIdString);
-            state.removeRoommate(index);
-            render();
-        })
-    })
+  Array.from(deleteBtn).forEach((item) =&gt; {
+    item.addEventListener(&#039;click&#039;, (e) =&gt; {
+      const index = e.target.id.substring(trimIdString);
+      state.removeRoommate(index);
+      render();
+    });
+  });
 };
 
 // ***************************************************************
 // used in both expense and roommate render
 let listToString = (list, callback) =&gt; {
-    let newList = list.map((item, index) =&gt; {
-        return callback(item, index);
-    })
-    return newList.join(&#039;&#039;);
+  const newList = list.map((item, index) =&gt; callback(item, index));
+  return newList.join(&#039;&#039;);
 };
 
 // *******************************************
 // expenses rendered and saved to state
-let partialExpenseTableHtml = () =&gt; {
-    return `&lt;div class=&quot;expense-table-container&quot;&gt;
+const partialExpenseTableHtml = () =&gt; `&lt;div class=&quot;expense-table-container&quot;&gt;
                 &lt;table class=&quot;table table-condensed&quot;&gt;
                     &lt;thead&gt;
                         &lt;tr&gt;
@@ -171,103 +167,96 @@ let partialExpenseTableHtml = () =&gt; {
 
                     &lt;/tbody&gt;
                 &lt;/table&gt;
-            &lt;/div&gt;`
-};
+            &lt;/div&gt;`;
 
-let expenseTableHtml = (expense, index) =&gt; {
-    return `&lt;tr&gt;
+const expenseTableHtml = (expense, index) =&gt; `&lt;tr&gt;
                 &lt;td&gt;${expense.name}&lt;/td&gt;
                 &lt;td&gt;${expense.amount}&lt;/td&gt;
                 &lt;td&gt;${expense.dueDate}&lt;/td&gt;
                 &lt;td&gt;
                     &lt;button class=&quot;btn btn-sm btn-primary delete-expense-btn-js&quot; id=&quot;expense-${index}&quot;&gt;Delete&lt;/button&gt;
                 &lt;/td&gt;
-            &lt;/tr&gt;`
+            &lt;/tr&gt;`;
+
+const renderExpenseTable = () =&gt; {
+  const tableContainer = document.getElementById(&#039;table-container&#039;);
+
+  if (state.getExpenses().length &gt;= 1) {
+    tableContainer.innerHTML = partialExpenseTableHtml();
+    const expenseTable = document.getElementById(&#039;expense-table&#039;);
+    expenseTable.innerHTML = listToString(state.getExpenses(), expenseTableHtml);
+    document.getElementById(&#039;add-expense-form&#039;).reset();
+
+    watchDeleteExpenseBtn();
+  } else {
+    tableContainer.innerHTML = &#039;&#039;;
+  }
 };
 
-let renderExpenseTable = () =&gt; {
-    let tableContainer = document.getElementById(&#039;table-container&#039;);
+const watchExpenseBtn = () =&gt; {
+  const addBillBtn = document.getElementById(&#039;add-expense-form&#039;);
+  const picker = new Pikaday({ field: document.querySelector(&#039;[name=dueDate]&#039;) });
 
-    if (state.getExpenses().length &gt;= 1) {
-        tableContainer.innerHTML = partialExpenseTableHtml();
-        let expenseTable = document.getElementById(&#039;expense-table&#039;)
-        expenseTable.innerHTML = listToString(state.getExpenses(), expenseTableHtml)
-        document.getElementById(&#039;add-expense-form&#039;).reset();
+  addBillBtn.addEventListener(&#039;submit&#039;, (e) =&gt; {
+    e.preventDefault();
 
-        watchDeleteExpenseBtn();
-    } else {
-        tableContainer.innerHTML = &#039;&#039;;
-    }
+    const expenseObject = {
+      name: e.target.name.value,
+      dueDate: e.target.dueDate.value,
+      amount: e.target.amount.value,
+    };
 
-}
-
-let watchExpenseBtn = () =&gt; {
-    let addBillBtn = document.getElementById(&#039;add-expense-form&#039;);
-    var picker = new Pikaday({ field: document.querySelector(&#039;[name=dueDate]&#039;) });
-
-    addBillBtn.addEventListener(&#039;submit&#039;, (e) =&gt; {
-        e.preventDefault();
-
-        const expenseObject = {
-            name: e.target.name.value,
-            dueDate: e.target.dueDate.value,
-            amount: e.target.amount.value
-        }
-
-        state.addExpenseToState(expenseObject);
-        const mobile = &#039;expenses&#039;;
-        render(mobile);
-    })
+    state.addExpenseToState(expenseObject);
+    const mobile = &#039;expenses&#039;;
+    render(mobile);
+  });
 };
 
 let watchDeleteExpenseBtn = () =&gt; {
-    let deleteBtn = document.getElementsByClassName(&#039;delete-expense-btn-js&#039;);
-    let trimIdString = 8;
-    Array.from(deleteBtn).forEach((item) =&gt; {
-        item.addEventListener(&#039;click&#039;, (e) =&gt; {
-            let index = e.target.id.substring(trimIdString);
-            state.removeExpense(index);
-            render();
-        })
-    })
-}
+  const deleteBtn = document.getElementsByClassName(&#039;delete-expense-btn-js&#039;);
+  const trimIdString = 8;
+  Array.from(deleteBtn).forEach((item) =&gt; {
+    item.addEventListener(&#039;click&#039;, (e) =&gt; {
+      const index = e.target.id.substring(trimIdString);
+      state.removeExpense(index);
+      render();
+    });
+  });
+};
 
 // ****************************************
 // rendering for household submission
-let submitHtml = () =&gt; {
-    return `&lt;button class=&quot;btn btn-primary&quot; id=&quot;submit-household-btn&quot;&gt;
+const submitHtml = () =&gt; `&lt;button class=&quot;btn btn-primary&quot; id=&quot;submit-household-btn&quot;&gt;
                 Submit Houshold
-            &lt;/button&gt;`
-}
+            &lt;/button&gt;`;
 
-let watchSubmitHousehold = () =&gt; {
-    let submitHouseBtn = document.getElementById(&#039;submit-household-btn&#039;);
-    submitHouseBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
-        let householdName = document.getElementById(&#039;household-name&#039;);
-        state.setHouseName(householdName.value);
+const watchSubmitHousehold = () =&gt; {
+  const submitHouseBtn = document.getElementById(&#039;submit-household-btn&#039;);
+  submitHouseBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
+    const householdName = document.getElementById(&#039;household-name&#039;);
+    state.setHouseName(householdName.value);
 
-        saveHouseHold(state.getHouseHold());
+    saveHouseHold(state.getHouseHold());
 
-        location.href = &#039;/house-stats&#039;;
-    })
-}
+    location.href = &#039;/house-stats&#039;;
+  });
+};
 
-let renderSubmitHousehold = () =&gt; {
-    let submitHouseContainer = document.getElementById(&#039;submit-household&#039;)
-    submitHouseContainer.innerHTML = &#039;&#039;;
-    if (state.readyForSubmit()) {
-        submitHouseContainer.innerHTML = submitHtml();
-        watchSubmitHousehold();
-    }
-}
+const renderSubmitHousehold = () =&gt; {
+  const submitHouseContainer = document.getElementById(&#039;submit-household&#039;);
+  submitHouseContainer.innerHTML = &#039;&#039;;
+  if (state.readyForSubmit()) {
+    submitHouseContainer.innerHTML = submitHtml();
+    watchSubmitHousehold();
+  }
+};
 
 const renderAddRoommateContainer = () =&gt; {
-    const roommateRow = document.getElementById(&#039;roommate-row&#039;);
-    roommateRow.innerHTML = addRoommateContainerHtml();
-}
+  const roommateRow = document.getElementById(&#039;roommate-row&#039;);
+  roommateRow.innerHTML = addRoommateContainerHtml();
+};
 
-const addRoommateContainerHtml = () =&gt; {
-    return `&lt;div id=&quot;roommate-form&quot;&gt; 
+const addRoommateContainerHtml = () =&gt; `&lt;div id=&quot;roommate-form&quot;&gt; 
             &lt;div class=&quot;col-md-4&quot;&gt;
                 &lt;h6 class=&quot;text-center&quot;&gt;Add a Roommate Below&lt;/h6&gt;
                     &lt;div class=&quot;form-container&quot;&gt;
@@ -292,16 +281,14 @@ const addRoommateContainerHtml = () =&gt; {
                     &lt;ol id=&quot;add-roommate&quot;&gt;
                     &lt;/ol&gt;
                 &lt;/div&gt;
-            &lt;/div&gt;`
-}
+            &lt;/div&gt;`;
 
 const renderAddExpenseContainer = () =&gt; {
-    const addExpenseRow = document.getElementById(&#039;add-expense-row&#039;);
-    addExpenseRow.innerHTML = addExpenseContainerHtml();
-}
+  const addExpenseRow = document.getElementById(&#039;add-expense-row&#039;);
+  addExpenseRow.innerHTML = addExpenseContainerHtml();
+};
 
-const addExpenseContainerHtml = () =&gt; {
-    return `&lt;div id=&quot;expense-form&quot;&gt;
+const addExpenseContainerHtml = () =&gt; `&lt;div id=&quot;expense-form&quot;&gt;
             &lt;div class=&quot;col-md-4&quot;&gt;
                 &lt;h6 class=&quot;text-center&quot;&gt;Enter a new Expense below&lt;/h6&gt;
                     &lt;div class=&quot;form-container&quot;&gt;
@@ -339,71 +326,68 @@ const addExpenseContainerHtml = () =&gt; {
                         &lt;/div&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
-            &lt;/div&gt;`
-}
+            &lt;/div&gt;`;
 
 // mobile rendering
-const mobileNavButtonsHtml = () =&gt; {
-    return `&lt;button id=&quot;add-roommates-btn&quot; class=&quot;btn btn-primary&quot; type=&quot;button&quot;&gt;Add Roommates&lt;/button&gt;
+const mobileNavButtonsHtml = () =&gt; `&lt;button id=&quot;add-roommates-btn&quot; class=&quot;btn btn-primary&quot; type=&quot;button&quot;&gt;Add Roommates&lt;/button&gt;
             &lt;button id=&quot;add-expenses-btn&quot; class=&quot;btn btn-primary&quot; type=&quot;button&quot;&gt;Add Expenses&lt;/button&gt;`;
-}
 
 const renderMobileNav = () =&gt; {
-    const mobileNavRenderArea = document.getElementById(&#039;mobile-nav-render-area&#039;);
-    mobileNavRenderArea.innerHTML = mobileNavButtonsHtml();
-}
+  const mobileNavRenderArea = document.getElementById(&#039;mobile-nav-render-area&#039;);
+  mobileNavRenderArea.innerHTML = mobileNavButtonsHtml();
+};
 
 const watchAddRoommatesBtn = () =&gt; {
-    const addRoommates = document.getElementById(&#039;add-roommates-btn&#039;);
-    addRoommates.addEventListener(&#039;click&#039;, (e) =&gt; {
-        const addExpenses = document.getElementById(&#039;expense-form&#039;);
-        addExpenses.parentNode.removeChild(addExpenses);
-        render();
-    })
-}
+  const addRoommates = document.getElementById(&#039;add-roommates-btn&#039;);
+  addRoommates.addEventListener(&#039;click&#039;, () =&gt; {
+    const addExpenses = document.getElementById(&#039;expense-form&#039;);
+    addExpenses.parentNode.removeChild(addExpenses);
+    render();
+  });
+};
 
 const watchAddExpensesBtn = () =&gt; {
-    const addExpenses = document.getElementById(&#039;add-expenses-btn&#039;);
-    addExpenses.addEventListener(&#039;click&#039;, (e) =&gt; {
-        const addRoommate = document.getElementById(&#039;roommate-form&#039;);
-        addRoommate.parentNode.removeChild(addRoommate);
-        const mobile = &#039;expenses&#039;;
-        render(mobile);
-    })
-}
+  const addExpenses = document.getElementById(&#039;add-expenses-btn&#039;);
+  addExpenses.addEventListener(&#039;click&#039;, () =&gt; {
+    const addRoommate = document.getElementById(&#039;roommate-form&#039;);
+    addRoommate.parentNode.removeChild(addRoommate);
+    const mobile = &#039;expenses&#039;;
+    render(mobile);
+  });
+};
 
 // check calls to mobile, refactor this
 let render = (mobile = &#039;&#039;) =&gt; {
-    if (window.innerWidth &lt;= &#039;1000&#039;) {
-        renderMobileNav();
-        watchAddRoommatesBtn();
-        watchAddExpensesBtn();
-        if (mobile === &#039;expenses&#039;) {
-            renderAddExpenseContainer();
-            renderExpenseTable();
-            watchExpenseBtn();
-        } else {
-            renderAddRoommateContainer();
-            renderRoommateList();
-            watchRoommateBtn();
-        }
-        renderHouseName();
-        renderSubmitHousehold();
+  if (window.innerWidth &lt;= &#039;1000&#039;) {
+    renderMobileNav();
+    watchAddRoommatesBtn();
+    watchAddExpensesBtn();
+    if (mobile === &#039;expenses&#039;) {
+      renderAddExpenseContainer();
+      renderExpenseTable();
+      watchExpenseBtn();
     } else {
-        renderAddExpenseContainer();
-        renderAddRoommateContainer();
-        renderRoommateList();
-        renderExpenseTable();
-        renderSubmitHousehold();
-        renderHouseName();
-        watchRoommateBtn();
-        watchExpenseBtn();
+      renderAddRoommateContainer();
+      renderRoommateList();
+      watchRoommateBtn();
     }
-}
+    renderHouseName();
+    renderSubmitHousehold();
+  } else {
+    renderAddExpenseContainer();
+    renderAddRoommateContainer();
+    renderRoommateList();
+    renderExpenseTable();
+    renderSubmitHousehold();
+    renderHouseName();
+    watchRoommateBtn();
+    watchExpenseBtn();
+  }
+};
 
 document.addEventListener(&#039;DOMContentLoaded&#039;, () =&gt; {
-    state.setHouseHold(createDemoHouse());
-    render();
+  state.setHouseHold(createDemoHouse());
+  render();
 });</textarea>
   </div>
 </div>

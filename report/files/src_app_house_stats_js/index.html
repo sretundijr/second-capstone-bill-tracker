@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">80.15</p>
+      <p class="stat">81.09</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">183</p>
+      <p class="stat">174</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">24.02</p>
+      <p class="stat">21.25</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.52</p>
+      <p class="stat">1.49</p>
     </div>
   </div>
 </div>
@@ -90,187 +90,178 @@
 <div class="container">
   <div class="row">
     <textarea id="file-source" class="col-md-12">const HOUSE_HTML = require(&#039;../views/house-stats-html&#039;);
-const CreateHouseState = require(&#039;./manage-state&#039;)
-const EXPENSE_DIVIDED_HTML = require(&#039;../views/expenses-divided-html&#039;)
-const { billingSummary } = require(&#039;./divide-expenses&#039;)
-const { getHousHold, saveHouseHold } = require(&#039;./api&#039;)
-const { formatTheMoneyInput } = require(&#039;./formatting&#039;)
+const CreateHouseState = require(&#039;./manage-state&#039;);
+const EXPENSE_DIVIDED_HTML = require(&#039;../views/expenses-divided-html&#039;);
+const { billingSummary } = require(&#039;./divide-expenses&#039;);
+const { getHousHold, saveHouseHold } = require(&#039;./api&#039;);
+const { formatTheMoneyInput } = require(&#039;./formatting&#039;);
 const Pikaday = require(&#039;pikaday&#039;);
 require(&#039;pikaday/css/pikaday.css&#039;);
-require(&#039;../styles/house-stats.css&#039;)
+require(&#039;../styles/house-stats.css&#039;);
 
+/* global document */
 
 // need better names
-let state = new CreateHouseState();
+const state = new CreateHouseState();
 
 state.setHouseHold(getHousHold());
 // state.setHouseHold(HouseHolds);
 
-let bills = state.getExpenses();
+const bills = state.getExpenses();
 const lotsOfBills = bills;
 
-let buildTable = (bills) =&gt; bills.map((item, index) =&gt; HOUSE_HTML(item, index));
+const buildTable = () =&gt; bills.map((item, index) =&gt; HOUSE_HTML(item, index));
 
-let tableToString = (bills) =&gt; buildTable(bills).join(&#039;&#039;);
+const tableToString = () =&gt; buildTable(bills).join(&#039;&#039;);
 
-let getTableBodyId = () =&gt; document.getElementById(&#039;main-content-js&#039;);
+const getTableBodyId = () =&gt; document.getElementById(&#039;main-content-js&#039;);
 
-let renderTableData = (bills) =&gt; {
-    getTableBodyId().innerHTML = tableToString(bills);
-    return watchEdit();
-}
+const renderTableData = () =&gt; {
+  getTableBodyId().innerHTML = tableToString(bills);
+  return watchEdit();
+};
 
-let isEditable = (index) =&gt; {
-    if (lotsOfBills[index].editable) {
-        return false;
-    } else {
-        return true;
-    }
-}
+const isEditable = (index) =&gt; {
+  if (lotsOfBills[index].editable) {
+    return false;
+  }
+  return true;
+
+};
 
 let watchEdit = () =&gt; {
-    let editButton = document.getElementsByClassName(&quot;watch-js&quot;);
+  const editButton = document.getElementsByClassName(&#039;watch-js&#039;);
 
-    Array.from(editButton).forEach(function (element, i, array) {
-        element.addEventListener(&#039;click&#039;, (e) =&gt; {
-            e.preventDefault();
-            let element = e.target
-            let index = element.id.substring(10);
-            index = parseInt(index);
-            lotsOfBills[index].editable = isEditable(index);
-            renderPage(lotsOfBills);
-            var picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
-            // listens for the save event, after the edit event
-            document.getElementById(element.id).addEventListener(&#039;click&#039;, (event) =&gt; {
-                setEditedRow(event, index);
-            })
-        });
+  Array.from(editButton).forEach((element) =&gt; {
+    element.addEventListener(&#039;click&#039;, (e) =&gt; {
+      e.preventDefault();
+      const targetElement = e.target;
+      let index = targetElement.id.substring(10);
+      index = parseInt(index);
+      lotsOfBills[index].editable = isEditable(index);
+      renderPage(lotsOfBills);
+      let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
+      // listens for the save event, after the edit event
+      document.getElementById(element.id).addEventListener(&#039;click&#039;, (event) =&gt; {
+        setEditedRow(event, index);
+      });
     });
-}
+  });
+};
 
 let setEditedRow = (e, i) =&gt; {
-    let data = e.target.parentNode.parentNode.getElementsByTagName(&#039;input&#039;)
-    const dataObj = {
-        name: data.name.value,
-        dueDate: data.dueDate.value,
-        amount: data.amount.value
-    }
-    state.editExpense(dataObj, i)
+  const data = e.target.parentNode.parentNode.getElementsByTagName(&#039;input&#039;);
+  const dataObj = {
+    name: data.name.value,
+    dueDate: data.dueDate.value,
+    amount: data.amount.value,
+  };
+  state.editExpense(dataObj, i);
 
-    renderPage(state.getExpenses());
-}
+  renderPage(state.getExpenses());
+};
 
 const divideTheExpenses = () =&gt; {
-    const expenses = lotsOfBills.map((item) =&gt; {
-        return item.amount;
-    })
-    // make dynamic
-    const divideAt300Dollars = &#039;300.00&#039;
-    const dividedBills = billingSummary(lotsOfBills,
-        divideAt300Dollars,
-        formatTheMoneyInput(state.getRoommates().length)
-    )
-    // change the structure to save a roommate to the bill
-    // currently saves a duplicate of the bills for each roommate
-    let saved = state.saveExpensesToRoommate(dividedBills);
-    return saved;
-}
+  const expenses = lotsOfBills.map(item =&gt; item.amount);
+  // make dynamic
+  const divideAt300Dollars = &#039;300.00&#039;;
+  const dividedBills = billingSummary(lotsOfBills,
+    divideAt300Dollars,
+    formatTheMoneyInput(state.getRoommates().length),
+  );
+  // change the structure to save a roommate to the bill
+  // currently saves a duplicate of the bills for each roommate
+  const saved = state.saveExpensesToRoommate(dividedBills);
+  return saved;
+};
 
-const createHtml = () =&gt; {
-    return divideTheExpenses().map((arr) =&gt; {
-        return EXPENSE_DIVIDED_HTML(arr.bills, arr.name);
-    })
-}
+const createHtml = () =&gt; divideTheExpenses().map((arr) =&gt; {
+  return EXPENSE_DIVIDED_HTML(arr.bills, arr.name);
+});
 
 const renderExpenseSummary = () =&gt; {
-    if (state.getExpenses().length &gt;= 1 &amp;&amp; state.getRoommates().length &gt; 1) {
-        const summaryContainer = document.getElementById(&#039;expense-summary-container&#039;);
-        summaryContainer.innerHTML = createHtml().join(&#039;&#039;);
-    }
-}
+  if (state.getExpenses().length &gt;= 1 &amp;&amp; state.getRoommates().length &gt; 1) {
+    const summaryContainer = document.getElementById(&#039;expense-summary-container&#039;);
+    summaryContainer.innerHTML = createHtml().join(&#039;&#039;);
+  }
+};
 
 const renderPage = (lotsOfBills, mobile = &#039;&#039;) =&gt; {
-    if (window.innerWidth &lt;= &#039;1000&#039;) {
-        renderMenuBtn();
-        if (mobile === &#039;summary&#039;) {
-            renderExpenseExplained();
-            renderExpenseSummary();
-        } else {
-            renderAllExpensesExplained();
-            renderTableData(lotsOfBills)
-        }
+  if (window.innerWidth &lt;= &#039;1000&#039;) {
+    renderMenuBtn();
+    if (mobile === &#039;summary&#039;) {
+      renderExpenseExplained();
+      renderExpenseSummary();
     } else {
-        renderExpenseExplained();
-        renderAllExpensesExplained();
-        renderExpenseSummary();
-        renderTableData(lotsOfBills);
+      renderAllExpensesExplained();
+      renderTableData(lotsOfBills);
     }
-}
+  } else {
+    renderExpenseExplained();
+    renderAllExpensesExplained();
+    renderExpenseSummary();
+    renderTableData(lotsOfBills);
+  }
+};
 
 const renderAllExpensesExplained = () =&gt; {
-    const allExpensesExplained = document.getElementById(&#039;all-expenses-explained&#039;);
-    allExpensesExplained.innerHTML = allExpensesExplainedHtml();
-}
+  const allExpensesExplained = document.getElementById(&#039;all-expenses-explained&#039;);
+  allExpensesExplained.innerHTML = allExpensesExplainedHtml();
+};
 
-const allExpensesExplainedHtml = () =&gt; {
-    return `&lt;h4 class=&quot;all-expenses-rendering&quot;&gt;All Monthly Expenses&lt;/h4&gt;
-            &lt;h5 class=&quot;all-expenses-rendering&quot;&gt;Each monthly expense can be edited as some bills and due dates may vary&lt;/h5&gt;`
-}
+const allExpensesExplainedHtml = () =&gt; `&lt;h4 class=&quot;all-expenses-rendering&quot;&gt;All Monthly Expenses&lt;/h4&gt;
+            &lt;h5 class=&quot;all-expenses-rendering&quot;&gt;Each monthly expense can be edited as some bills and due dates may vary&lt;/h5&gt;`;
 
 const renderExpenseExplained = () =&gt; {
-    const expenseExplained = document.getElementById(&#039;roommate-expense-explained&#039;);
-    expenseExplained.innerHTML = roommateAmountExplainedHtml();
-}
+  const expenseExplained = document.getElementById(&#039;roommate-expense-explained&#039;);
+  expenseExplained.innerHTML = roommateAmountExplainedHtml();
+};
 
-const roommateAmountExplainedHtml = () =&gt; {
-    return `&lt;h4 class=&quot;each-roommate-expense-js&quot;&gt;Each Roommates total amount due&lt;/h4&gt;
+const roommateAmountExplainedHtml = () =&gt; `&lt;h4 class=&quot;each-roommate-expense-js&quot;&gt;Each Roommates total amount due&lt;/h4&gt;
             &lt;h5 class=&quot;each-roommate-expense-js&quot;&gt;*Each expense over $300.00 is evenly divided amongst roommates. Any expense below $300.00 is passed out
                         one at time to each roommate. If there is a difference in overall payment, that difference is made
                         even in the largest amount due by each roommate.
-            &lt;/h5&gt;`
-}
+            &lt;/h5&gt;`;
 
 // for mobile users
 const renderMenuBtn = () =&gt; {
-    const mobileMenuDiv = document.getElementById(&#039;mobile-menu&#039;)
-    mobileMenuDiv.innerHTML = menuBtnHtml();
-    watchMobileSummaryBtn();
-    watchMobileAllExpenseBtn();
-}
+  const mobileMenuDiv = document.getElementById(&#039;mobile-menu&#039;);
+  mobileMenuDiv.innerHTML = menuBtnHtml();
+  watchMobileSummaryBtn();
+  watchMobileAllExpenseBtn();
+};
 
-const menuBtnHtml = () =&gt; {
-    return `&lt;button type=&quot;button&quot; id=&quot;all-expenses&quot; class=&quot;btn btn-primary&quot;&gt;${&#039;All Expenses&#039;}&lt;/button&gt;
-            &lt;button typ=&quot;button&quot; id=&quot;roommate-summary&quot; class=&quot;btn btn-primary&quot;&gt;Expenses divided by Roommate&lt;/button&gt;`
-}
+const menuBtnHtml = () =&gt; `&lt;button type=&quot;button&quot; id=&quot;all-expenses&quot; class=&quot;btn btn-primary&quot;&gt;${&#039;All Expenses&#039;}&lt;/button&gt;
+            &lt;button typ=&quot;button&quot; id=&quot;roommate-summary&quot; class=&quot;btn btn-primary&quot;&gt;Expenses divided by Roommate&lt;/button&gt;`;
 
 const watchMobileSummaryBtn = () =&gt; {
-    const roommateSummaryBtn = document.getElementById(&#039;roommate-summary&#039;);
-    const allBillsContentArea = document.getElementsByClassName(&#039;all-expenses-rendering&#039;);
-    roommateSummaryBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
-        // removes all expenses html and the header content
-        Array.from(allBillsContentArea).forEach((item) =&gt; {
-            item.parentNode.removeChild(item);
-        })
-        const mobile = &#039;summary&#039;;
-        renderPage(lotsOfBills, mobile);
-    })
-}
+  const roommateSummaryBtn = document.getElementById(&#039;roommate-summary&#039;);
+  const allBillsContentArea = document.getElementsByClassName(&#039;all-expenses-rendering&#039;);
+  roommateSummaryBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
+    // removes all expenses html and the header content
+    Array.from(allBillsContentArea).forEach((item) =&gt; {
+      item.parentNode.removeChild(item);
+    });
+    const mobile = &#039;summary&#039;;
+    renderPage(lotsOfBills, mobile);
+  });
+};
 
 const watchMobileAllExpenseBtn = () =&gt; {
-    const allExpensesBtn = document.getElementById(&#039;all-expenses&#039;);
-    const expensesByRoommateArea = document.getElementsByClassName(&#039;each-roommate-expense-js&#039;)
-    allExpensesBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
-        // removes the headers used to explain the ui content
-        // removes expense per roommate html
-        Array.from(expensesByRoommateArea).forEach((item) =&gt; {
-            item.parentNode.removeChild(item);
-        })
-        renderPage(lotsOfBills);
-    })
-}
+  const allExpensesBtn = document.getElementById(&#039;all-expenses&#039;);
+  const expensesByRoommateArea = document.getElementsByClassName(&#039;each-roommate-expense-js&#039;);
+  allExpensesBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
+    // removes the headers used to explain the ui content
+    // removes expense per roommate html
+    Array.from(expensesByRoommateArea).forEach((item) =&gt; {
+      item.parentNode.removeChild(item);
+    });
+    renderPage(lotsOfBills);
+  });
+};
 
 document.addEventListener(&#039;DOMContentLoaded&#039;, () =&gt; {
-    renderPage(lotsOfBills);
+  renderPage(lotsOfBills);
 });</textarea>
   </div>
 </div>
