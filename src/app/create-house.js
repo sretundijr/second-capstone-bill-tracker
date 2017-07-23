@@ -111,7 +111,8 @@ let watchDeleteExpenseBtn = () => {
 
 // ****************************************
 // rendering for household submission
-const submitHtml = () => `<button class="btn btn-primary" id="submit-household-btn">
+const submitHtml = () => `<h5 class="text-center">Your household is ready to submit. You can continue to add roommates and expenses or submit now.</h5>
+            <button class="btn btn-primary submit-btn" id="submit-household-btn">
                 Submit Houshold
             </button>`;
 
@@ -138,10 +139,8 @@ const renderSubmitHousehold = () => {
 
 const renderAddRoommateContainer = () => {
   const roommateRow = document.getElementById('roommate-row');
-  roommateRow.innerHTML = addRoommateContainerHtml();
+  roommateRow.innerHTML = AddRoommateForm();
 };
-
-const addRoommateContainerHtml = () => AddRoommateForm();
 
 const renderAddExpenseContainer = () => {
   const addExpenseRow = document.getElementById('add-expense-row');

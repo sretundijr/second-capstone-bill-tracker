@@ -3,10 +3,6 @@ const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpens
 
 const { formatTheMoneyInput } = require('./formatting')
 
-// const ARRAY = require('lodash/array');
-// const billsPerPage = 4
-// const pagedResultsArray = (bills) => ARRAY.chunk(bills, billsPerPage);
-
 class CreateHouseState {
     constructor() {
         this.state = {
