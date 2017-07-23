@@ -155,7 +155,7 @@ const renderMobileNav = () => {
 };
 
 const watchAddRoommatesBtn = () => {
-  const addRoommates = document.getElementById('Add Roommates');
+  const addRoommates = document.getElementById('Add-Roommates');
   addRoommates.addEventListener('click', () => {
     const addExpenses = document.getElementById('expense-form');
     addExpenses.parentNode.removeChild(addExpenses);
@@ -164,7 +164,7 @@ const watchAddRoommatesBtn = () => {
 };
 
 const watchAddExpensesBtn = () => {
-  const addExpenses = document.getElementById('Add Expenses');
+  const addExpenses = document.getElementById('Add-Expenses');
   addExpenses.addEventListener('click', () => {
     const addRoommate = document.getElementById('roommate-form');
     addRoommate.parentNode.removeChild(addRoommate);

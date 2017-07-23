@@ -136,7 +136,7 @@ const renderMenuBtn = () => {
 };
 
 const watchMobileSummaryBtn = () => {
-  const roommateSummaryBtn = document.getElementById('Expenses Divided By Roommate');
+  const roommateSummaryBtn = document.getElementById('Expenses-Divided-By-Roommate');
   const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
   roommateSummaryBtn.addEventListener('click', (e) => {
     // removes all expenses html and the header content
@@ -149,7 +149,7 @@ const watchMobileSummaryBtn = () => {
 };
 
 const watchMobileAllExpenseBtn = () => {
-  const allExpensesBtn = document.getElementById('All Expenses');
+  const allExpensesBtn = document.getElementById('All-Expenses');
   const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js');
   allExpensesBtn.addEventListener('click', (e) => {
     // removes the headers used to explain the ui content
