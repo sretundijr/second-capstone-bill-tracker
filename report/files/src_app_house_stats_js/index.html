@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">81.09</p>
+      <p class="stat">78.98</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">174</p>
+      <p class="stat">165</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">21.25</p>
+      <p class="stat">21.69</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.49</p>
+      <p class="stat">1.53</p>
     </div>
   </div>
 </div>
@@ -89,19 +89,22 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">const HOUSE_HTML = require(&#039;../views/house-stats-html&#039;);
+    <textarea id="file-source" class="col-md-12">const HOUSE_HTML = require(&#039;../templates/house-stats-form.pug&#039;);
+const EXPENSE_DIVIDED_HTML = require(&#039;../templates/expenses-divided.pug&#039;);
+const AllExpensesExplained = require(&#039;../templates/expense-data-explained.pug&#039;);
+const RoommateExpenseExplained = require(&#039;../templates/roommate-expenses-explained.pug&#039;);
+const MobileNav = require(&#039;../templates/mobile-nav.pug&#039;);
 const CreateHouseState = require(&#039;./manage-state&#039;);
-const EXPENSE_DIVIDED_HTML = require(&#039;../views/expenses-divided-html&#039;);
 const { billingSummary } = require(&#039;./divide-expenses&#039;);
 const { getHousHold, saveHouseHold } = require(&#039;./api&#039;);
 const { formatTheMoneyInput } = require(&#039;./formatting&#039;);
 const Pikaday = require(&#039;pikaday&#039;);
+
 require(&#039;pikaday/css/pikaday.css&#039;);
 require(&#039;../styles/house-stats.css&#039;);
 
 /* global document */
 
-// need better names
 const state = new CreateHouseState();
 
 state.setHouseHold(getHousHold());
@@ -110,7 +113,7 @@ state.setHouseHold(getHousHold());
 const bills = state.getExpenses();
 const lotsOfBills = bills;
 
-const buildTable = () =&gt; bills.map((item, index) =&gt; HOUSE_HTML(item, index));
+const buildTable = () =&gt; bills.map((item, index) =&gt; HOUSE_HTML({ item: item, index }));
 
 const tableToString = () =&gt; buildTable(bills).join(&#039;&#039;);
 
@@ -176,7 +179,7 @@ const divideTheExpenses = () =&gt; {
 };
 
 const createHtml = () =&gt; divideTheExpenses().map((arr) =&gt; {
-  return EXPENSE_DIVIDED_HTML(arr.bills, arr.name);
+  return EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name });
 });
 
 const renderExpenseSummary = () =&gt; {
@@ -206,36 +209,24 @@ const renderPage = (lotsOfBills, mobile = &#039;&#039;) =&gt; {
 
 const renderAllExpensesExplained = () =&gt; {
   const allExpensesExplained = document.getElementById(&#039;all-expenses-explained&#039;);
-  allExpensesExplained.innerHTML = allExpensesExplainedHtml();
+  allExpensesExplained.innerHTML = AllExpensesExplained();
 };
-
-const allExpensesExplainedHtml = () =&gt; `&lt;h4 class=&quot;all-expenses-rendering&quot;&gt;All Monthly Expenses&lt;/h4&gt;
-            &lt;h5 class=&quot;all-expenses-rendering&quot;&gt;Each monthly expense can be edited as some bills and due dates may vary&lt;/h5&gt;`;
 
 const renderExpenseExplained = () =&gt; {
   const expenseExplained = document.getElementById(&#039;roommate-expense-explained&#039;);
-  expenseExplained.innerHTML = roommateAmountExplainedHtml();
+  expenseExplained.innerHTML = RoommateExpenseExplained();
 };
-
-const roommateAmountExplainedHtml = () =&gt; `&lt;h4 class=&quot;each-roommate-expense-js&quot;&gt;Each Roommates total amount due&lt;/h4&gt;
-            &lt;h5 class=&quot;each-roommate-expense-js&quot;&gt;*Each expense over $300.00 is evenly divided amongst roommates. Any expense below $300.00 is passed out
-                        one at time to each roommate. If there is a difference in overall payment, that difference is made
-                        even in the largest amount due by each roommate.
-            &lt;/h5&gt;`;
 
 // for mobile users
 const renderMenuBtn = () =&gt; {
   const mobileMenuDiv = document.getElementById(&#039;mobile-menu&#039;);
-  mobileMenuDiv.innerHTML = menuBtnHtml();
+  mobileMenuDiv.innerHTML = MobileNav({ btn1: &#039;All Expenses&#039;, btn2: &#039;Expenses Divided By Roommate&#039; });
   watchMobileSummaryBtn();
   watchMobileAllExpenseBtn();
 };
 
-const menuBtnHtml = () =&gt; `&lt;button type=&quot;button&quot; id=&quot;all-expenses&quot; class=&quot;btn btn-primary&quot;&gt;${&#039;All Expenses&#039;}&lt;/button&gt;
-            &lt;button typ=&quot;button&quot; id=&quot;roommate-summary&quot; class=&quot;btn btn-primary&quot;&gt;Expenses divided by Roommate&lt;/button&gt;`;
-
 const watchMobileSummaryBtn = () =&gt; {
-  const roommateSummaryBtn = document.getElementById(&#039;roommate-summary&#039;);
+  const roommateSummaryBtn = document.getElementById(&#039;Expenses Divided By Roommate&#039;);
   const allBillsContentArea = document.getElementsByClassName(&#039;all-expenses-rendering&#039;);
   roommateSummaryBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
     // removes all expenses html and the header content
@@ -248,7 +239,7 @@ const watchMobileSummaryBtn = () =&gt; {
 };
 
 const watchMobileAllExpenseBtn = () =&gt; {
-  const allExpensesBtn = document.getElementById(&#039;all-expenses&#039;);
+  const allExpensesBtn = document.getElementById(&#039;All Expenses&#039;);
   const expensesByRoommateArea = document.getElementsByClassName(&#039;each-roommate-expense-js&#039;);
   allExpensesBtn.addEventListener(&#039;click&#039;, (e) =&gt; {
     // removes the headers used to explain the ui content

@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">78.49</p>
+      <p class="stat">75.30</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">300</p>
+      <p class="stat">208</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">20.52</p>
+      <p class="stat">19.66</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.82</p>
+      <p class="stat">1.68</p>
     </div>
   </div>
 </div>
@@ -91,10 +91,19 @@
   <div class="row">
     <textarea id="file-source" class="col-md-12">const CreateHouseState = require(&#039;./manage-state&#039;);
 const Pikaday = require(&#039;pikaday&#039;);
-require(&#039;pikaday/css/pikaday.css&#039;);
-require(&#039;../styles/create-house.css&#039;);
 const HouseHold = require(&#039;./mock-model&#039;);
 const { saveHouseHold, createDemoHouse } = require(&#039;./api&#039;);
+const { AddRoommateForm, RoommateList } = require(&#039;./create-roommate.js&#039;);
+const {
+  CreateExpenseForm,
+  CreatePartialExpenseTable,
+  CreateExpenseTable
+} = require(&#039;./create-expense&#039;);
+
+const MobileNav = require(&#039;../templates/mobile-nav.pug&#039;);
+
+require(&#039;pikaday/css/pikaday.css&#039;);
+require(&#039;../styles/create-house.css&#039;);
 /* global document, window, location */
 
 const state = new CreateHouseState();
@@ -106,14 +115,11 @@ const renderHouseName = () =&gt; {
   }
 };
 
+// *************************************
 // roommate rendered and saved to state
-const roommateHtml = (roommate, index) =&gt; `&lt;li class=&quot;rendered-list&quot;&gt;${roommate.name} 
-                &lt;button class=&quot;btn btn-sm btn-primary delete-btn-js rendered-roommate-btn&quot; id=&quot;roommate-${index}&quot;&gt;Delete&lt;/button&gt;
-            &lt;/li&gt;`;
-
 const renderRoommateList = () =&gt; {
   const roommateContainer = document.getElementById(&#039;add-roommate&#039;);
-  roommateContainer.innerHTML = listToString(state.getRoommates(), roommateHtml);
+  roommateContainer.innerHTML = RoommateList({ roommates: state.getRoommates() });
   document.getElementById(&#039;add-roommate-form&#039;).reset();
 
   watchDeleteRoommate();
@@ -145,46 +151,16 @@ let watchDeleteRoommate = () =&gt; {
   });
 };
 
-// ***************************************************************
-// used in both expense and roommate render
-let listToString = (list, callback) =&gt; {
-  const newList = list.map((item, index) =&gt; callback(item, index));
-  return newList.join(&#039;&#039;);
-};
-
 // *******************************************
 // expenses rendered and saved to state
-const partialExpenseTableHtml = () =&gt; `&lt;div class=&quot;expense-table-container&quot;&gt;
-                &lt;table class=&quot;table table-condensed&quot;&gt;
-                    &lt;thead&gt;
-                        &lt;tr&gt;
-                            &lt;th&gt;Name&lt;/th&gt;
-                            &lt;th&gt;Amount&lt;/th&gt;
-                            &lt;th&gt;Due Date&lt;/th&gt;
-                        &lt;/tr&gt;
-                    &lt;/thead&gt;
-                    &lt;tbody id=&quot;expense-table&quot;&gt;
-
-                    &lt;/tbody&gt;
-                &lt;/table&gt;
-            &lt;/div&gt;`;
-
-const expenseTableHtml = (expense, index) =&gt; `&lt;tr&gt;
-                &lt;td&gt;${expense.name}&lt;/td&gt;
-                &lt;td&gt;${expense.amount}&lt;/td&gt;
-                &lt;td&gt;${expense.dueDate}&lt;/td&gt;
-                &lt;td&gt;
-                    &lt;button class=&quot;btn btn-sm btn-primary delete-expense-btn-js&quot; id=&quot;expense-${index}&quot;&gt;Delete&lt;/button&gt;
-                &lt;/td&gt;
-            &lt;/tr&gt;`;
-
 const renderExpenseTable = () =&gt; {
   const tableContainer = document.getElementById(&#039;table-container&#039;);
 
   if (state.getExpenses().length &gt;= 1) {
-    tableContainer.innerHTML = partialExpenseTableHtml();
+    tableContainer.innerHTML = CreatePartialExpenseTable();
     const expenseTable = document.getElementById(&#039;expense-table&#039;);
-    expenseTable.innerHTML = listToString(state.getExpenses(), expenseTableHtml);
+    expenseTable.innerHTML = CreateExpenseTable(state.getExpenses())
+
     document.getElementById(&#039;add-expense-form&#039;).reset();
 
     watchDeleteExpenseBtn();
@@ -226,7 +202,8 @@ let watchDeleteExpenseBtn = () =&gt; {
 
 // ****************************************
 // rendering for household submission
-const submitHtml = () =&gt; `&lt;button class=&quot;btn btn-primary&quot; id=&quot;submit-household-btn&quot;&gt;
+const submitHtml = () =&gt; `&lt;h5 class=&quot;text-center&quot;&gt;Your household is ready to submit. You can continue to add roommates and expenses or submit now.&lt;/h5&gt;
+            &lt;button class=&quot;btn btn-primary submit-btn&quot; id=&quot;submit-household-btn&quot;&gt;
                 Submit Houshold
             &lt;/button&gt;`;
 
@@ -253,92 +230,23 @@ const renderSubmitHousehold = () =&gt; {
 
 const renderAddRoommateContainer = () =&gt; {
   const roommateRow = document.getElementById(&#039;roommate-row&#039;);
-  roommateRow.innerHTML = addRoommateContainerHtml();
+  roommateRow.innerHTML = AddRoommateForm();
 };
-
-const addRoommateContainerHtml = () =&gt; `&lt;div id=&quot;roommate-form&quot;&gt; 
-            &lt;div class=&quot;col-md-4&quot;&gt;
-                &lt;h6 class=&quot;text-center&quot;&gt;Add a Roommate Below&lt;/h6&gt;
-                    &lt;div class=&quot;form-container&quot;&gt;
-                        &lt;form action=&quot;&quot; id=&quot;add-roommate-form&quot;&gt;
-                            &lt;div class=&quot;form-group&quot;&gt;
-                                &lt;label class=&quot;control-label&quot; for=&quot;create-roommate&quot;&gt;Roommate&lt;/label&gt;
-                                &lt;input class=&quot;form-control input-style&quot; type=&quot;text&quot; name=&quot;create-roommate&quot;&gt;
-                            &lt;/div&gt;
-                            &lt;div class=&quot;row&quot;&gt;
-                                &lt;div class=&quot;col-md-6&quot;&gt;
-                                    &lt;div class=&quot;form-group&quot;&gt;
-                                        &lt;input id=&quot;add-roommate-btn input-style&quot; name=&quot;create-roommate&quot; class=&quot;btn btn-primary&quot; type=&quot;submit&quot; value=&quot;Save&quot;&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/form&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;col-md-6 rendered-area&quot;&gt;
-                    &lt;h5&gt;Roommates&lt;/h5&gt;
-                    &lt;hr&gt;
-                    &lt;ol id=&quot;add-roommate&quot;&gt;
-                    &lt;/ol&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;`;
 
 const renderAddExpenseContainer = () =&gt; {
   const addExpenseRow = document.getElementById(&#039;add-expense-row&#039;);
-  addExpenseRow.innerHTML = addExpenseContainerHtml();
+  addExpenseRow.innerHTML = CreateExpenseForm();
 };
 
-const addExpenseContainerHtml = () =&gt; `&lt;div id=&quot;expense-form&quot;&gt;
-            &lt;div class=&quot;col-md-4&quot;&gt;
-                &lt;h6 class=&quot;text-center&quot;&gt;Enter a new Expense below&lt;/h6&gt;
-                    &lt;div class=&quot;form-container&quot;&gt;
-                        &lt;form action=&quot;&quot; id=&quot;add-expense-form&quot;&gt;
-                            &lt;div class=&quot;form-group&quot;&gt;
-                                &lt;label class=&quot;control-label&quot; for=&quot;name&quot;&gt;Name&lt;/label&gt;
-                                &lt;input class=&quot;form-control input-style&quot; type=&quot;text&quot; name=&quot;name&quot; placeholder=&quot;electric&quot;&gt;
-                            &lt;/div&gt;
-                            &lt;div class=&quot;form-group&quot;&gt;
-                                &lt;label class=&quot;control-label&quot; for=&quot;due-date&quot;&gt;Due Date&lt;/label&gt;
-                                &lt;input class=&quot;form-control input-style&quot; type=&quot;text&quot; name=&quot;dueDate&quot; placeholder=&quot;MM/DD/YYYY&quot;&gt;
-                            &lt;/div&gt;
-                            &lt;div class=&quot;form-group&quot;&gt;
-                                &lt;label class=&quot;control-label&quot; for=&quot;amount&quot;&gt;Amount&lt;/label&gt;
-                                &lt;input class=&quot;form-control input-style&quot; type=&quot;text&quot; name=&quot;amount&quot; placeholder=&quot;100.32&quot;&gt;
-                            &lt;/div&gt;
-                            &lt;div class=&quot;row&quot;&gt;
-                                &lt;div class=&quot;col-md-6&quot;&gt;
-                                    &lt;div class=&quot;form-group&quot;&gt;
-                                        &lt;input id=&quot;expense-btn&quot; name=&quot;create-expense&quot; class=&quot;btn btn-primary input-style&quot; type=&quot;submit&quot; value=&quot;Save&quot;&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/form&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;row&quot;&gt;
-                    &lt;div class=&quot;col-md-6&quot;&gt;
-                        &lt;div class=&quot;rendered-area&quot;&gt;
-                            &lt;h5&gt;Expenses&lt;/h5&gt;
-                            &lt;hr&gt;
-                        &lt;/div&gt;
-                        &lt;div id=&quot;table-container&quot;&gt;
-
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;`;
-
+// *****************************
 // mobile rendering
-const mobileNavButtonsHtml = () =&gt; `&lt;button id=&quot;add-roommates-btn&quot; class=&quot;btn btn-primary&quot; type=&quot;button&quot;&gt;Add Roommates&lt;/button&gt;
-            &lt;button id=&quot;add-expenses-btn&quot; class=&quot;btn btn-primary&quot; type=&quot;button&quot;&gt;Add Expenses&lt;/button&gt;`;
-
 const renderMobileNav = () =&gt; {
   const mobileNavRenderArea = document.getElementById(&#039;mobile-nav-render-area&#039;);
-  mobileNavRenderArea.innerHTML = mobileNavButtonsHtml();
+  mobileNavRenderArea.innerHTML = MobileNav({ btn1: &#039;Add Roommates&#039;, btn2: &#039;Add Expenses&#039; });
 };
 
 const watchAddRoommatesBtn = () =&gt; {
-  const addRoommates = document.getElementById(&#039;add-roommates-btn&#039;);
+  const addRoommates = document.getElementById(&#039;Add Roommates&#039;);
   addRoommates.addEventListener(&#039;click&#039;, () =&gt; {
     const addExpenses = document.getElementById(&#039;expense-form&#039;);
     addExpenses.parentNode.removeChild(addExpenses);
@@ -347,7 +255,7 @@ const watchAddRoommatesBtn = () =&gt; {
 };
 
 const watchAddExpensesBtn = () =&gt; {
-  const addExpenses = document.getElementById(&#039;add-expenses-btn&#039;);
+  const addExpenses = document.getElementById(&#039;Add Expenses&#039;);
   addExpenses.addEventListener(&#039;click&#039;, () =&gt; {
     const addRoommate = document.getElementById(&#039;roommate-form&#039;);
     addRoommate.parentNode.removeChild(addRoommate);
