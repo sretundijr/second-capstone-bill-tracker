@@ -31,7 +31,21 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(html)$/,
+                exclude: /(views)/,
+                use: {
+                    loader: 'html-loader',
+                }
+            },
+            {
+                test: /\.(pug)$/,
+                use: {
+                    loader: 'pug-loader'
+                }
             }
         ]
     }
 };
+
