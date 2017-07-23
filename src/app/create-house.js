@@ -1,9 +1,16 @@
 const CreateHouseState = require('./manage-state');
 const Pikaday = require('pikaday');
-require('pikaday/css/pikaday.css');
-require('../styles/create-house.css');
 const HouseHold = require('./mock-model');
 const { saveHouseHold, createDemoHouse } = require('./api');
+const { AddRoommateForm, RoommateList } = require('./create-roommate.js');
+const {
+  CreateExpenseForm,
+  CreatePartialExpenseTable,
+  CreateExpenseTable
+} = require('./create-expense');
+
+require('pikaday/css/pikaday.css');
+require('../styles/create-house.css');
 /* global document, window, location */
 
 const state = new CreateHouseState();
@@ -15,14 +22,11 @@ const renderHouseName = () => {
   }
 };
 
+// *************************************
 // roommate rendered and saved to state
-const roommateHtml = (roommate, index) => `<li class="rendered-list">${roommate.name} 
-                <button class="btn btn-sm btn-primary delete-btn-js rendered-roommate-btn" id="roommate-${index}">Delete</button>
-            </li>`;
-
 const renderRoommateList = () => {
   const roommateContainer = document.getElementById('add-roommate');
-  roommateContainer.innerHTML = listToString(state.getRoommates(), roommateHtml);
+  roommateContainer.innerHTML = RoommateList({ roommates: state.getRoommates() });
   document.getElementById('add-roommate-form').reset();
 
   watchDeleteRoommate();
@@ -54,46 +58,16 @@ let watchDeleteRoommate = () => {
   });
 };
 
-// ***************************************************************
-// used in both expense and roommate render
-let listToString = (list, callback) => {
-  const newList = list.map((item, index) => callback(item, index));
-  return newList.join('');
-};
-
 // *******************************************
 // expenses rendered and saved to state
-const partialExpenseTableHtml = () => `<div class="expense-table-container">
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Amount</th>
-                            <th>Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expense-table">
-
-                    </tbody>
-                </table>
-            </div>`;
-
-const expenseTableHtml = (expense, index) => `<tr>
-                <td>${expense.name}</td>
-                <td>${expense.amount}</td>
-                <td>${expense.dueDate}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary delete-expense-btn-js" id="expense-${index}">Delete</button>
-                </td>
-            </tr>`;
-
 const renderExpenseTable = () => {
   const tableContainer = document.getElementById('table-container');
 
   if (state.getExpenses().length >= 1) {
-    tableContainer.innerHTML = partialExpenseTableHtml();
+    tableContainer.innerHTML = CreatePartialExpenseTable();
     const expenseTable = document.getElementById('expense-table');
-    expenseTable.innerHTML = listToString(state.getExpenses(), expenseTableHtml);
+    expenseTable.innerHTML = CreateExpenseTable(state.getExpenses())
+
     document.getElementById('add-expense-form').reset();
 
     watchDeleteExpenseBtn();
@@ -165,77 +139,14 @@ const renderAddRoommateContainer = () => {
   roommateRow.innerHTML = addRoommateContainerHtml();
 };
 
-const addRoommateContainerHtml = () => `<div id="roommate-form"> 
-            <div class="col-md-4">
-                <h6 class="text-center">Add a Roommate Below</h6>
-                    <div class="form-container">
-                        <form action="" id="add-roommate-form">
-                            <div class="form-group">
-                                <label class="control-label" for="create-roommate">Roommate</label>
-                                <input class="form-control input-style" type="text" name="create-roommate">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input id="add-roommate-btn input-style" name="create-roommate" class="btn btn-primary" type="submit" value="Save">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-6 rendered-area">
-                    <h5>Roommates</h5>
-                    <hr>
-                    <ol id="add-roommate">
-                    </ol>
-                </div>
-            </div>`;
+const addRoommateContainerHtml = () => AddRoommateForm();
 
 const renderAddExpenseContainer = () => {
   const addExpenseRow = document.getElementById('add-expense-row');
   addExpenseRow.innerHTML = addExpenseContainerHtml();
 };
 
-const addExpenseContainerHtml = () => `<div id="expense-form">
-            <div class="col-md-4">
-                <h6 class="text-center">Enter a new Expense below</h6>
-                    <div class="form-container">
-                        <form action="" id="add-expense-form">
-                            <div class="form-group">
-                                <label class="control-label" for="name">Name</label>
-                                <input class="form-control input-style" type="text" name="name" placeholder="electric">
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="due-date">Due Date</label>
-                                <input class="form-control input-style" type="text" name="dueDate" placeholder="MM/DD/YYYY">
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="amount">Amount</label>
-                                <input class="form-control input-style" type="text" name="amount" placeholder="100.32">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input id="expense-btn" name="create-expense" class="btn btn-primary input-style" type="submit" value="Save">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="rendered-area">
-                            <h5>Expenses</h5>
-                            <hr>
-                        </div>
-                        <div id="table-container">
-
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+const addExpenseContainerHtml = () => CreateExpenseForm();
 
 // mobile rendering
 const mobileNavButtonsHtml = () => `<button id="add-roommates-btn" class="btn btn-primary" type="button">Add Roommates</button>

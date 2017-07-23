@@ -1,0 +1,9 @@
+div(class="row all-expenses-rendering")
+  form(class="form-style" id="house-expense")
+    label(for="bill") Name
+    input(class="form-control" name="name" type="text" readonly=!item.editable value=item.name)
+    label(for="bill") Date Due
+    input(class="form-control" id=`datePicker${index}` name="dueDate" type="text" readonly=!item.editable value=item.dueDate)
+    label(for="bill") Amount
+    input(class="form-control" name="amount" type="text" readonly=!item.editable value=item.amount)
+    input(class="form-control edit-btn-style watch-js btn btn-primary btn-sm" type="button" value=`${item.editable ? 'Save' : 'Edit'}` name="bill" id=`edit-bill-${index}`)

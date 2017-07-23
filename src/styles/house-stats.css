@@ -25,9 +25,7 @@ hr.style-four {
     margin-bottom: -10px;
 }
 
-.form-container{
+.form-style{
     margin: 20px;
-    border: 2px solid rgb(228, 228, 228);
-    background: rgb(247, 248, 251);
-    padding: 20px;
+    width: auto;
 }

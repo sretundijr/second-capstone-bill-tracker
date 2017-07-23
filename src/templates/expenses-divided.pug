@@ -1,0 +1,6 @@
+div(class="col-md-6 each-roommate-expense-js")
+  h6= name
+  ol(class="list-group")
+      each val in list 
+          li(class="list-group-item")= `${val.name}: ${val.roommateAmountDue}`
+           
