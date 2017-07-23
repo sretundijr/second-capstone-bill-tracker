@@ -1,7 +1,10 @@
 
-const HOUSE_HTML = require('../templates/house-stats.pug');
-const CreateHouseState = require('./manage-state');
+const HOUSE_HTML = require('../templates/house-stats-form.pug');
 const EXPENSE_DIVIDED_HTML = require('../templates/expenses-divided.pug');
+const AllExpensesExplained = require('../templates/expense-data-explained.pug');
+const RoommateExpenseExplained = require('../templates/roommate-expenses-explained.pug');
+const MobileNav = require('../templates/mobile-nav.pug');
+const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
 const { getHousHold, saveHouseHold } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
@@ -12,7 +15,6 @@ require('../styles/house-stats.css');
 
 /* global document */
 
-// need better names
 const state = new CreateHouseState();
 
 state.setHouseHold(getHousHold());
@@ -117,40 +119,24 @@ const renderPage = (lotsOfBills, mobile = '') => {
 
 const renderAllExpensesExplained = () => {
   const allExpensesExplained = document.getElementById('all-expenses-explained');
-  allExpensesExplained.innerHTML = allExpensesExplainedHtml();
+  allExpensesExplained.innerHTML = AllExpensesExplained();
 };
-
-const allExpensesExplainedHtml = () => `<hr class="style-four all-expenses-rendering">
-<h4 class="all-expenses-rendering">All Monthly Expenses</h4>
-            <h5 class="all-expenses-rendering">Each monthly expense can be edited as some bills and due dates may vary</h5>
-            <hr class="style-four all-expenses-rendering">`;
 
 const renderExpenseExplained = () => {
   const expenseExplained = document.getElementById('roommate-expense-explained');
-  expenseExplained.innerHTML = roommateAmountExplainedHtml();
+  expenseExplained.innerHTML = RoommateExpenseExplained();
 };
-
-const roommateAmountExplainedHtml = () => `<hr class="style-four each-roommate-expense-js">
-<h4 class="each-roommate-expense-js">Each Roommates total amount due</h4>
-            <h5 class="each-roommate-expense-js">*Each expense over $300.00 is evenly divided amongst roommates. Any expense below $300.00 is passed out
-                        one at time to each roommate. If there is a difference in overall payment, that difference is made
-                        even in the largest amount due by each roommate.
-            </h5>
-            <hr class="style-four each-roommate-expense-js">`;
 
 // for mobile users
 const renderMenuBtn = () => {
   const mobileMenuDiv = document.getElementById('mobile-menu');
-  mobileMenuDiv.innerHTML = menuBtnHtml();
+  mobileMenuDiv.innerHTML = MobileNav({ btn1: 'All Expenses', btn2: 'Expenses Divided By Roommate' });
   watchMobileSummaryBtn();
   watchMobileAllExpenseBtn();
 };
 
-const menuBtnHtml = () => `<button type="button" id="all-expenses" class="btn btn-primary">${'All Expenses'}</button>
-            <button typ="button" id="roommate-summary" class="btn btn-primary">Expenses divided by Roommate</button>`;
-
 const watchMobileSummaryBtn = () => {
-  const roommateSummaryBtn = document.getElementById('roommate-summary');
+  const roommateSummaryBtn = document.getElementById('Expenses Divided By Roommate');
   const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
   roommateSummaryBtn.addEventListener('click', (e) => {
     // removes all expenses html and the header content
@@ -163,7 +149,7 @@ const watchMobileSummaryBtn = () => {
 };
 
 const watchMobileAllExpenseBtn = () => {
-  const allExpensesBtn = document.getElementById('all-expenses');
+  const allExpensesBtn = document.getElementById('All Expenses');
   const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js');
   allExpensesBtn.addEventListener('click', (e) => {
     // removes the headers used to explain the ui content

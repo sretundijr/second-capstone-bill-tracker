@@ -9,6 +9,8 @@ const {
   CreateExpenseTable
 } = require('./create-expense');
 
+const MobileNav = require('../templates/mobile-nav.pug');
+
 require('pikaday/css/pikaday.css');
 require('../styles/create-house.css');
 /* global document, window, location */
@@ -143,22 +145,18 @@ const addRoommateContainerHtml = () => AddRoommateForm();
 
 const renderAddExpenseContainer = () => {
   const addExpenseRow = document.getElementById('add-expense-row');
-  addExpenseRow.innerHTML = addExpenseContainerHtml();
+  addExpenseRow.innerHTML = CreateExpenseForm();
 };
 
-const addExpenseContainerHtml = () => CreateExpenseForm();
-
+// *****************************
 // mobile rendering
-const mobileNavButtonsHtml = () => `<button id="add-roommates-btn" class="btn btn-primary" type="button">Add Roommates</button>
-            <button id="add-expenses-btn" class="btn btn-primary" type="button">Add Expenses</button>`;
-
 const renderMobileNav = () => {
   const mobileNavRenderArea = document.getElementById('mobile-nav-render-area');
-  mobileNavRenderArea.innerHTML = mobileNavButtonsHtml();
+  mobileNavRenderArea.innerHTML = MobileNav({ btn1: 'Add Roommates', btn2: 'Add Expenses' });
 };
 
 const watchAddRoommatesBtn = () => {
-  const addRoommates = document.getElementById('add-roommates-btn');
+  const addRoommates = document.getElementById('Add Roommates');
   addRoommates.addEventListener('click', () => {
     const addExpenses = document.getElementById('expense-form');
     addExpenses.parentNode.removeChild(addExpenses);
@@ -167,7 +165,7 @@ const watchAddRoommatesBtn = () => {
 };
 
 const watchAddExpensesBtn = () => {
-  const addExpenses = document.getElementById('add-expenses-btn');
+  const addExpenses = document.getElementById('Add Expenses');
   addExpenses.addEventListener('click', () => {
     const addRoommate = document.getElementById('roommate-form');
     addRoommate.parentNode.removeChild(addRoommate);
