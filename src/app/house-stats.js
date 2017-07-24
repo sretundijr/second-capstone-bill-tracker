@@ -130,13 +130,13 @@ const renderExpenseExplained = () => {
 // for mobile users
 const renderMenuBtn = () => {
   const mobileMenuDiv = document.getElementById('mobile-menu');
-  mobileMenuDiv.innerHTML = MobileNav({ btn1: 'All Expenses', btn2: 'Expenses Divided By Roommate' });
+  mobileMenuDiv.innerHTML = MobileNav({ btn1: 'All Expenses', btn2: 'Expenses Divided' });
   watchMobileSummaryBtn();
   watchMobileAllExpenseBtn();
 };
 
 const watchMobileSummaryBtn = () => {
-  const roommateSummaryBtn = document.getElementById('Expenses-Divided-By-Roommate');
+  const roommateSummaryBtn = document.getElementById('Expenses-Divided');
   const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
   roommateSummaryBtn.addEventListener('click', (e) => {
     // removes all expenses html and the header content
