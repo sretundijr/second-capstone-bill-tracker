@@ -1,15 +1,19 @@
 
+// Templates
 const HOUSE_HTML = require('../templates/house-stats-form.pug');
 const EXPENSE_DIVIDED_HTML = require('../templates/expenses-divided.pug');
 const AllExpensesExplained = require('../templates/expense-data-explained.pug');
 const RoommateExpenseExplained = require('../templates/roommate-expenses-explained.pug');
 const MobileNav = require('../templates/mobile-nav.pug');
+
+// JS
 const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
 const { getHousHold, saveHouseHold } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
 
+// css
 require('pikaday/css/pikaday.css');
 require('../styles/house-stats.css');
 
@@ -17,25 +21,19 @@ require('../styles/house-stats.css');
 
 const state = new CreateHouseState();
 
-state.setHouseHold(getHousHold());
-// state.setHouseHold(HouseHolds);
+const buildTable = () => state.getExpenses().map((item, index) => HOUSE_HTML({ item: item, index }));
 
-const bills = state.getExpenses();
-const lotsOfBills = bills;
-
-const buildTable = () => bills.map((item, index) => HOUSE_HTML({ item: item, index }));
-
-const tableToString = () => buildTable(bills).join('');
+const tableToString = () => buildTable(state.getExpenses()).join('');
 
 const getTableBodyId = () => document.getElementById('main-content-js');
 
 const renderTableData = () => {
-  getTableBodyId().innerHTML = tableToString(bills);
+  getTableBodyId().innerHTML = tableToString(state.getExpenses());
   return watchEdit();
 };
 
 const isEditable = (index) => {
-  if (lotsOfBills[index].editable) {
+  if (state.getExpenses()[index].editable) {
     return false;
   }
   return true;
@@ -51,8 +49,8 @@ let watchEdit = () => {
       const targetElement = e.target;
       let index = targetElement.id.substring(10);
       index = parseInt(index);
-      lotsOfBills[index].editable = isEditable(index);
-      renderPage(lotsOfBills);
+      state.getExpenses()[index].editable = isEditable(index);
+      renderPage(state.getExpenses());
       let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
       // listens for the save event, after the edit event
       document.getElementById(element.id).addEventListener('click', (event) => {
@@ -71,14 +69,16 @@ let setEditedRow = (e, i) => {
   };
   state.editExpense(dataObj, i);
 
+  saveHouseHold(state.getHouseHold());
+
   renderPage(state.getExpenses());
 };
 
 const divideTheExpenses = () => {
-  const expenses = lotsOfBills.map(item => item.amount);
+  const expenses = state.getExpenses().map(item => item.amount);
   // make dynamic
   const divideAt300Dollars = '300.00';
-  const dividedBills = billingSummary(lotsOfBills,
+  const dividedBills = billingSummary(state.getExpenses(),
     divideAt300Dollars,
     formatTheMoneyInput(state.getRoommates().length),
   );
@@ -107,13 +107,13 @@ const renderPage = (lotsOfBills, mobile = '') => {
       renderExpenseSummary();
     } else {
       renderAllExpensesExplained();
-      renderTableData(lotsOfBills);
+      renderTableData(state.getExpenses());
     }
   } else {
     renderExpenseExplained();
     renderAllExpensesExplained();
     renderExpenseSummary();
-    renderTableData(lotsOfBills);
+    renderTableData(state.getExpenses());
   }
 };
 
@@ -127,6 +127,7 @@ const renderExpenseExplained = () => {
   expenseExplained.innerHTML = RoommateExpenseExplained();
 };
 
+// **************************************
 // for mobile users
 const renderMenuBtn = () => {
   const mobileMenuDiv = document.getElementById('mobile-menu');
@@ -144,7 +145,7 @@ const watchMobileSummaryBtn = () => {
       item.parentNode.removeChild(item);
     });
     const mobile = 'summary';
-    renderPage(lotsOfBills, mobile);
+    renderPage(state.getExpenses(), mobile);
   });
 };
 
@@ -157,10 +158,13 @@ const watchMobileAllExpenseBtn = () => {
     Array.from(expensesByRoommateArea).forEach((item) => {
       item.parentNode.removeChild(item);
     });
-    renderPage(lotsOfBills);
+    renderPage(state.getExpenses());
   });
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage(lotsOfBills);
+  getHousHold().then(house => {
+    state.setHouseHold(house);
+    renderPage(state.getExpenses());
+  });
 });

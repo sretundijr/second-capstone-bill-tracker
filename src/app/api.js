@@ -5,9 +5,10 @@ const localObj = 'localObj';
 
 const getHousHold = () => {
   const retrieve = localStorage.getItem('localObj');
-  return JSON.parse(retrieve);
+  return Promise.resolve(JSON.parse(retrieve));
 };
 
+// how do I make this a promise
 const saveHouseHold = (obj) => {
   localStorage.setItem('localObj', JSON.stringify(obj));
 };
