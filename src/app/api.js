@@ -3,15 +3,37 @@ const house = require('./mock-model');
 
 const localObj = 'localObj';
 
+const retrieveFromLocal = () => {
+  return JSON.parse(localStorage.getItem('localObj'));
+}
+
+const saveToLocal = (obj) => {
+  localStorage.setItem('localObj', JSON.stringify(obj));
+}
+
 const getHousHold = () => {
-  const retrieve = localStorage.getItem('localObj');
-  return Promise.resolve(JSON.parse(retrieve));
+  return Promise.resolve(retrieveFromLocal());
 };
 
-// how do I make this a promise
 const saveHouseHold = (obj) => {
-  localStorage.setItem('localObj', JSON.stringify(obj));
+  saveToLocal(obj);
+  return Promise.resolve(obj);
 };
+
+const editExpense = (expense, index) => {
+  const retrieve = retrieveFromLocal();
+  for (var prop in expense) {
+    if (retrieve.expenses[index].hasOwnProperty(prop)) {
+      retrieve.expenses[index][prop] = expense[prop];
+    }
+  };
+  saveToLocal(retrieve);
+  return Promise.resolve(retrieve.expenses);
+};
+
+const addOrEditRoommatesBills = (list) => {
+
+}
 
 const removeHouseHold = () => {
   localStorage.removeItem('localObj');
@@ -27,4 +49,4 @@ const createDemoHouse = () => {
   return obj;
 };
 
-module.exports = { getHousHold, saveHouseHold, createDemoHouse };
+module.exports = { getHousHold, saveHouseHold, editExpense, createDemoHouse };

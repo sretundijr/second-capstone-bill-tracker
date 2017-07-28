@@ -9,7 +9,7 @@ const MobileNav = require('../templates/mobile-nav.pug');
 // JS
 const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
-const { getHousHold, saveHouseHold } = require('./api');
+const { getHousHold, saveHouseHold, editExpense } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
 
@@ -68,10 +68,7 @@ let setEditedRow = (e, i) => {
     amount: data.amount.value,
   };
   state.editExpense(dataObj, i);
-
-  saveHouseHold(state.getHouseHold());
-
-  renderPage(state.getExpenses());
+  editExpense(state.getOneExpense(i), i).then(renderPage);
 };
 
 const divideTheExpenses = () => {
@@ -85,6 +82,7 @@ const divideTheExpenses = () => {
   // change the structure to save a roommate to the bill
   // currently saves a duplicate of the bills for each roommate
   const saved = state.saveExpensesToRoommate(dividedBills);
+
   return saved;
 };
 

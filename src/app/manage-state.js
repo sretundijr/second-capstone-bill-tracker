@@ -1,5 +1,10 @@
-const { isValidRoommate, isValidExpenseName, isValidExpenseAmount, isValidExpenseDate, validateAnExpense }
-    = require('./validation')
+const {
+    isValidRoommate,
+    isValidExpenseName,
+    isValidExpenseAmount,
+    isValidExpenseDate,
+    validateAnExpense
+} = require('./validation')
 
 const { formatTheMoneyInput } = require('./formatting')
 
@@ -10,6 +15,7 @@ class CreateHouseState {
             roommates: [],
             expenses: []
         }
+        this.setHouseHold = this.setHouseHold.bind(this);
     }
 
     getHouseHold() {
@@ -83,6 +89,10 @@ class CreateHouseState {
     removeExpense(index) {
         this.state.expenses.splice(index, 1)
         return this.state.expenses.length;
+    }
+
+    getOneExpense(index) {
+        return this.state.expenses[index];
     }
 
     getExpenses() {

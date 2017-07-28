@@ -1,3 +1,5 @@
+
+// js
 const CreateHouseState = require('./manage-state');
 const Pikaday = require('pikaday');
 const HouseHold = require('./mock-model');
@@ -9,10 +11,13 @@ const {
   CreateExpenseTable
 } = require('./create-expense');
 
+// templates
 const MobileNav = require('../templates/mobile-nav.pug');
 
+// css
 require('pikaday/css/pikaday.css');
 require('../styles/create-house.css');
+
 /* global document, window, location */
 
 const state = new CreateHouseState();
@@ -122,8 +127,11 @@ const watchSubmitHousehold = () => {
     const householdName = document.getElementById('household-name');
     state.setHouseName(householdName.value);
 
-    saveHouseHold(state.getHouseHold());
-    location.href = '/house-stats';
+    saveHouseHold(state.getHouseHold()).then(house => {
+      state.setHouseHold(house);
+    }).then(() => {
+      location.href = '/house-stats';
+    });
   });
 };
 
@@ -201,12 +209,19 @@ let render = (mobile = '') => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  getHousHold().then(houseHold => {
-    if (houseHold === null) {
-      houseHold = createDemoHouse();
+const getValueOrDefault = (defaultValue) => {
+  return (value) => {
+    if (value === null || value === undefined) {
+      return defaultValue;
+    } else {
+      return value;
     }
-    state.setHouseHold(houseHold);
-    render();
-  })
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  getHousHold()
+    .then(getValueOrDefault(createDemoHouse()))
+    .then(state.setHouseHold)
+    .then(render);
 });
