@@ -21,7 +21,27 @@ app.get("/house-stats", (req, res) => {
 
 app.get("/create-house", (req, res) => {
     res.sendFile(path.join(DIST_DIR, 'create-house.html'))
-})
+});
+
+app.get("/household", (req, res) => {
+
+});
+// ask about json parser
+app.post("/household", (req, res) => {
+
+});
+
+app.post("/roommates/bills", (req, res) => {
+
+});
+
+app.put("/expenses/:id", (req, res) => {
+
+});
+
+app.put("/roommates/bills", (req, res) => {
+
+});
 
 let server;
 
