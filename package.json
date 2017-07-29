@@ -20,6 +20,7 @@
     "lodash.pullall": "^4.2.0",
     "moment": "^2.18.1",
     "money-math": "^2.5.0",
+    "mongoose": "^4.11.4",
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
