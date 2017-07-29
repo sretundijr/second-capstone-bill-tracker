@@ -9,7 +9,7 @@ const MobileNav = require('../templates/mobile-nav.pug');
 // JS
 const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
-const { getHousHold, saveHouseHold, editExpense } = require('./api');
+const { getHousHold, saveHouseHold, editExpense, addOrEditRoommatesBills } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
 
@@ -50,7 +50,7 @@ let watchEdit = () => {
       let index = targetElement.id.substring(10);
       index = parseInt(index);
       state.getExpenses()[index].editable = isEditable(index);
-      renderPage(state.getExpenses());
+      renderPage();
       let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
       // listens for the save event, after the edit event
       document.getElementById(element.id).addEventListener('click', (event) => {
@@ -68,7 +68,7 @@ let setEditedRow = (e, i) => {
     amount: data.amount.value,
   };
   state.editExpense(dataObj, i);
-  editExpense(state.getOneExpense(i), i).then(renderPage);
+  editExpense(state.getOneExpense(i), i).then(divideTheExpenses).then(renderPage);
 };
 
 const divideTheExpenses = () => {
@@ -77,16 +77,16 @@ const divideTheExpenses = () => {
   const divideAt300Dollars = '300.00';
   const dividedBills = billingSummary(state.getExpenses(),
     divideAt300Dollars,
-    formatTheMoneyInput(state.getRoommates().length),
+    formatTheMoneyInput(state.getRoommates().length)
   );
   // change the structure to save a roommate to the bill
   // currently saves a duplicate of the bills for each roommate
-  const saved = state.saveExpensesToRoommate(dividedBills);
-
-  return saved;
+  addOrEditRoommatesBills(dividedBills).then(roommates => {
+    state.saveExpensesToRoommate(roommates);
+  });
 };
 
-const createHtml = () => divideTheExpenses().map((arr) => {
+const createHtml = () => state.getRoommates().map((arr) => {
   return EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name });
 });
 
@@ -97,7 +97,7 @@ const renderExpenseSummary = () => {
   }
 };
 
-const renderPage = (lotsOfBills, mobile = '') => {
+const renderPage = (mobile = '') => {
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
     if (mobile === 'summary') {
@@ -143,7 +143,7 @@ const watchMobileSummaryBtn = () => {
       item.parentNode.removeChild(item);
     });
     const mobile = 'summary';
-    renderPage(state.getExpenses(), mobile);
+    renderPage(mobile);
   });
 };
 
@@ -156,13 +156,12 @@ const watchMobileAllExpenseBtn = () => {
     Array.from(expensesByRoommateArea).forEach((item) => {
       item.parentNode.removeChild(item);
     });
-    renderPage(state.getExpenses());
+    renderPage();
   });
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   getHousHold().then(house => {
     state.setHouseHold(house);
-    renderPage(state.getExpenses());
-  });
+  }).then(divideTheExpenses).then(renderPage);
 });

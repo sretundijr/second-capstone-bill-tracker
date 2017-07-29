@@ -22,9 +22,9 @@ const saveHouseHold = (obj) => {
 
 const editExpense = (expense, index) => {
   const retrieve = retrieveFromLocal();
-  for (var prop in expense) {
-    if (retrieve.expenses[index].hasOwnProperty(prop)) {
-      retrieve.expenses[index][prop] = expense[prop];
+  for (let property in expense) {
+    if (retrieve.expenses[index].hasOwnProperty(property)) {
+      retrieve.expenses[index][property] = expense[property];
     }
   };
   saveToLocal(retrieve);
@@ -32,7 +32,15 @@ const editExpense = (expense, index) => {
 };
 
 const addOrEditRoommatesBills = (list) => {
-
+  let retrieve = retrieveFromLocal();
+  list.forEach((arr, index) => {
+    retrieve.roommates[index].bills = [];
+    arr.forEach(expense => {
+      retrieve.roommates[index].bills.push(expense);
+    })
+  })
+  saveToLocal(retrieve);
+  return Promise.resolve(retrieve.roommates);
 }
 
 const removeHouseHold = () => {
@@ -49,4 +57,4 @@ const createDemoHouse = () => {
   return obj;
 };
 
-module.exports = { getHousHold, saveHouseHold, editExpense, createDemoHouse };
+module.exports = { getHousHold, saveHouseHold, editExpense, addOrEditRoommatesBills, createDemoHouse };
