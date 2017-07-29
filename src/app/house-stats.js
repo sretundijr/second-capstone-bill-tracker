@@ -9,7 +9,7 @@ const MobileNav = require('../templates/mobile-nav.pug');
 // JS
 const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
-const { getHousHold, saveHouseHold, editExpense, addOrEditRoommatesBills } = require('./api');
+const { getHouseHold, saveHouseHold, editExpense, addOrEditRoommatesBills } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
 
@@ -161,7 +161,7 @@ const watchMobileAllExpenseBtn = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  getHousHold().then(house => {
+  getHouseHold().then(house => {
     state.setHouseHold(house);
   }).then(divideTheExpenses).then(renderPage);
 });

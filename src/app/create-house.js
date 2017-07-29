@@ -3,7 +3,7 @@
 const CreateHouseState = require('./manage-state');
 const Pikaday = require('pikaday');
 const HouseHold = require('./mock-model');
-const { getHousHold, saveHouseHold, createDemoHouse } = require('./api');
+const { getHouseHold, saveHouseHold, createDemoHouse } = require('./api');
 const { AddRoommateForm, RoommateList } = require('./create-roommate.js');
 const {
   CreateExpenseForm,
@@ -220,7 +220,7 @@ const getValueOrDefault = (defaultValue) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  getHousHold()
+  getHouseHold()
     .then(getValueOrDefault(createDemoHouse()))
     .then(state.setHouseHold)
     .then(render);

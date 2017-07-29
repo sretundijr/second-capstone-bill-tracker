@@ -11,7 +11,7 @@ const saveToLocal = (obj) => {
   localStorage.setItem('localObj', JSON.stringify(obj));
 }
 
-const getHousHold = () => {
+const getHouseHold = () => {
   return Promise.resolve(retrieveFromLocal());
 };
 
@@ -57,4 +57,4 @@ const createDemoHouse = () => {
   return obj;
 };
 
-module.exports = { getHousHold, saveHouseHold, editExpense, addOrEditRoommatesBills, createDemoHouse };
+module.exports = { getHouseHold, saveHouseHold, editExpense, addOrEditRoommatesBills, createDemoHouse };
