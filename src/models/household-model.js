@@ -1,6 +1,8 @@
 
 const mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
+
 const householdSchema = mongoose.Schema({
   name: { type: String, required: true },
   expenses: [
@@ -19,9 +21,22 @@ const householdSchema = mongoose.Schema({
           name: { type: String, required: true },
           amount: { type: String, required: true },
           dueDate: { type: String, required: true },
-          roommateAmountDue: { type: String, required: true }
+          roommateAmountDue: { type: String }
         }
       ]
     }
   ]
 })
+
+householdSchema.methods.getHouseHold = () => {
+  return {
+    id: this.id,
+    name: this.name,
+    expenses: this.expenses,
+    roommates: this.roommates
+  }
+}
+
+const Household = mongoose.model('Household', householdSchema)
+
+module.exports = { Household };
