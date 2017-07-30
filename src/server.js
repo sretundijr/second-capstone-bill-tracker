@@ -78,7 +78,7 @@ let server;
 function runServer() {
 	const port = process.env.PORT || 8080;
 	return new Promise((resolve, reject) => {
-		mongoose.connect(DATABASE_URL, err => {
+		mongoose.connect(DATABASE_URL, { useMongoClient: true }, err => {
 			if (err) {
 				return reject(err);
 			}
