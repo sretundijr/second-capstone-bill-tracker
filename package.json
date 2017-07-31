@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "npm run build && mocha",
+    "watch:test": "npm run build && mocha --watch",
     "serve": "npm-run-all --parallel watch:server watch:build",
     "watch:build": "webpack --watch",
     "watch:server": "nodemon \"./src/server.js\" --watch \"./src\"",
@@ -25,6 +26,8 @@
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pikaday": "^1.6.1",
+    "sinon": "^2.4.1",
+    "sinon-mongoose": "^2.0.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

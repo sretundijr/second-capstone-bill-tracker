@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const { Household } = require('./models/household-model');
+const { Household, createHousehold } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, "../dist"),
 	PORT = 8080,
@@ -18,6 +18,7 @@ app.use(express.static(DIST_DIR));
 app.use(bodyParser.json());
 app.use(morgan('common'));
 
+// *************************
 // static end points
 app.get("/", (req, res) => {
 	res.sendFile(path.join(DIST_DIR, "index.html"));
@@ -31,18 +32,27 @@ app.get("/create-house", (req, res) => {
 	res.sendFile(path.join(DIST_DIR, 'create-house.html'))
 });
 
+// ******************************
 // api endpoints
 app.get("/household", (req, res) => {
-
+	Promise.resolve().then(house => {
+		res.status(200).json({ message: 'hello' });
+	})
+	// Household
+	// 	.find()
+	// 	.exec()
+	// 	.then(house => {
+	// 		res.status(200);
+	// 	})
+	// 	.catch(err => {
+	// 		console.error(err);
+	// 		res.status(500).json({ message: 'nope' });
+	// 	})
 });
 // ask about json parser
 // creates a new household
 app.post("/household", (req, res) => {
-	Household.create({
-		name: req.body.name,
-		expenses: req.body.expenses,
-		roommates: req.body.roommates
-	}).then(household => {
+	createHousehold(req.body).then(household => {
 		res.status(201).json(household);
 	}).catch(err => {
 		console.log(err);
@@ -73,6 +83,7 @@ app.put("/roommates/bills", (req, res) => {
 
 });
 
+// *******************************************
 let server;
 
 function runServer() {

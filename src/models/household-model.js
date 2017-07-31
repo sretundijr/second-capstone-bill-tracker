@@ -37,6 +37,21 @@ householdSchema.methods.getHouseHold = () => {
   }
 }
 
-const Household = mongoose.model('Household', householdSchema)
+const createHousehold = (obj) => {
+  return Household.create({
+    name: obj.name,
+    expenses: obj.expenses,
+    roommates: obj.roommates
+  })
+};
 
-module.exports = { Household };
+let Household;
+
+try {
+  Household = mongoose.model('Household');
+} catch (e) {
+  Household = mongoose.model('Household', householdSchema);
+}
+
+
+module.exports = { Household, createHousehold };
