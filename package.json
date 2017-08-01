@@ -26,8 +26,6 @@
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "pikaday": "^1.6.1",
-    "sinon": "^2.4.1",
-    "sinon-mongoose": "^2.0.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

@@ -34,24 +34,21 @@ app.get("/create-house", (req, res) => {
 
 // ******************************
 // api endpoints
-app.get("/household", (req, res) => {
-	Promise.resolve().then(house => {
-		res.status(200).json({ message: 'hello' });
-	})
-	// Household
-	// 	.find()
-	// 	.exec()
-	// 	.then(house => {
-	// 		res.status(200);
-	// 	})
-	// 	.catch(err => {
-	// 		console.error(err);
-	// 		res.status(500).json({ message: 'nope' });
-	// 	})
+app.get("/api/household", (req, res) => {
+	Household
+		.find()
+		.exec()
+		.then(house => {
+			res.status(200).json(house);
+		})
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({ message: 'nope' });
+		})
 });
 // ask about json parser
 // creates a new household
-app.post("/household", (req, res) => {
+app.post("/api/household", (req, res) => {
 	createHousehold(req.body).then(household => {
 		res.status(201).json(household);
 	}).catch(err => {
@@ -61,25 +58,25 @@ app.post("/household", (req, res) => {
 });
 
 // end point to assign bills to each roommate
-app.post("/roommates/bills", (req, res) => {
+app.post("/api/roommates/bills", (req, res) => {
 
 });
 
 // used to add roommates to a household
-app.post("/roommates", (req, res) => {
+app.post("/api/roommates", (req, res) => {
 
 });
 
 // used to add expenses to the household
-app.post("/expenses", (req, res) => {
+app.post("/api/expenses", (req, res) => {
 
 });
 
-app.put("/expenses/:id", (req, res) => {
+app.put("/api/expenses/:id", (req, res) => {
 
 });
 
-app.put("/roommates/bills", (req, res) => {
+app.put("/api/roommates/bills", (req, res) => {
 
 });
 

@@ -1,6 +1,6 @@
 const households = [
     {
-        _id: "steve-christina-house",
+        // _id: "steve-christina-house",
         name: 'Steve and Christina\'s house',
         expenses: [
             {
@@ -31,11 +31,11 @@ const households = [
         ],
         roommates: [
             {
-                _id: 'steve-2',
+                // _id: 'steve-2',
                 name: 'steve'
             },
             {
-                _id: 'christina',
+                // _id: 'christina',
                 name: 'christina'
             }
         ]

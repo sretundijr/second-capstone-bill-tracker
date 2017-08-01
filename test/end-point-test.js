@@ -2,51 +2,58 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
-const sinon = require('sinon');
 const mongoose = require('mongoose');
 
 const { runServer, app, closeServer } = require('../src/server');
 const { Household, createHousehold } = require('../src/models/household-model');
+const mockHousehold = require('../src/app/mock-model');
 
 chai.use(chaiHttp);
 
-require('sinon-mongoose');
+function seedDatabase() {
+	return Household.insertMany(mockHousehold[0]);
+};
 
-// function tearDownDb() {
-// 	console.warn('Deleting database');
-// 	return mongoose.connection.dropDatabase();
-// }
+function tearDownDb() {
+	console.warn('Deleting database');
+	return mongoose.connection.dropDatabase();
+};
 
-describe('Get a household', function () {
+describe('Household api endpoints', function () {
 	// do I need this for this test
 	before(function () {
 		return runServer();
 	});
 
-	// afterEach(function () {
-	// 	return tearDownDb();
+	// beforeEach(function () {
+	// 	return seedDatabase();
 	// });
+
+	afterEach(function () {
+		return tearDownDb();
+	});
 
 	after(function () {
 		return closeServer();
 	});
 
 	it('should get a household', function () {
+		seedDatabase();
 		return chai.request(app)
-			.get("/household")
+			.get("/api/household")
 			.then(function (res) {
 				res.should.have.status(200);
+				res.body[0].should.be.an('object');
 			})
 	})
 
 	it('should create a household', function () {
-		// let stub = sinon.stub(HouseholdModel, 'createHousehold', () => Promise.resolve({ name: 'bob' }));
 		return chai.request(app)
-			.post('/household')
-			.send({ name: 'steve' })
+			.post('/api/household')
+			.send(mockHousehold[0])
 			.then((res) => {
 				res.should.have.status(201);
-				res.body.name.should.equal('steve');
+				res.body.name.should.equal(mockHousehold[0].name);
 			})
 	})
 });
