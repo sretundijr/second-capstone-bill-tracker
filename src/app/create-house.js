@@ -8,7 +8,7 @@ const { AddRoommateForm, RoommateList } = require('./create-roommate.js');
 const {
   CreateExpenseForm,
   CreatePartialExpenseTable,
-  CreateExpenseTable
+  CreateExpenseTable,
 } = require('./create-expense');
 
 // templates
@@ -73,7 +73,7 @@ const renderExpenseTable = () => {
   if (state.getExpenses().length >= 1) {
     tableContainer.innerHTML = CreatePartialExpenseTable();
     const expenseTable = document.getElementById('expense-table');
-    expenseTable.innerHTML = CreateExpenseTable(state.getExpenses())
+    expenseTable.innerHTML = CreateExpenseTable(state.getExpenses());
 
     document.getElementById('add-expense-form').reset();
 
@@ -127,7 +127,7 @@ const watchSubmitHousehold = () => {
     const householdName = document.getElementById('household-name');
     state.setHouseName(householdName.value);
 
-    saveHouseHold(state.getHouseHold()).then(house => {
+    saveHouseHold(state.getHouseHold()).then((house) => {
       state.setHouseHold(house);
     }).then(() => {
       location.href = '/house-stats';
@@ -209,15 +209,12 @@ let render = (mobile = '') => {
   }
 };
 
-const getValueOrDefault = (defaultValue) => {
-  return (value) => {
-    if (value === null || value === undefined) {
-      return defaultValue;
-    } else {
-      return value;
-    }
+const getValueOrDefault = (defaultValue) => (value) => {
+  if (value === null || value === undefined) {
+    return defaultValue;
   }
-}
+  return value;
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   getHouseHold()

@@ -1,9 +1,7 @@
 
 
-let totalAmount = (bills) => bills.reduce((total, item) => {
-    return total += item.amount;
-}, 0);
+const totalAmount = bills => bills.reduce((total, item) => total += item.amount, 0);
 
-let totalNumberOfBills = (bills) => bills.length;
+const totalNumberOfBills = bills => bills.length;
 
-module.exports = { totalAmount, totalNumberOfBills }
+module.exports = { totalAmount, totalNumberOfBills };

@@ -1,5 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+
 const should = chai.should();
 const expect = chai.expect;
 const mongoose = require('mongoose');
@@ -10,92 +11,95 @@ const mockHousehold = require('../src/app/mock-model');
 
 chai.use(chaiHttp);
 
-function seedDatabase() {
-	return Household.insertMany(mockHousehold[0]);
+const mockPostReq = () => {
+  return {
+    name: 'steve',
+    expenses:
+    [
+      {
+        amount: '100',
+        name: 'electric',
+        dueDate: '2017-11-11',
+      },
+      {
+        amount: '500',
+        name: 'auto',
+        dueDate: '2017-13-12',
+      },
+    ],
+    roommates:
+    [
+      {
+        name: 'steve',
+      },
+      {
+        name: 'Christina',
+      },
+    ],
+  };
 };
+
+const household = () => {
+  return Household
+    .findOne()
+    .exec()
+    .then(house => house);
+};
+
+function seedDatabase() {
+  return Household.insertMany(mockHousehold[0]);
+}
 
 function tearDownDb() {
-	console.warn('Deleting database');
-	return mongoose.connection.dropDatabase();
-};
+  console.warn('Deleting database');
+  return mongoose.connection.dropDatabase();
+}
 
-describe('Household api endpoints', function () {
-	// do I need this for this test
-	before(function () {
-		return runServer();
-	});
+describe('Household api endpoints', () => {
+  // do I need this for this test
+  before(() => runServer());
 
-	// beforeEach(function () {
-	// 	return seedDatabase();
-	// });
+  beforeEach(() => seedDatabase());
 
-	afterEach(function () {
-		return tearDownDb();
-	});
+  afterEach(() => tearDownDb());
 
-	after(function () {
-		return closeServer();
-	});
+  after(() => closeServer());
 
-	it('should get a household', function () {
-		seedDatabase();
-		return chai.request(app)
-			.get("/api/household")
-			.then(function (res) {
-				res.should.have.status(200);
-				res.body[0].should.be.an('object');
-			})
-	})
+  // this returns undefined once in awhile
+  it('should get a household', () => chai.request(app)
+    .get('/api/household')
+    .then((res) => {
+      res.should.have.status(200);
+      res.body[0].should.be.an('object');
+    }));
 
-	it('should create a household', function () {
-		return chai.request(app)
-			.post('/api/household')
-			.send(mockHousehold[0])
-			.then((res) => {
-				res.should.have.status(201);
-				res.body.name.should.equal(mockHousehold[0].name);
-			})
-	})
+  it('should create a household', () => chai.request(app)
+    .post('/api/household')
+    .send(mockPostReq())
+    .then((res) => {
+      res.should.have.status(201);
+      res.body.name.should.equal(mockPostReq().name);
+    }));
+
+  // it('should edit an expense', () => {
+  //   const update = { _id: '', amount: '' };
+  //   // console.log(unwrapHousehold());
+  //   household().then((house) => {
+  //     update._id = house.expenses._id;
+  //     update.amount = '433.33';
+  //     chai.request(app)
+  //       .put(`/api/expenses/${update._id}`)
+  //       .send(update)
+  //       .end((res) => {
+  //         res.should.have.status(201);
+  //         console.log(house);
+
+  //       });
+  //   });
+  //   // .then((res) => {
+  //   //   res.should.have.status(201);
+  //   //   console.log(res.body);
+  //   // });
+  // });
+  // });
 });
-
-
-// ************************
-// static end point tests
-describe('test static endpoints', function () {
-	before(function () {
-		return runServer();
-	});
-	after(function () {
-		return closeServer();
-	});
-
-	it('should return index', function () {
-		return chai.request(app)
-			.get('/')
-			.then(function (res) {
-				res.should.have.status(200);
-			})
-	})
-
-	it('should return house stats', function () {
-		return chai.request(app)
-			.get('/house-stats')
-			.then(function (res) {
-				res.should.have.status(200);
-			})
-	})
-})
-
-// saved for later
-// it('return a household', function () {
-	// 	var householdMock = sinon.mock(Household);
-	// 	var expectedResults = { status: true, house: [] };
-	// 	console.log(householdMock);
-	// 	householdMock.expects('find').resolves(expectedResults);
-	// 	Household.find(function (err, results) {
-	// 		householdMock.verify();
-	// 		householdMock.restore();
-	// 		expect(results.status).to.be.true;
-	// 		done();
-	// 	})
-	// })

@@ -17,11 +17,13 @@ const Pikaday = require('pikaday');
 require('pikaday/css/pikaday.css');
 require('../styles/house-stats.css');
 
-/* global document */
+/* global document window */
 
 const state = new CreateHouseState();
 
-const buildTable = () => state.getExpenses().map((item, index) => HOUSE_HTML({ item: item, index }));
+const buildTable = () => state
+  .getExpenses()
+  .map((item, index) => HOUSE_HTML({ item: item, index }));
 
 const tableToString = () => buildTable(state.getExpenses()).join('');
 
@@ -77,11 +79,11 @@ const divideTheExpenses = () => {
   const divideAt300Dollars = '300.00';
   const dividedBills = billingSummary(state.getExpenses(),
     divideAt300Dollars,
-    formatTheMoneyInput(state.getRoommates().length)
+    formatTheMoneyInput(state.getRoommates().length),
   );
   // change the structure to save a roommate to the bill
   // currently saves a duplicate of the bills for each roommate
-  addOrEditRoommatesBills(dividedBills).then(roommates => {
+  addOrEditRoommatesBills(dividedBills).then((roommates) => {
     state.saveExpensesToRoommate(roommates);
   });
 };
@@ -161,7 +163,7 @@ const watchMobileAllExpenseBtn = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  getHouseHold().then(house => {
+  getHouseHold().then((house) => {
     state.setHouseHold(house);
   }).then(divideTheExpenses).then(renderPage);
 });

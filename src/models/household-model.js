@@ -9,9 +9,8 @@ const householdSchema = mongoose.Schema({
     {
       name: { type: String, required: true },
       amount: { type: String, required: true },
-      dueDate: { type: String, required: true }
-    }
-
+      dueDate: { type: String, required: true },
+    },
   ],
   roommates: [
     {
@@ -21,28 +20,28 @@ const householdSchema = mongoose.Schema({
           name: { type: String, required: true },
           amount: { type: String, required: true },
           dueDate: { type: String, required: true },
-          roommateAmountDue: { type: String }
-        }
-      ]
-    }
-  ]
-})
+          roommateAmountDue: { type: String },
+        },
+      ],
+    },
+  ],
+});
 
 householdSchema.methods.getHouseHold = () => {
   return {
     id: this.id,
     name: this.name,
     expenses: this.expenses,
-    roommates: this.roommates
-  }
-}
+    roommates: this.roommates,
+  };
+};
 
 const createHousehold = (obj) => {
   return Household.create({
     name: obj.name,
     expenses: obj.expenses,
-    roommates: obj.roommates
-  })
+    roommates: obj.roommates,
+  });
 };
 
 let Household;

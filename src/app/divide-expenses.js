@@ -110,11 +110,13 @@ const equalizeBills = (dividedBills, bills, numberOfRoommates) => {
     let overage = '0.00';
     if (item > evenlyDivided) {
       overage = moneyMath.subtract(item, evenlyDivided);
-      dividedBills[index][0].roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage);
+      dividedBills[index][0]
+        .roommateAmountDue = moneyMath.subtract(dividedBills[index][0].roommateAmountDue, overage);
     }
     if (item < evenlyDivided) {
       const shortage = moneyMath.subtract(evenlyDivided, item);
-      dividedBills[index][0].roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage);
+      dividedBills[index][0]
+        .roommateAmountDue = moneyMath.add(dividedBills[index][0].roommateAmountDue, shortage);
     }
   });
   return dividedBills;
