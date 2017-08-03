@@ -27,14 +27,21 @@ const householdSchema = mongoose.Schema({
   ],
 });
 
-householdSchema.methods.getHouseHold = () => {
-  return {
-    id: this.id,
-    name: this.name,
-    expenses: this.expenses,
-    roommates: this.roommates,
-  };
-};
+// householdSchema.methods.getHouseHold = () => {
+//   return {
+//     id: this.id,
+//     name: this.name,
+//     expenses: this.expenses,
+//     roommates: this.roommates,
+//   };
+// };
+
+const getHouseHold = (id) => {
+  return Household
+    .findById(id)
+    .exec()
+    .then(house => house);
+}
 
 const createHousehold = (obj) => {
   return Household.create({
@@ -44,13 +51,13 @@ const createHousehold = (obj) => {
   });
 };
 
-let Household;
+// let Household;
 
-try {
-  Household = mongoose.model('Household');
-} catch (e) {
-  Household = mongoose.model('Household', householdSchema);
-}
+// try {
+//   Household = mongoose.model('Household');
+// } catch (e) {
+const Household = mongoose.model('Household', householdSchema);
+// }
 
 
-module.exports = { Household, createHousehold };
+module.exports = Household;

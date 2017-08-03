@@ -8,7 +8,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const { Household, createHousehold } = require('./models/household-model');
+const Household = require('./models/household-model');
+
+// const Household = mongoose.model('Household');
+
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -48,12 +51,17 @@ app.get('/api/household', (req, res) => {
 // ask about json parser
 // creates a new household
 app.post('/api/household', (req, res) => {
-  createHousehold(req.body).then((household) => {
-    res.status(201).json(household);
-  }).catch((err) => {
-    console.log(err);
-    res.status(500).json({ message: 'nope' });
-  });
+  Household.create({
+    name: req.body.name,
+    expenses: req.body.expenses,
+    roommates: req.body.roommates,
+  })
+    .then((household) => {
+      res.status(201).json(household);
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: 'nope' });
+    });
 });
 
 // end point to assign bills to each roommate
@@ -73,7 +81,24 @@ app.post('/api/household', (req, res) => {
 
 // edit a household expense
 app.put('/api/expenses/:id', (req, res) => {
-  res.status(201);
+  // console.log(req.body);
+  const update = {};
+  const updatedFields = ['amount', 'name', 'dueDate'];
+  updatedFields.forEach((field) => {
+    if (field in req.body) {
+      update[field] = req.body[field];
+    }
+  });
+  // I have the correct id but when I search for it I'm returning null
+  // see end point test on line 88 of end-point-test.js
+  Household
+    .findById(req.body.house_id)
+    .exec()
+    .then((updateExpense) => {
+      console.log(`${updateExpense} here}`);
+      res.status(201).json(updateExpense);
+    })
+    .catch(err => res.status(500).json({ message: 'Something went wrong', error: err }));
 });
 
 // *******************************************

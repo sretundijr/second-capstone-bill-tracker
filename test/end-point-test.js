@@ -6,8 +6,9 @@ const expect = chai.expect;
 const mongoose = require('mongoose');
 
 const { runServer, app, closeServer } = require('../src/server');
-const { Household, createHousehold } = require('../src/models/household-model');
+const Household = require('../src/models/household-model');
 const mockHousehold = require('../src/app/mock-model');
+const { DATABASE_URL } = require('../config');
 
 chai.use(chaiHttp);
 
@@ -39,12 +40,12 @@ const mockPostReq = () => {
   };
 };
 
-const household = () => {
-  return Household
-    .findOne()
-    .exec()
-    .then(house => house);
-};
+// const household = () => {
+//   return Household
+//     .findOne()
+//     .exec()
+//     .then(house => house);
+// };
 
 function seedDatabase() {
   return Household.insertMany(mockHousehold[0]);
@@ -57,7 +58,7 @@ function tearDownDb() {
 
 describe('Household api endpoints', () => {
   // do I need this for this test
-  before(() => runServer());
+  before(() => runServer(DATABASE_URL));
 
   beforeEach(() => seedDatabase());
 
@@ -81,25 +82,26 @@ describe('Household api endpoints', () => {
       res.body.name.should.equal(mockPostReq().name);
     }));
 
-  // it('should edit an expense', () => {
-  //   const update = { _id: '', amount: '' };
-  //   // console.log(unwrapHousehold());
-  //   household().then((house) => {
-  //     update._id = house.expenses._id;
-  //     update.amount = '433.33';
-  //     chai.request(app)
-  //       .put(`/api/expenses/${update._id}`)
-  //       .send(update)
-  //       .end((res) => {
-  //         res.should.have.status(201);
-  //         console.log(house);
+  it('should edit an expense', () => {
+    const update = { house_id: '', expense_id: '', amount: '' };
+    // console.log(unwrapHousehold());
+    Household
+      .findOne()
+      .exec()
+      .then((house) => {
+        // console.log(house.expenses[0].id);
+        // console.log(house);
+        update.house_id = house.id;
+        update.expense_id = house.expenses[0].id;
+        update.amount = '433.33';
+        return chai.request(app)
+          .put(`/api/expenses/${update.house_id}`)
+          .send(update);
+      })
+      .then((res) => {
+        console.log(res.body);
 
-  //       });
-  //   });
-  //   // .then((res) => {
-  //   //   res.should.have.status(201);
-  //   //   console.log(res.body);
-  //   // });
-  // });
-  // });
+        res.should.have.status(201);
+      });
+  });
 });
