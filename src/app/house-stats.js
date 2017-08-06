@@ -1,3 +1,4 @@
+/* global document window */
 
 // Templates
 const HOUSE_HTML = require('../templates/house-stats-form.pug');
@@ -11,7 +12,6 @@ const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
 const {
   getHouseHold,
-  saveHouseHold,
   removeExpense,
   editExpense,
   addOrEditRoommatesBills,
@@ -23,10 +23,10 @@ const Pikaday = require('pikaday');
 require('pikaday/css/pikaday.css');
 require('../styles/house-stats.css');
 
-/* global document window */
-
 const state = new CreateHouseState();
 
+// ************************************
+// initial render
 const buildTable = () => state
   .getExpenses()
   .map((item, index) => HOUSE_HTML({ item: item, index }));
@@ -35,16 +35,25 @@ const tableToString = () => buildTable(state.getExpenses()).join('');
 
 const getTableBodyId = () => document.getElementById('main-content-js');
 
-const renderTableData = () => {
-  getTableBodyId().innerHTML = tableToString(state.getExpenses());
+const renderTableData = (expense = '') => {
+  getTableBodyId().innerHTML = tableToString(expense);
   return watchEdit();
 };
 
+// *********************************
+// edit delete or add expenses
 const isEditable = (index) => {
   if (state.getExpenses()[index].editable) {
     return false;
   }
   return true;
+};
+
+const getEditOrDeleteElementIndex = (actionType, id) => {
+  if (actionType === 'Delete') {
+    return parseInt(id.substring(7));
+  }
+  return parseInt(id.substring(10));
 };
 
 let watchEdit = () => {
@@ -54,18 +63,16 @@ let watchEdit = () => {
     element.addEventListener('click', (e) => {
       e.preventDefault();
       const targetElement = e.target;
-      let index = targetElement.id.substring(10);
-      index = parseInt(index);
+      const index = getEditOrDeleteElementIndex(targetElement.value, targetElement.id);
       if (targetElement.value === 'Delete') {
         removeExpenseFromState(index);
+      } else if (state.getExpenses()[index].editable) {
+        state.getExpenses()[index].editable = isEditable(index);
+        setEditedRow(e, index);
       } else {
         state.getExpenses()[index].editable = isEditable(index);
         renderPage();
         let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
-        // listens for the save event, after the edit event
-        document.getElementById(element.id).addEventListener('click', (event) => {
-          setEditedRow(event, index);
-        });
       }
     });
   });
@@ -87,6 +94,25 @@ let setEditedRow = (e, i) => {
   editExpense(state.getOneExpense(i), i).then(divideTheExpenses).then(renderPage);
 };
 
+const watchAddExpenses = () => {
+  const addExpense = document.getElementById('add-expense');
+  const expenseObject = {
+    name: '',
+    amount: '',
+    dueDate: '',
+    editable: true,
+  };
+
+  addExpense.addEventListener('click', () => {
+    state.getExpenses().push(expenseObject);
+    renderPage();
+    const index = state.getExpenses().length - 1;
+    let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
+  });
+};
+
+// ***************************************
+// divide expenses to roommates and create a table showing the results
 const divideTheExpenses = () => {
   const expenses = state.getExpenses().map(item => item.amount);
   // make dynamic
@@ -177,6 +203,7 @@ const watchMobileAllExpenseBtn = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  watchAddExpenses();
   getHouseHold().then((house) => {
     state.setHouseHold(house);
   }).then(divideTheExpenses).then(renderPage);

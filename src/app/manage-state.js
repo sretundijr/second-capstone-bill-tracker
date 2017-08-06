@@ -78,6 +78,8 @@ class CreateHouseState {
       this.state.expenses.push(expense);
       return expense;
     }
+    // todo add better error handling
+    return console.error('validation error');
   }
 
   editExpense(expense, index) {
