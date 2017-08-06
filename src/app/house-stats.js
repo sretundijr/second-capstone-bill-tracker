@@ -96,15 +96,9 @@ let setEditedRow = (e, i) => {
 
 const watchAddExpenses = () => {
   const addExpense = document.getElementById('add-expense');
-  const expenseObject = {
-    name: '',
-    amount: '',
-    dueDate: '',
-    editable: true,
-  };
 
   addExpense.addEventListener('click', () => {
-    state.getExpenses().push(expenseObject);
+    state.addEmptyExpense();
     renderPage();
     const index = state.getExpenses().length - 1;
     let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
@@ -114,7 +108,8 @@ const watchAddExpenses = () => {
 // ***************************************
 // divide expenses to roommates and create a table showing the results
 const divideTheExpenses = () => {
-  const expenses = state.getExpenses().map(item => item.amount);
+  // todo make sure the following commmented out line doesn't bug
+  // const expenses = state.getExpenses().map(item => item.amount);
   // make dynamic
   const divideAt300Dollars = '300.00';
   const dividedBills = billingSummary(state.getExpenses(),
@@ -142,6 +137,7 @@ const renderExpenseSummary = () => {
 // **********************************
 // main render
 const renderPage = (mobile = '') => {
+  removeHtml();
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
     if (mobile === 'summary') {
@@ -178,14 +174,20 @@ const renderMenuBtn = () => {
   watchMobileAllExpenseBtn();
 };
 
+const removeHtml = () => {
+  const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
+  const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js');
+  Array.from(allBillsContentArea).forEach((item) => {
+    item.parentNode.removeChild(item);
+  });
+  Array.from(expensesByRoommateArea).forEach((item) => {
+    item.parentNode.removeChild(item);
+  });
+}
+
 const watchMobileSummaryBtn = () => {
   const roommateSummaryBtn = document.getElementById('Expenses-Divided');
-  const allBillsContentArea = document.getElementsByClassName('all-expenses-rendering');
-  roommateSummaryBtn.addEventListener('click', (e) => {
-    // removes all expenses html and the header content
-    Array.from(allBillsContentArea).forEach((item) => {
-      item.parentNode.removeChild(item);
-    });
+  roommateSummaryBtn.addEventListener('click', () => {
     const mobile = 'summary';
     renderPage(mobile);
   });
@@ -193,13 +195,7 @@ const watchMobileSummaryBtn = () => {
 
 const watchMobileAllExpenseBtn = () => {
   const allExpensesBtn = document.getElementById('All-Expenses');
-  const expensesByRoommateArea = document.getElementsByClassName('each-roommate-expense-js');
-  allExpensesBtn.addEventListener('click', (e) => {
-    // removes the headers used to explain the ui content
-    // removes expense per roommate html
-    Array.from(expensesByRoommateArea).forEach((item) => {
-      item.parentNode.removeChild(item);
-    });
+  allExpensesBtn.addEventListener('click', () => {
     renderPage();
   });
 };
