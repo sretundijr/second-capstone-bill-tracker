@@ -1,4 +1,4 @@
-/* global document window */
+/* global document window alert location */
 
 // Templates
 const HOUSE_HTML = require('../templates/house-stats-form.pug');
@@ -110,7 +110,7 @@ const watchAddExpenses = () => {
 const divideTheExpenses = () => {
   // todo make sure the following commmented out line doesn't bug
   // const expenses = state.getExpenses().map(item => item.amount);
-  // make dynamic
+  // todo make dynamic
   const divideAt300Dollars = '300.00';
   const dividedBills = billingSummary(state.getExpenses(),
     divideAt300Dollars,
@@ -204,5 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
   watchAddExpenses();
   getHouseHold().then((house) => {
     state.setHouseHold(house);
-  }).then(divideTheExpenses).then(renderPage);
+  })
+    .then(divideTheExpenses)
+    .then(renderPage)
+    .then(() => {
+      alert(`This is your unqiue house hold url. 
+  Please save this url to access your acount.
+  ${location}`);
+    });
 });
