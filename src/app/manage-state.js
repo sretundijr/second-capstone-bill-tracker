@@ -64,6 +64,16 @@ class CreateHouseState {
     });
   }
 
+  addEmptyExpense() {
+    const expenseObject = {
+      name: '',
+      amount: '',
+      dueDate: '',
+      editable: true,
+    };
+    this.state.expenses.push(expenseObject);
+  }
+
   addExpenseToState(expenses) {
     const name = isValidExpenseName(expenses.name);
     const number = isValidExpenseAmount(expenses.amount);
