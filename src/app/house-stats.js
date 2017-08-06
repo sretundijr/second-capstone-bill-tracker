@@ -6,6 +6,7 @@ const EXPENSE_DIVIDED_HTML = require('../templates/expenses-divided.pug');
 const AllExpensesExplained = require('../templates/expense-data-explained.pug');
 const RoommateExpenseExplained = require('../templates/roommate-expenses-explained.pug');
 const MobileNav = require('../templates/mobile-nav.pug');
+const createRoommate = require('../templates/create-roommate.pug');
 
 // JS
 const CreateHouseState = require('./manage-state');
@@ -14,6 +15,7 @@ const {
   getHouseHold,
   removeExpense,
   editExpense,
+  addRoommate,
   addOrEditRoommatesBills,
 } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
@@ -40,6 +42,29 @@ const renderTableData = (expense = '') => {
   return watchEdit();
 };
 
+// **********************************
+// add or remove roommate
+const addNewRoommate = () => {
+  const roommateBtn = document.getElementById('add-roommate');
+  roommateBtn.addEventListener('click', () => {
+    removeHtml();
+    const roommateContainer = document.getElementById('expense-summary-container');
+    roommateContainer.innerHTML = createRoommate();
+    // todo reused from create house
+    // const value = document.getElementsByName('create-roommate')[0].value;
+    const addRoommateBtn = document.getElementById('add-roommate-form');
+
+    addRoommateBtn.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = document.getElementsByName('create-roommate')[0].value;
+      state.addRoommate(value);
+      addRoommate(state.getRoommates()[state.getRoommates().length - 1])
+        .then(divideTheExpenses)
+        .then(() => { roommateContainer.innerHTML = ''; })
+        .then(renderPage);
+    });
+  });
+};
 // *********************************
 // edit delete or add expenses
 const isEditable = (index) => {
@@ -124,6 +149,7 @@ const divideTheExpenses = () => {
 };
 
 const createHtml = () => state.getRoommates().map((arr) => {
+  console.log(arr);
   return EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name });
 });
 
@@ -153,6 +179,8 @@ const renderPage = (mobile = '') => {
     renderExpenseSummary();
     renderTableData(state.getExpenses());
   }
+  watchAddExpenses();
+  addNewRoommate();
 };
 
 const renderAllExpensesExplained = () => {
@@ -201,15 +229,12 @@ const watchMobileAllExpenseBtn = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  watchAddExpenses();
+  alert(`This is your unqiue house hold url. 
+  Please save this url to access your acount.
+  ${location}`);
   getHouseHold().then((house) => {
     state.setHouseHold(house);
   })
     .then(divideTheExpenses)
-    .then(renderPage)
-    .then(() => {
-      alert(`This is your unqiue house hold url. 
-  Please save this url to access your acount.
-  ${location}`);
-    });
+    .then(renderPage);
 });
