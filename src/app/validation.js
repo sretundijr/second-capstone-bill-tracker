@@ -1,4 +1,14 @@
+/* global alert */
+
 const moment = require('moment');
+
+const isValidHouseName = (name) => {
+  if (name === '') {
+    alert('Your household must have a name');
+    return false;
+  }
+  return true;
+};
 
 const isValidRoommate = (roommate) => {
   const errors = [];
@@ -69,5 +79,6 @@ module.exports = {
   isValidExpenseName,
   isValidExpenseAmount,
   isValidExpenseDate,
-  validateAnExpense
+  validateAnExpense,
+  isValidHouseName,
 };

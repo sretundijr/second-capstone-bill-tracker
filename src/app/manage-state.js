@@ -1,5 +1,5 @@
 const {
-    isValidRoommate,
+  isValidRoommate,
   isValidExpenseName,
   isValidExpenseAmount,
   isValidExpenseDate,

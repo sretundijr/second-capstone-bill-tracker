@@ -1,3 +1,4 @@
+/* global document, window, location */
 
 // js
 const CreateHouseState = require('./manage-state');
@@ -11,14 +12,14 @@ const {
   CreateExpenseTable,
 } = require('./create-expense');
 
+const { isValidHouseName } = require('./validation');
+
 // templates
 const MobileNav = require('../templates/mobile-nav.pug');
 
 // css
 require('pikaday/css/pikaday.css');
 require('../styles/create-house.css');
-
-/* global document, window, location */
 
 const state = new CreateHouseState();
 
@@ -125,13 +126,14 @@ const watchSubmitHousehold = () => {
   const submitHouseBtn = document.getElementById('submit-household-btn');
   submitHouseBtn.addEventListener('click', (e) => {
     const householdName = document.getElementById('household-name');
-    state.setHouseName(householdName.value);
-
-    saveHouseHold(state.getHouseHold()).then((house) => {
-      state.setHouseHold(house);
-    }).then(() => {
-      location.href = `/house-stats/${state.slug}`;
-    });
+    if (isValidHouseName(householdName.value)) {
+      state.setHouseName(householdName.value);
+      saveHouseHold(state.getHouseHold()).then((house) => {
+        state.setHouseHold(house);
+      }).then(() => {
+        location.href = `/house-stats/${state.slug}`;
+      });
+    }
   });
 };
 
