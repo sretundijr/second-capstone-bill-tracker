@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const { runServer, app, closeServer } = require('../src/server');
 const Household = require('../src/models/household-model');
 const mockHousehold = require('../src/app/mock-model');
-const { DATABASE_URL } = require('../config');
+const { TEST_DATABASE_URL } = require('../config');
 
 chai.use(chaiHttp);
 
@@ -40,13 +40,6 @@ const mockPostReq = () => {
   };
 };
 
-// const household = () => {
-//   return Household
-//     .findOne()
-//     .exec()
-//     .then(house => house);
-// };
-
 function seedDatabase() {
   return Household.insertMany(mockHousehold[0]);
 }
@@ -56,9 +49,9 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('Household api endpoints', () => {
+describe('Household api endpoints', function () {
   // do I need this for this test
-  before(() => runServer(DATABASE_URL));
+  before(() => runServer(TEST_DATABASE_URL));
 
   beforeEach(() => seedDatabase());
 
@@ -67,30 +60,31 @@ describe('Household api endpoints', () => {
   after(() => closeServer());
 
   // this returns undefined once in awhile
-  it('should get a household', () => chai.request(app)
-    .get('/api/household')
-    .then((res) => {
-      res.should.have.status(200);
-      res.body[0].should.be.an('object');
-    }));
+  it('should get a household', () => {
+    return chai.request(app)
+      .get('/api/household')
+      .then((res) => {
+        res.should.have.status(200);
+        res.body[0].should.be.an('object');
+      });
+  });
 
-  it('should create a household', () => chai.request(app)
-    .post('/api/household')
-    .send(mockPostReq())
-    .then((res) => {
-      res.should.have.status(201);
-      res.body.name.should.equal(mockPostReq().name);
-    }));
+  it('should create a household', () => {
+    return chai.request(app)
+      .post('/api/household')
+      .send(mockPostReq())
+      .then((res) => {
+        res.should.have.status(201);
+        res.body.name.should.equal(mockPostReq().name);
+      });
+  });
 
   it('should edit an expense', () => {
     const update = { house_id: '', expense_id: '', amount: '' };
-    // console.log(unwrapHousehold());
-    Household
+    return Household
       .findOne()
       .exec()
       .then((house) => {
-        // console.log(house.expenses[0].id);
-        // console.log(house);
         update.house_id = house.id;
         update.expense_id = house.expenses[0].id;
         update.amount = '433.33';

@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(DIST_DIR, 'index.html'));
 });
 
-app.get('/house-stats', (req, res) => {
+app.get('/house-stats/:slug', (req, res) => {
   res.sendFile(path.join(DIST_DIR, 'house-stats.html'));
 });
 
@@ -81,7 +81,7 @@ app.post('/api/household', (req, res) => {
 
 // edit a household expense
 app.put('/api/expenses/:id', (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   const update = {};
   const updatedFields = ['amount', 'name', 'dueDate'];
   updatedFields.forEach((field) => {
@@ -89,13 +89,11 @@ app.put('/api/expenses/:id', (req, res) => {
       update[field] = req.body[field];
     }
   });
-  // I have the correct id but when I search for it I'm returning null
-  // see end point test on line 88 of end-point-test.js
+
   Household
     .findById(req.body.house_id)
     .exec()
     .then((updateExpense) => {
-      console.log(`${updateExpense} here}`);
       res.status(201).json(updateExpense);
     })
     .catch(err => res.status(500).json({ message: 'Something went wrong', error: err }));
@@ -104,10 +102,10 @@ app.put('/api/expenses/:id', (req, res) => {
 // *******************************************
 let server;
 
-function runServer() {
+function runServer(databaseUrl = DATABASE_URL) {
   const port = process.env.PORT || 8080;
   return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL, { useMongoClient: true }, (err) => {
+    mongoose.connect(databaseUrl, { useMongoClient: true }, (err) => {
       if (err) {
         return reject(err);
       }

@@ -6,12 +6,15 @@ const {
   validateAnExpense,
 } = require('./validation');
 
+const slugify = require('slugify');
+
 const { formatTheMoneyInput } = require('./formatting');
 
 class CreateHouseState {
   constructor() {
     this.state = {
       name: '',
+      slug: '',
       roommates: [],
       expenses: [],
     };
@@ -27,6 +30,7 @@ class CreateHouseState {
   }
 
   setHouseName(data) {
+    this.slug = slugify(data);
     this.state.name = data;
   }
 

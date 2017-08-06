@@ -1,14 +1,14 @@
-
+/* global localStorage */
 const house = require('./mock-model');
 
 const localObj = 'localObj';
 
 const retrieveFromLocal = () => {
-  return JSON.parse(localStorage.getItem('localObj'));
+  return JSON.parse(localStorage.getItem(localObj));
 };
 
 const saveToLocal = (obj) => {
-  localStorage.setItem('localObj', JSON.stringify(obj));
+  localStorage.setItem(localObj, JSON.stringify(obj));
 };
 
 const getHouseHold = () => {
@@ -44,7 +44,7 @@ const addOrEditRoommatesBills = (list) => {
 };
 
 const removeHouseHold = () => {
-  localStorage.removeItem('localObj');
+  localStorage.removeItem(localObj);
 };
 
 const createDemoHouse = () => {
