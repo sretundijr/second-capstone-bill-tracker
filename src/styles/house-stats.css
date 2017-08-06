@@ -9,6 +9,13 @@
     height: 35px;
 }
 
+.delete-btn-style{
+    margin-top: 25px;
+    height: 35px;
+    width: 75px; 
+    margin-left: 10px;
+}
+
 .col-centered{
     float: none;
     margin: 0 auto;

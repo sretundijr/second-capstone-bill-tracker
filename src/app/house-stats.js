@@ -9,7 +9,13 @@ const MobileNav = require('../templates/mobile-nav.pug');
 // JS
 const CreateHouseState = require('./manage-state');
 const { billingSummary } = require('./divide-expenses');
-const { getHouseHold, saveHouseHold, editExpense, addOrEditRoommatesBills } = require('./api');
+const {
+  getHouseHold,
+  saveHouseHold,
+  removeExpense,
+  editExpense,
+  addOrEditRoommatesBills,
+} = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
 
@@ -39,27 +45,35 @@ const isEditable = (index) => {
     return false;
   }
   return true;
-
 };
 
 let watchEdit = () => {
-  const editButton = document.getElementsByClassName('watch-js');
+  const editOrDeleteButton = document.getElementsByClassName('watch-js');
 
-  Array.from(editButton).forEach((element) => {
+  Array.from(editOrDeleteButton).forEach((element) => {
     element.addEventListener('click', (e) => {
       e.preventDefault();
       const targetElement = e.target;
       let index = targetElement.id.substring(10);
       index = parseInt(index);
-      state.getExpenses()[index].editable = isEditable(index);
-      renderPage();
-      let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
-      // listens for the save event, after the edit event
-      document.getElementById(element.id).addEventListener('click', (event) => {
-        setEditedRow(event, index);
-      });
+      if (targetElement.value === 'Delete') {
+        removeExpenseFromState(index);
+      } else {
+        state.getExpenses()[index].editable = isEditable(index);
+        renderPage();
+        let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
+        // listens for the save event, after the edit event
+        document.getElementById(element.id).addEventListener('click', (event) => {
+          setEditedRow(event, index);
+        });
+      }
     });
   });
+};
+
+const removeExpenseFromState = (index) => {
+  state.removeExpense(index);
+  removeExpense(index).then(divideTheExpenses).then(renderPage);
 };
 
 let setEditedRow = (e, i) => {

@@ -31,6 +31,13 @@ const editExpense = (expense, index) => {
   return Promise.resolve(retrieve.expenses);
 };
 
+const removeExpense = (index) => {
+  const retrieve = retrieveFromLocal();
+  retrieve.expenses.splice(index, 1);
+  saveToLocal(retrieve);
+  return Promise.resolve(retrieve.expenses);
+}
+
 const addOrEditRoommatesBills = (list) => {
   const retrieve = retrieveFromLocal();
   list.forEach((arr, index) => {
@@ -61,6 +68,7 @@ module.exports = {
   getHouseHold,
   saveHouseHold,
   editExpense,
+  removeExpense,
   addOrEditRoommatesBills,
   createDemoHouse,
 };

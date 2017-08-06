@@ -7,3 +7,4 @@ div(class="row all-expenses-rendering")
     label(for="bill") Amount
     input(class="form-control" name="amount" type="text" readonly=!item.editable value=item.amount)
     input(class="form-control edit-btn-style watch-js btn btn-primary btn-sm" type="button" value=`${item.editable ? 'Save' : 'Edit'}` name="bill" id=`edit-bill-${index}`)
+    input(class="form-control btn btn-sm watch-js btn-primary delete-btn-style" type="button" value='Delete')
