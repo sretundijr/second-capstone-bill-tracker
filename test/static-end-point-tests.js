@@ -24,7 +24,7 @@ describe('test static endpoints', function () {
 
   it('should return house stats', function () {
     return chai.request(app)
-      .get('/house-stats')
+      .get('/house-stats/steve-christina')
       .then(function (res) {
         res.should.have.status(200);
       })

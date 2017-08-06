@@ -139,6 +139,8 @@ const renderExpenseSummary = () => {
   }
 };
 
+// **********************************
+// main render
 const renderPage = (mobile = '') => {
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
