@@ -19,14 +19,14 @@ describe('test static endpoints', function () {
       .get('/')
       .then(function (res) {
         res.should.have.status(200);
-      })
-  })
+      });
+  });
 
   it('should return house stats', function () {
     return chai.request(app)
       .get('/house-stats/steve-christina')
       .then(function (res) {
         res.should.have.status(200);
-      })
-  })
-})
+      });
+  });
+});

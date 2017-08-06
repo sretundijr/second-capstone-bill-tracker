@@ -216,9 +216,18 @@ const getValueOrDefault = (defaultValue) => (value) => {
   return value;
 };
 
+const determineUserPath = (path) => {
+  return path.replace('/create-house/', '');
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  getHouseHold()
-    .then(getValueOrDefault(createDemoHouse()))
-    .then(state.setHouseHold)
-    .then(render);
+  const path = determineUserPath(location.pathname);
+  if (path === 'demo') {
+    getHouseHold()
+      .then(getValueOrDefault(createDemoHouse()))
+      .then(state.setHouseHold)
+      .then(render);
+  } else {
+    render();
+  }
 });

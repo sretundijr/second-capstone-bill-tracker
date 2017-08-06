@@ -183,7 +183,7 @@ const removeHtml = () => {
   Array.from(expensesByRoommateArea).forEach((item) => {
     item.parentNode.removeChild(item);
   });
-}
+};
 
 const watchMobileSummaryBtn = () => {
   const roommateSummaryBtn = document.getElementById('Expenses-Divided');
