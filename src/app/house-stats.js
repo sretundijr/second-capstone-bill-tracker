@@ -27,6 +27,8 @@ require('../styles/house-stats.css');
 
 const state = new CreateHouseState();
 
+const pipe = (...pipeline) => input => pipeline.reduce((acc, fn) => fn(acc), input);
+
 // ************************************
 // initial render
 const buildTable = () => state
@@ -39,6 +41,7 @@ const getTableBodyId = () => document.getElementById('main-content-js');
 
 const renderTableData = (expense = '') => {
   getTableBodyId().innerHTML = tableToString(expense);
+  watchDelete();
   return watchEdit();
 };
 
@@ -65,6 +68,7 @@ const addNewRoommate = () => {
     });
   });
 };
+
 // *********************************
 // edit delete or add expenses
 const isEditable = (index) => {
@@ -74,21 +78,29 @@ const isEditable = (index) => {
   return true;
 };
 
-const getEditOrDeleteElementIndex = (actionType, id) => {
-  if (actionType === 'Delete') {
-    return parseInt(id.substring(7));
-  }
-  return parseInt(id.substring(10));
+const getDeleteElementIndex = (e) => parseInt(e.target.id.substring(7));
+
+const getEditElementIndex = (actionType, id) => parseInt(id.substring(10));
+
+const preventDefault = (e) => { e.preventDefault(); return e; };
+
+const preventAndGetIndex = pipe(preventDefault, getDeleteElementIndex);
+
+const watchDelete = () => {
+  const deleteBtnHandler = pipe(preventAndGetIndex, removeExpenseFromState);
+  const deleteButton = document.getElementsByClassName('delete-expense-js');
+  Array.from(deleteButton).forEach((element) => {
+    element.addEventListener('click', deleteBtnHandler);
+  });
 };
 
 let watchEdit = () => {
   const editOrDeleteButton = document.getElementsByClassName('watch-js');
-
   Array.from(editOrDeleteButton).forEach((element) => {
     element.addEventListener('click', (e) => {
       e.preventDefault();
       const targetElement = e.target;
-      const index = getEditOrDeleteElementIndex(targetElement.value, targetElement.id);
+      const index = getEditElementIndex(targetElement.value, targetElement.id);
       if (targetElement.value === 'Delete') {
         removeExpenseFromState(index);
       } else if (state.getExpenses()[index].editable) {
@@ -126,7 +138,7 @@ const watchAddExpenses = () => {
     state.addEmptyExpense();
     renderPage();
     const index = state.getExpenses().length - 1;
-    let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
+    const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
   });
 };
 
@@ -148,10 +160,8 @@ const divideTheExpenses = () => {
   });
 };
 
-const createHtml = () => state.getRoommates().map((arr) => {
-  console.log(arr);
-  return EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name });
-});
+const createHtml = () =>
+  state.getRoommates().map(arr => EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name }));
 
 const renderExpenseSummary = () => {
   if (state.getExpenses().length >= 1 && state.getRoommates().length > 1) {
@@ -228,10 +238,15 @@ const watchMobileAllExpenseBtn = () => {
   });
 };
 
+// ************************
+// unique house hold link rendered
+const renderUserLink = () => {
+  const userLinkId = document.getElementById('unique-url');
+  userLinkId.innerHTML = `<a href="${location}"><h4>${location}</h4></a>`;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  alert(`This is your unqiue house hold url. 
-  Please save this url to access your acount.
-  ${location}`);
+  renderUserLink();
   getHouseHold().then((house) => {
     state.setHouseHold(house);
   })
