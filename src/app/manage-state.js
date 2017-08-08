@@ -21,6 +21,10 @@ class CreateHouseState {
     this.setHouseHold = this.setHouseHold.bind(this);
   }
 
+  getSlug() {
+    return this.state.slug;
+  }
+
   getHouseHold() {
     return this.state;
   }
@@ -30,7 +34,7 @@ class CreateHouseState {
   }
 
   setHouseName(data) {
-    this.slug = slugify(data);
+    this.state.slug = slugify(data);
     this.state.name = data;
   }
 

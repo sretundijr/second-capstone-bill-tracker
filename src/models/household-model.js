@@ -5,6 +5,7 @@ mongoose.Promise = global.Promise;
 
 const householdSchema = mongoose.Schema({
   name: { type: String, required: true },
+  slug: { type: String, required: true },
   expenses: [
     {
       name: { type: String, required: true },

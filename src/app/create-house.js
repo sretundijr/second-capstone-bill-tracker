@@ -131,7 +131,7 @@ const watchSubmitHousehold = () => {
       saveHouseHold(state.getHouseHold()).then((house) => {
         state.setHouseHold(house);
       }).then(() => {
-        location.href = `/house-stats/${state.slug}`;
+        location.href = `/house-stats/${state.getSlug()}`;
       });
     }
   });

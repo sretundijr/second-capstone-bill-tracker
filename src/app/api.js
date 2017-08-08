@@ -1,4 +1,5 @@
-/* global localStorage */
+/* global localStorage fetch */
+
 const house = require('./mock-model');
 
 const localObj = 'localObj';
@@ -16,7 +17,15 @@ const getHouseHold = () => {
 };
 
 const saveHouseHold = (obj) => {
-  saveToLocal(obj);
+  fetch('/api/household', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  });
+
+  // saveToLocal(obj);
   return Promise.resolve(obj);
 };
 

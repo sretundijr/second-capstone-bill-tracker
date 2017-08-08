@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const url = require('url');
 
 mongoose.Promise = global.Promise;
 
@@ -36,9 +37,12 @@ app.get('/create-house/:userType', (req, res) => {
 
 // ******************************
 // api endpoints
-app.get('/api/household', (req, res) => {
+app.get('/api/household/:houseName', (req, res) => {
+  const parseUrl = url.parse(req.url, true, true);
+  const houseName = parseUrl.pathname.replace('/api/household/', '');
+  console.log(houseName);
   Household
-    .find()
+    .find({ slug: houseName })
     .exec()
     .then((house) => {
       res.status(200).json(house);
@@ -48,11 +52,12 @@ app.get('/api/household', (req, res) => {
       res.status(500).json({ message: 'nope' });
     });
 });
-// ask about json parser
+
 // creates a new household
 app.post('/api/household', (req, res) => {
   Household.create({
     name: req.body.name,
+    slug: req.body.slug,
     expenses: req.body.expenses,
     roommates: req.body.roommates,
   })
