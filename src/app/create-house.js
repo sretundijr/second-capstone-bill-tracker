@@ -4,7 +4,7 @@
 const CreateHouseState = require('./manage-state');
 const Pikaday = require('pikaday');
 const HouseHold = require('./mock-model');
-const { getHouseHold, saveHouseHold, createDemoHouse } = require('./api');
+const { getHouseHold, createHouseHold, createDemoHouse } = require('./api');
 const { AddRoommateForm, RoommateList } = require('./create-roommate.js');
 const {
   CreateExpenseForm,
@@ -128,7 +128,7 @@ const watchSubmitHousehold = () => {
     const householdName = document.getElementById('household-name');
     if (isValidHouseName(householdName.value)) {
       state.setHouseName(householdName.value);
-      saveHouseHold(state.getHouseHold()).then((house) => {
+      createHouseHold(state.getHouseHold()).then((house) => {
         state.setHouseHold(house);
       }).then(() => {
         location.href = `/house-stats/${state.getSlug()}`;

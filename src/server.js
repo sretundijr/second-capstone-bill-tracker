@@ -38,9 +38,9 @@ app.get('/create-house/:userType', (req, res) => {
 // ******************************
 // api endpoints
 app.get('/api/household/:houseName', (req, res) => {
+  // todo replace req.params.id
   const parseUrl = url.parse(req.url, true, true);
   const houseName = parseUrl.pathname.replace('/api/household/', '');
-  console.log(houseName);
   Household
     .find({ slug: houseName })
     .exec()

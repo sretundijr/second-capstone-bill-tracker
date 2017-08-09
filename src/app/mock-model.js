@@ -1,6 +1,7 @@
 const households = [
   {
     name: 'Demo-house',
+    slug: 'demo-house',
     expenses: [
       {
         name: 'electric',

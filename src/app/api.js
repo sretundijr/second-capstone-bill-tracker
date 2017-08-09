@@ -16,7 +16,8 @@ const getHouseHold = () => {
   return Promise.resolve(retrieveFromLocal());
 };
 
-const saveHouseHold = (obj) => {
+// todo change name to create household
+const createHouseHold = (obj) => {
   fetch('/api/household', {
     method: 'POST',
     headers: {
@@ -72,13 +73,13 @@ const createDemoHouse = () => {
     roommates: house[0].roommates.slice(0),
     expenses: house[0].expenses.slice(0),
   };
-  saveHouseHold(obj);
+  createHouseHold(obj);
   return obj;
 };
 
 module.exports = {
   getHouseHold,
-  saveHouseHold,
+  createHouseHold,
   editExpense,
   removeExpense,
   addRoommate,

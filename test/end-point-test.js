@@ -15,6 +15,7 @@ chai.use(chaiHttp);
 const mockPostReq = () => {
   return {
     name: 'steve',
+    slug: 'steve-house',
     expenses:
     [
       {
@@ -62,7 +63,7 @@ describe('Household api endpoints', function () {
   // this returns undefined once in awhile
   it('should get a household', () => {
     return chai.request(app)
-      .get('/api/household')
+      .get(`/api/household/${mockHousehold[0].slug}`)
       .then((res) => {
         res.should.have.status(200);
         res.body[0].should.be.an('object');
