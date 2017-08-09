@@ -4,15 +4,11 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const url = require('url');
 
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
 const Household = require('./models/household-model');
-
-// const Household = mongoose.model('Household');
-
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -38,11 +34,8 @@ app.get('/create-house/:userType', (req, res) => {
 // ******************************
 // api endpoints
 app.get('/api/household/:houseName', (req, res) => {
-  // todo replace req.params.id
-  const parseUrl = url.parse(req.url, true, true);
-  const houseName = parseUrl.pathname.replace('/api/household/', '');
   Household
-    .find({ slug: houseName })
+    .find({ slug: req.params.houseName })
     .exec()
     .then((house) => {
       res.status(200).json(house);
