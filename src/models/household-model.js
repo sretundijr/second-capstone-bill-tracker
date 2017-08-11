@@ -28,14 +28,20 @@ const householdSchema = mongoose.Schema({
 //   }
 // }
 
-householdSchema.methods.getHousehold = function () {
-  return {
-    id: this.id,
-    name: this.name,
-    expenses: this.expenses,
-    roommates: this.roommates,
-  };
-};
+// householdSchema.methods.setHousehold = function (obj) {
+//   this.name = obj.name;
+//   this.expenses = obj.expenses;
+//   this.roommates = obj.roommates;
+// };
+
+// householdSchema.methods.getHousehold = function () {
+//   return {
+//     id: this.id,
+//     name: this.name,
+//     expenses: this.expenses,
+//     roommates: this.roommates,
+//   };
+// };
 
 
 // const getHouseHold = (id) => {
@@ -43,14 +49,6 @@ householdSchema.methods.getHousehold = function () {
 //     .findById(id)
 //     .exec();
 //   // .then(house);
-// };
-
-// const createHousehold = (obj) => {
-//   return Household.create({
-//     name: obj.name,
-//     expenses: obj.expenses,
-//     roommates: obj.roommates,
-//   });
 // };
 
 // let Household;
@@ -61,5 +59,18 @@ householdSchema.methods.getHousehold = function () {
 const Household = mongoose.model('Household', householdSchema);
 // }
 
+const createHousehold = (obj) => {
+  return Household.create({
+    name: obj.name,
+    slug: obj.slug,
+    expenses: obj.expenses,
+    roommates: obj.roommates,
+  });
+};
 
-module.exports = Household;
+const getHousehold = (slug) => {
+  return Household
+    .findOne({ slug });
+};
+
+module.exports = { Household, createHousehold, getHousehold };

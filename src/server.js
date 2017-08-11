@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const Household = require('./models/household-model');
+const { Household, createHousehold, getHousehold } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -34,14 +34,16 @@ app.get('/create-house/:userType', (req, res) => {
 // ******************************
 // api endpoints
 
-let aHousehold = '';
+// let aHousehold = '';
 
-app.get('/api/household/:houseName', (req, res) => {
+app.get('/api/household/:slug', (req, res) => {
   // Household
   //   .findOne({ slug: req.params.houseName })
   //   .exec()
-  const household = aHousehold.getHousehold();
-  Promise.resolve(household)
+  // const household = aHousehold.getHousehold();
+  // console.log(household);
+  // Promise.resolve(household)
+  getHousehold(req.params.slug)
     .then((house) => {
       if (house === null) {
         res.status(400);
@@ -62,13 +64,15 @@ app.post('/api/household', (req, res) => {
   //   expenses: req.body.expenses,
   //   roommates: req.body.roommates,
   // })
-  aHousehold = new Household({
-    name: req.body.name,
-    slug: req.body.slug,
-    expenses: req.body.expenses,
-    roommates: req.body.roommates,
-  });
-  Promise.resolve(aHousehold)
+  // aHousehold = new Household({
+  //   name: req.body.name,
+  //   slug: req.body.slug,
+  //   expenses: req.body.expenses,
+  //   roommates: req.body.roommates,
+  // });
+  // aHousehold.setHousehold(req.body);
+  // Promise.resolve(aHousehold)
+  createHousehold(req.body)
     .then((household) => {
       res.status(201).json(household);
     }).catch((err) => {
