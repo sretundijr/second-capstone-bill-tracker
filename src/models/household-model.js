@@ -21,7 +21,6 @@ const householdSchema = mongoose.Schema({
           name: { type: String, required: true },
           amount: { type: String, required: true },
           dueDate: { type: String, required: true },
-          roommateAmountDue: { type: String },
         },
       ],
     },
