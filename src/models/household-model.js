@@ -11,11 +11,13 @@ const householdSchema = mongoose.Schema({
       name: { type: String, required: true },
       amount: { type: String, required: true },
       dueDate: { type: String, required: true },
+      deleted: { type: Boolean },
     },
   ],
   roommates: [
     {
       name: { type: String, required: true },
+      deleted: { type: Boolean },
     },
   ],
 });
@@ -73,9 +75,20 @@ const getHousehold = (slug) => {
     .findOne({ slug });
 };
 
-const updateAnExpense = (slug, expense) => {
-  const updatedExpense = { name: expense.name, amount: expense.amount, dueDate: expense.dueDate };
-  return Household.updateOne({ slug, 'expenses._id': expense._id }, { $set: { 'expenses.$': updatedExpense } });
+const findOneExpense = (slug, expense) => {
+  return { slug, 'expenses._id': expense._id };
 };
 
-module.exports = { Household, createHousehold, getHousehold, updateAnExpense };
+const updatedExpense = (expense) => {
+  return { name: expense.name, amount: expense.amount, dueDate: expense.dueDate };
+};
+
+const updateAnExpense = (slug, expense) => {
+  return Household.updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } });
+};
+
+const deleteAnExpense = (slug, expense) => {
+  Household.updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': { deleted: true } } });
+};
+
+module.exports = { Household, createHousehold, getHousehold, updateAnExpense, deleteAnExpense };

@@ -116,7 +116,8 @@ let watchEdit = () => {
 
 const removeExpenseFromState = (index) => {
   state.removeExpense(index);
-  removeExpense(index).then(divideTheExpenses).then(renderPage);
+  removeExpense(state.getOneExpense(index), state.getSlug())
+    .then(divideTheExpenses).then(renderPage);
 };
 
 let setEditedRow = (e, i) => {

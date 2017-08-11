@@ -32,21 +32,24 @@ const createHouseHold = (obj) => {
   }).then(response => Promise.resolve(response.json()));
 };
 
-const editExpense = (expense, slug) => {
+const modifyAnExpense = (expense, slug) => {
   return fetch(`/api/expenses/${slug}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(expense),
-  }).then(response => response.json());
+  });
 };
 
-const removeExpense = (index) => {
-  const retrieve = retrieveFromLocal();
-  retrieve.expenses.splice(index, 1);
-  saveToLocal(retrieve);
-  return Promise.resolve(retrieve.expenses);
+const editExpense = (expense, slug) => {
+  return modifyAnExpense(expense, slug)
+    .then(response => response.json());
+};
+
+const removeExpense = (expense, slug) => {
+  return modifyAnExpense(expense, slug)
+    .then(response => response.json());
 };
 
 const addRoommate = (roommate) => {

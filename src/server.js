@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const { Household, createHousehold, getHousehold, updateAnExpense } = require('./models/household-model');
+const { createHousehold, getHousehold, updateAnExpense, deleteAnExpense } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -34,15 +34,7 @@ app.get('/create-house/:userType', (req, res) => {
 // ******************************
 // api endpoints
 
-// let aHousehold = '';
-
 app.get('/api/household/:slug', (req, res) => {
-  // Household
-  //   .findOne({ slug: req.params.houseName })
-  //   .exec()
-  // const household = aHousehold.getHousehold();
-  // console.log(household);
-  // Promise.resolve(household)
   getHousehold(req.params.slug)
     .then((house) => {
       if (house === null) {
@@ -58,20 +50,6 @@ app.get('/api/household/:slug', (req, res) => {
 
 // creates a new household
 app.post('/api/household', (req, res) => {
-  // Household.create({
-  //   name: req.body.name,
-  //   slug: req.body.slug,
-  //   expenses: req.body.expenses,
-  //   roommates: req.body.roommates,
-  // })
-  // aHousehold = new Household({
-  //   name: req.body.name,
-  //   slug: req.body.slug,
-  //   expenses: req.body.expenses,
-  //   roommates: req.body.roommates,
-  // });
-  // aHousehold.setHousehold(req.body);
-  // Promise.resolve(aHousehold)
   createHousehold(req.body)
     .then((household) => {
       res.status(201).json(household);
@@ -81,22 +59,17 @@ app.post('/api/household', (req, res) => {
     });
 });
 
-// used to add roommates to a household
-// app.post('/api/roommates', (req, res) => {
-
-// });
-
-// used to add expenses to the household
-// app.post('/api/expenses', (req, res) => {
-
-// });
-
 // edit a household expense
 app.put('/api/expenses/:slug', (req, res) => {
   updateAnExpense(req.params.slug, req.body)
     .then((expense) => {
       res.status(200).json(expense);
     });
+});
+
+app.delete('/api/expenses/:slug', (req, res) => {
+  deleteAnExpense(req.params.slug, req.body)
+    .then(expenseStatus => res.status(200).json(expenseStatus));
 });
 
 // *******************************************
