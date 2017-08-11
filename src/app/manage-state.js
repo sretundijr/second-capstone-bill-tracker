@@ -62,9 +62,7 @@ class CreateHouseState {
   // list is an array of two arrays containing objects
   saveExpensesToRoommate(list) {
     list.forEach((item, index) => {
-      for (const property in item) {
-        this.state.roommates[index][property] = item[property];
-      }
+      this.state.roommates[index].bills = list[index];
     });
   }
 

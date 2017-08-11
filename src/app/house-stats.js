@@ -153,11 +153,8 @@ const divideTheExpenses = () => {
     divideAt300Dollars,
     formatTheMoneyInput(state.getRoommates().length),
   );
-  // change the structure to save a roommate to the bill
-  // currently saves a duplicate of the bills for each roommate
-  addOrEditRoommatesBills(dividedBills, state.getSlug()).then((roommates) => {
-    state.saveExpensesToRoommate(roommates);
-  });
+  state.saveExpensesToRoommate(dividedBills);
+  console.log(state.getRoommates());
 };
 
 const createDividedExpenseHtml = () =>
