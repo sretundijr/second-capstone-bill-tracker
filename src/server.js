@@ -33,10 +33,15 @@ app.get('/create-house/:userType', (req, res) => {
 
 // ******************************
 // api endpoints
+
+let aHousehold = '';
+
 app.get('/api/household/:houseName', (req, res) => {
-  Household
-    .findOne({ slug: req.params.houseName })
-    .exec()
+  // Household
+  //   .findOne({ slug: req.params.houseName })
+  //   .exec()
+  const household = aHousehold.getHousehold();
+  Promise.resolve(household)
     .then((house) => {
       if (house === null) {
         res.status(400);
@@ -51,12 +56,19 @@ app.get('/api/household/:houseName', (req, res) => {
 
 // creates a new household
 app.post('/api/household', (req, res) => {
-  Household.create({
+  // Household.create({
+  //   name: req.body.name,
+  //   slug: req.body.slug,
+  //   expenses: req.body.expenses,
+  //   roommates: req.body.roommates,
+  // })
+  aHousehold = new Household({
     name: req.body.name,
     slug: req.body.slug,
     expenses: req.body.expenses,
     roommates: req.body.roommates,
-  })
+  });
+  Promise.resolve(aHousehold)
     .then((household) => {
       res.status(201).json(household);
     }).catch((err) => {
@@ -76,23 +88,23 @@ app.post('/api/household', (req, res) => {
 // });
 
 // edit a household expense
-app.put('/api/expenses/:id', (req, res) => {
-  console.log(req.body);
-  const update = {};
-  const updatedFields = ['amount', 'name', 'dueDate'];
-  updatedFields.forEach((field) => {
-    if (field in req.body) {
-      update[field] = req.body[field];
-    }
-  });
+app.put('/api/expenses/:slug', (req, res) => {
+  // console.log(aHousehold.editAnExpense(req.params.slug, req.body));
+  // const update = {};
+  // const updatedFields = ['amount', 'name', 'dueDate'];
+  // updatedFields.forEach((field) => {
+  //   if (field in req.body) {
+  //     update[field] = req.body[field];
+  //   }
+  // });
 
-  Household
-    .findById(req.body.house_id)
-    .exec()
-    .then((updateExpense) => {
-      res.status(201).json(updateExpense);
-    })
-    .catch(err => res.status(500).json({ message: 'Something went wrong', error: err }));
+  // Household
+  //   .findById(req.body.house_id)
+  //   .exec()
+  //   .then((updateExpense) => {
+  //     res.status(201).json(updateExpense);
+  //   })
+  //   .catch(err => res.status(500).json({ message: 'Something went wrong', error: err }));
 });
 
 // *******************************************

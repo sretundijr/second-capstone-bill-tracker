@@ -16,40 +16,42 @@ const householdSchema = mongoose.Schema({
   roommates: [
     {
       name: { type: String, required: true },
-      bills: [
-        {
-          name: { type: String, required: true },
-          amount: { type: String, required: true },
-          dueDate: { type: String, required: true },
-        },
-      ],
     },
   ],
 });
 
-// householdSchema.methods.getHouseHold = () => {
+// no arrow functions due the "this" binding
+// householdSchema.methods.editAnExpense = function (slug, expense) {
+//   const house = this.model('Household').findOne({ slug: slug });
 //   return {
-//     id: this.id,
-//     name: this.name,
-//     expenses: this.expenses,
-//     roommates: this.roommates,
-//   };
+//     name: house.name,
+//   }
+// }
+
+householdSchema.methods.getHousehold = function () {
+  return {
+    id: this.id,
+    name: this.name,
+    expenses: this.expenses,
+    roommates: this.roommates,
+  };
+};
+
+
+// const getHouseHold = (id) => {
+//   return Household
+//     .findById(id)
+//     .exec();
+//   // .then(house);
 // };
 
-const getHouseHold = (id) => {
-  return Household
-    .findById(id)
-    .exec();
-  // .then(house);
-};
-
-const createHousehold = (obj) => {
-  return Household.create({
-    name: obj.name,
-    expenses: obj.expenses,
-    roommates: obj.roommates,
-  });
-};
+// const createHousehold = (obj) => {
+//   return Household.create({
+//     name: obj.name,
+//     expenses: obj.expenses,
+//     roommates: obj.roommates,
+//   });
+// };
 
 // let Household;
 
