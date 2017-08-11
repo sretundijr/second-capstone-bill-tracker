@@ -40,9 +40,9 @@ const householdSchema = mongoose.Schema({
 const getHouseHold = (id) => {
   return Household
     .findById(id)
-    .exec()
-    .then(house => house);
-}
+    .exec();
+  // .then(house);
+};
 
 const createHousehold = (obj) => {
   return Household.create({
