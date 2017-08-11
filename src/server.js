@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const { Household, createHousehold, getHousehold } = require('./models/household-model');
+const { Household, createHousehold, getHousehold, updateAnExpense } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -93,22 +93,10 @@ app.post('/api/household', (req, res) => {
 
 // edit a household expense
 app.put('/api/expenses/:slug', (req, res) => {
-  // console.log(aHousehold.editAnExpense(req.params.slug, req.body));
-  // const update = {};
-  // const updatedFields = ['amount', 'name', 'dueDate'];
-  // updatedFields.forEach((field) => {
-  //   if (field in req.body) {
-  //     update[field] = req.body[field];
-  //   }
-  // });
-
-  // Household
-  //   .findById(req.body.house_id)
-  //   .exec()
-  //   .then((updateExpense) => {
-  //     res.status(201).json(updateExpense);
-  //   })
-  //   .catch(err => res.status(500).json({ message: 'Something went wrong', error: err }));
+  updateAnExpense(req.params.slug, req.body)
+    .then((expense) => {
+      res.status(200).json(expense);
+    });
 });
 
 // *******************************************

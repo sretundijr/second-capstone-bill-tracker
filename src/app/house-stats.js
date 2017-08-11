@@ -16,7 +16,6 @@ const {
   removeExpense,
   editExpense,
   addRoommate,
-  addOrEditRoommatesBills,
 } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
@@ -128,7 +127,7 @@ let setEditedRow = (e, i) => {
     amount: data.amount.value,
   };
   state.editExpense(dataObj, i);
-  editExpense(state.getOneExpense(i), i).then(divideTheExpenses).then(renderPage);
+  editExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
 };
 
 const watchAddExpenses = () => {
@@ -154,7 +153,6 @@ const divideTheExpenses = () => {
     formatTheMoneyInput(state.getRoommates().length),
   );
   state.saveExpensesToRoommate(dividedBills);
-  console.log(state.getRoommates());
 };
 
 const createDividedExpenseHtml = () =>

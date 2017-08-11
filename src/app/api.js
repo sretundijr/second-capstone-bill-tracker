@@ -32,11 +32,14 @@ const createHouseHold = (obj) => {
   }).then(response => Promise.resolve(response.json()));
 };
 
-const editExpense = (expense, index) => {
-  const retrieve = retrieveFromLocal();
-  retrieve.expenses[index] = expense;
-  saveToLocal(retrieve);
-  return Promise.resolve(retrieve.expenses);
+const editExpense = (expense, slug) => {
+  return fetch(`/api/expenses/${slug}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(expense),
+  }).then(response => response.json());
 };
 
 const removeExpense = (index) => {
@@ -51,33 +54,6 @@ const addRoommate = (roommate) => {
   retrieve.roommates.push(roommate);
   saveToLocal(retrieve);
   return Promise.resolve(retrieve.roommates);
-};
-
-// todo add endpoint to resolve error
-// list is an array of arrays, the number
-// of arrays represents the number of roommates
-const addOrEditRoommatesBills = (list, slug) => {
-  console.log(list, slug);
-  return fetch(`/api/roommates/bills/${slug}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(list),
-  })
-    .then((response) => {
-
-    });
-  // .then(response => Promise.resolve(response.json()));
-  // const retrieve = retrieveFromLocal();
-  // list.forEach((arr, index) => {
-  //   retrieve.roommates[index].bills = [];
-  //   arr.forEach((expense) => {
-  //     retrieve.roommates[index].bills.push(expense);
-  //   });
-  // });
-  // saveToLocal(retrieve);
-  // return Promise.resolve(retrieve.roommates);
 };
 
 const removeHouseHold = () => {
@@ -99,6 +75,5 @@ module.exports = {
   editExpense,
   removeExpense,
   addRoommate,
-  addOrEditRoommatesBills,
   createDemoHouse,
 };

@@ -73,4 +73,9 @@ const getHousehold = (slug) => {
     .findOne({ slug });
 };
 
-module.exports = { Household, createHousehold, getHousehold };
+const updateAnExpense = (slug, expense) => {
+  const updatedExpense = { name: expense.name, amount: expense.amount, dueDate: expense.dueDate };
+  return Household.updateOne({ slug, 'expenses._id': expense._id }, { $set: { 'expenses.$': updatedExpense } });
+};
+
+module.exports = { Household, createHousehold, getHousehold, updateAnExpense };
