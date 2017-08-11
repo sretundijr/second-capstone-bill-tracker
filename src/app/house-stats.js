@@ -1,4 +1,4 @@
-/* global document window alert location */
+/* global document window location */
 
 // Templates
 const HOUSE_HTML = require('../templates/house-stats-form.pug');
@@ -155,18 +155,18 @@ const divideTheExpenses = () => {
   );
   // change the structure to save a roommate to the bill
   // currently saves a duplicate of the bills for each roommate
-  addOrEditRoommatesBills(dividedBills).then((roommates) => {
+  addOrEditRoommatesBills(dividedBills, state.getSlug()).then((roommates) => {
     state.saveExpensesToRoommate(roommates);
   });
 };
 
-const createHtml = () =>
+const createDividedExpenseHtml = () =>
   state.getRoommates().map(arr => EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name }));
 
 const renderExpenseSummary = () => {
   if (state.getExpenses().length >= 1 && state.getRoommates().length > 1) {
     const summaryContainer = document.getElementById('expense-summary-container');
-    summaryContainer.innerHTML = createHtml().join('');
+    summaryContainer.innerHTML = createDividedExpenseHtml().join('');
   }
 };
 
@@ -247,8 +247,11 @@ const renderUserLink = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderUserLink();
-  getHouseHold().then((house) => {
-    state.setHouseHold(house);
+  const path = location.pathname.replace('/house-stats/', '');
+  console.log(path);
+  getHouseHold(path).then((house) => {
+    state.setHouseHold(house[0]);
+    console.log(state.getHouseHold());
   })
     .then(divideTheExpenses)
     .then(renderPage);
