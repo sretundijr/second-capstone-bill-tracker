@@ -35,7 +35,7 @@ app.get('/create-house/:userType', (req, res) => {
 // api endpoints
 app.get('/api/household/:houseName', (req, res) => {
   Household
-    .find({ slug: req.params.houseName })
+    .findOne({ slug: req.params.houseName })
     .exec()
     .then((house) => {
       res.status(200).json(house);
@@ -62,10 +62,27 @@ app.post('/api/household', (req, res) => {
     });
 });
 
-// end point to assign bills to each roommate
-// app.post('/api/roommates/bills', (req, res) => {
-
-// });
+// end point to assign or edit bills to each roommate
+// todo find a better way
+app.put('/api/roommates/bills/:slug', (req, res) => {
+  Household
+    .find({ slug: req.params.slug })
+    .exec()
+    .then((roommates) => {
+      // res.status(201).json(roommates);
+      console.log(roommates[0].roommates);
+      // roommates.forEach((item) => {
+      //   console.log(item.bills);
+      // });
+      // return req.body.map((item, index) => {
+      //   roommates[index].bills = item;
+      //   console.log(roommates[index]);
+      //   return roommates;
+      // });
+    });
+  // .then((roommates) => {
+  // });
+});
 
 // used to add roommates to a household
 // app.post('/api/roommates', (req, res) => {

@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const path = location.pathname.replace('/house-stats/', '');
   console.log(path);
   getHouseHold(path).then((house) => {
-    state.setHouseHold(house[0]);
+    state.setHouseHold(house);
     console.log(state.getHouseHold());
   })
     .then(divideTheExpenses)
