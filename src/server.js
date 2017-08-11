@@ -38,6 +38,9 @@ app.get('/api/household/:houseName', (req, res) => {
     .findOne({ slug: req.params.houseName })
     .exec()
     .then((house) => {
+      if (house === null) {
+        res.status(400);
+      }
       res.status(200).json(house);
     })
     .catch((err) => {

@@ -212,7 +212,7 @@ let render = (mobile = '') => {
 };
 
 const getValueOrDefault = (defaultValue) => (value) => {
-  if (value === null || value === undefined) {
+  if (value === null) {
     return defaultValue;
   }
   return value;
@@ -222,13 +222,15 @@ const determineUserPath = (path) => {
   return path.replace('/create-house/', '');
 };
 
+// todo talk about this
 document.addEventListener('DOMContentLoaded', () => {
   const path = determineUserPath(location.pathname);
   if (path === 'demo') {
-    getHouseHold()
+    getHouseHold('no-data')
       .then(getValueOrDefault(createDemoHouse()))
       .then(state.setHouseHold)
       .then(render);
+    return createDemoHouse().then(state.setHouseHold).then(render);
   } else {
     render();
   }

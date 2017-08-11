@@ -12,22 +12,24 @@ const saveToLocal = (obj) => {
   localStorage.setItem(localObj, JSON.stringify(obj));
 };
 
-const getHouseHold = () => {
-  return Promise.resolve(retrieveFromLocal());
+const getHouseHold = (slug) => {
+  return fetch(`/api/household/${slug}`, {
+    method: 'GET',
+  })
+    .then((response) => {
+      return response.json();
+    });
 };
 
-// todo change name to create household
+// todo talk about this, is returning a promise here correct
 const createHouseHold = (obj) => {
-  fetch('/api/household', {
+  return fetch('/api/household', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(obj),
-  });
-
-  // saveToLocal(obj);
-  return Promise.resolve(obj);
+  }).then(response => Promise.resolve(response.json()));
 };
 
 const editExpense = (expense, index) => {
@@ -51,16 +53,31 @@ const addRoommate = (roommate) => {
   return Promise.resolve(retrieve.roommates);
 };
 
-const addOrEditRoommatesBills = (list) => {
-  const retrieve = retrieveFromLocal();
-  list.forEach((arr, index) => {
-    retrieve.roommates[index].bills = [];
-    arr.forEach((expense) => {
-      retrieve.roommates[index].bills.push(expense);
+// todo add endpoint to resolve error
+// list is an array of arrays, the number
+// of arrays represents the number of roommates
+const addOrEditRoommatesBills = (list, slug) => {
+  console.log(list, slug);
+  return fetch(`/api/roommates/bills/${slug}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(list),
+  })
+    .then((response) => {
+
     });
-  });
-  saveToLocal(retrieve);
-  return Promise.resolve(retrieve.roommates);
+  // .then(response => Promise.resolve(response.json()));
+  // const retrieve = retrieveFromLocal();
+  // list.forEach((arr, index) => {
+  //   retrieve.roommates[index].bills = [];
+  //   arr.forEach((expense) => {
+  //     retrieve.roommates[index].bills.push(expense);
+  //   });
+  // });
+  // saveToLocal(retrieve);
+  // return Promise.resolve(retrieve.roommates);
 };
 
 const removeHouseHold = () => {
@@ -73,8 +90,7 @@ const createDemoHouse = () => {
     roommates: house[0].roommates.slice(0),
     expenses: house[0].expenses.slice(0),
   };
-  createHouseHold(obj);
-  return obj;
+  return Promise.resolve(obj);
 };
 
 module.exports = {
