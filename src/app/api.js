@@ -48,7 +48,13 @@ const editExpense = (expense, slug) => {
 };
 
 const removeExpense = (expense, slug) => {
-  return modifyAnExpense(expense, slug)
+  return fetch(`/api/expenses/delete/${slug}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(expense),
+  })
     .then(response => response.json());
 };
 

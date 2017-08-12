@@ -222,7 +222,6 @@ const determineUserPath = (path) => {
   return path.replace('/create-house/', '');
 };
 
-// todo talk about this
 document.addEventListener('DOMContentLoaded', () => {
   const path = determineUserPath(location.pathname);
   if (path === 'demo') {

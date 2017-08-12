@@ -40,6 +40,7 @@ app.get('/api/household/:slug', (req, res) => {
       if (house === null) {
         res.status(400);
       }
+      // console.log(house);
       res.status(200).json(house);
     })
     .catch((err) => {
@@ -63,13 +64,18 @@ app.post('/api/household', (req, res) => {
 app.put('/api/expenses/:slug', (req, res) => {
   updateAnExpense(req.params.slug, req.body)
     .then((expense) => {
+      console.log(expense);
       res.status(200).json(expense);
     });
 });
 
-app.delete('/api/expenses/:slug', (req, res) => {
+app.put('/api/expenses/delete/:slug', (req, res) => {
+  console.log(req.body);
   deleteAnExpense(req.params.slug, req.body)
-    .then(expenseStatus => res.status(200).json(expenseStatus));
+    .then((expenseStatus) => {
+      console.log(expenseStatus);
+      res.status(200).json(expenseStatus);
+    });
 });
 
 // *******************************************

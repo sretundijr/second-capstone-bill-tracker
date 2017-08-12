@@ -100,9 +100,7 @@ let watchEdit = () => {
       e.preventDefault();
       const targetElement = e.target;
       const index = getEditElementIndex(targetElement.value, targetElement.id);
-      if (targetElement.value === 'Delete') {
-        removeExpenseFromState(index);
-      } else if (state.getExpenses()[index].editable) {
+      if (state.getExpenses()[index].editable) {
         state.getExpenses()[index].editable = isEditable(index);
         setEditedRow(e, index);
       } else {
@@ -115,9 +113,15 @@ let watchEdit = () => {
 };
 
 const removeExpenseFromState = (index) => {
+  const removedObj = state.getOneExpense(index);
   state.removeExpense(index);
-  removeExpense(state.getOneExpense(index), state.getSlug())
-    .then(divideTheExpenses).then(renderPage);
+  removeExpense(removedObj, state.getSlug())
+    .then(divideTheExpenses)
+    .then(renderPage);
+  // removeExpense(state.getOneExpense(index), state.getSlug())
+  //   .then(state.removeExpense(index))
+  //   .then(divideTheExpenses)
+  //   .then(renderPage);
 };
 
 let setEditedRow = (e, i) => {

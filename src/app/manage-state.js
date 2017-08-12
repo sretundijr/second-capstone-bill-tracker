@@ -85,7 +85,6 @@ class CreateHouseState {
         name: expenses.name,
         amount: formatTheMoneyInput(expenses.amount),
         dueDate: expenses.dueDate,
-
       };
       this.state.expenses.push(expense);
       return expense;
