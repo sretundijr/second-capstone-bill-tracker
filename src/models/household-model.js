@@ -11,13 +11,13 @@ const householdSchema = mongoose.Schema({
       name: { type: String, required: true },
       amount: { type: String, required: true },
       dueDate: { type: String, required: true },
-      deleted: { type: Boolean },
+      removed: { type: Boolean, default: false },
     },
   ],
   roommates: [
     {
       name: { type: String, required: true },
-      deleted: { type: Boolean },
+      removed: { type: Boolean, default: false },
     },
   ],
 });
@@ -70,9 +70,11 @@ const createHousehold = (obj) => {
   });
 };
 
+// todo add condition to filter any items with deleted flag
 const getHousehold = (slug) => {
   return Household
-    .findOne({ slug });
+    .findOne({ slug }, { 'expenses:removed': false });
+  // return cursor.findOne({ 'expenses.removed': false });
 };
 
 const findOneExpense = (slug, expense) => {
@@ -80,15 +82,28 @@ const findOneExpense = (slug, expense) => {
 };
 
 const updatedExpense = (expense) => {
-  return { name: expense.name, amount: expense.amount, dueDate: expense.dueDate };
+  return {
+    name: expense.name,
+    amount: expense.amount,
+    dueDate: expense.dueDate,
+  };
 };
 
 const updateAnExpense = (slug, expense) => {
-  return Household.updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } });
+  return Household
+    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } });
 };
 
 const deleteAnExpense = (slug, expense) => {
-  Household.updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': { deleted: true } } });
+  const deletedExpense = {
+    name: expense.name,
+    amount: expense.amount,
+    dueDate: expense.dueDate,
+    removed: true,
+  };
+  console.log(deletedExpense);
+  return Household
+    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$.removed': true } });
 };
 
 module.exports = { Household, createHousehold, getHousehold, updateAnExpense, deleteAnExpense };
