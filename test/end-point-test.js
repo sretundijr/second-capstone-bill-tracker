@@ -6,7 +6,7 @@ const expect = chai.expect;
 const mongoose = require('mongoose');
 
 const { runServer, app, closeServer } = require('../src/server');
-const Household = require('../src/models/household-model');
+const { Household } = require('../src/models/household-model');
 const mockHousehold = require('../src/app/mock-model');
 const { TEST_DATABASE_URL } = require('../config');
 
@@ -66,7 +66,7 @@ describe('Household api endpoints', function () {
       .get(`/api/household/${mockHousehold[0].slug}`)
       .then((res) => {
         res.should.have.status(200);
-        res.body[0].should.be.an('object');
+        res.body.should.be.an('object');
       });
   });
 
@@ -96,7 +96,7 @@ describe('Household api endpoints', function () {
       .then((res) => {
         console.log(res.body);
 
-        res.should.have.status(201);
+        res.should.have.status(200);
       });
   });
 });
