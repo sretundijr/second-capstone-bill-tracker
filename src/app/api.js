@@ -66,11 +66,14 @@ const removeExpense = (expense, slug) => {
     .then(response => response.json());
 };
 
-const addRoommate = (roommate) => {
-  const retrieve = retrieveFromLocal();
-  retrieve.roommates.push(roommate);
-  saveToLocal(retrieve);
-  return Promise.resolve(retrieve.roommates);
+const addRoommate = (roommate, slug) => {
+  return fetch(`/api/roommates/new/${slug}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(roommate),
+  });
 };
 
 const removeHouseHold = () => {

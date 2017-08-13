@@ -15,6 +15,7 @@ const {
   deleteAnExpense,
   filterOutRemovedExpenses,
   addNewExpense,
+  addNewRoommate,
  } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
@@ -76,7 +77,6 @@ app.post('/api/household', (req, res) => {
 
 // add new expense
 app.post('/api/expenses/:slug', (req, res) => {
-  console.log(req.params.slug);
   addNewExpense(req.params.slug, req.body)
     .then((status) => {
       res.status(200).json(status);
@@ -91,11 +91,18 @@ app.put('/api/expenses/:slug', (req, res) => {
     });
 });
 
+// delete an expense
 app.put('/api/expenses/delete/:slug', (req, res) => {
   deleteAnExpense(req.params.slug, req.body)
     .then((expenseStatus) => {
       res.status(200).json(expenseStatus);
     });
+});
+
+// add a new roommate
+app.post('/api/roommates/new/:slug', (req, res) => {
+  addNewRoommate(req.params.slug, req.body)
+    .then(response => res.status(200).json(response));
 });
 
 // *******************************************

@@ -53,15 +53,14 @@ const addNewRoommate = () => {
     removeHtml();
     const roommateContainer = document.getElementById('expense-summary-container');
     roommateContainer.innerHTML = createRoommate();
-    // todo reused from create house
-    // const value = document.getElementsByName('create-roommate')[0].value;
+    // todo reused from create house clean up for this ui
     const addRoommateBtn = document.getElementById('add-roommate-form');
 
     addRoommateBtn.addEventListener('submit', (e) => {
       e.preventDefault();
       const value = document.getElementsByName('create-roommate')[0].value;
       state.addRoommate(value);
-      addRoommate(state.getRoommates()[state.getRoommates().length - 1])
+      addRoommate(state.getRoommates()[state.getRoommates().length - 1], state.getSlug())
         .then(divideTheExpenses)
         .then(() => { roommateContainer.innerHTML = ''; })
         .then(renderPage);
@@ -131,7 +130,6 @@ let setEditedRow = (e, i) => {
   if (state.getNewExpenseFlag() === true) {
     state.setNewExpenseFlag(false);
     state.editExpense(dataObj, i);
-    // console.log('hello from add new expense');
     saveNewExpense(dataObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
   } else {
     state.editExpense(dataObj, i);

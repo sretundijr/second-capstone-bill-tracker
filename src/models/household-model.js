@@ -83,6 +83,12 @@ const deleteAnExpense = (slug, expense) => {
     .exec();
 };
 
+const addNewRoommate = (slug, roommate) => {
+  return Household
+    .updateOne({ slug }, { $push: { roommates: roommate } })
+    .exec();
+};
+
 module.exports = {
   Household,
   createHousehold,
@@ -91,4 +97,5 @@ module.exports = {
   deleteAnExpense,
   filterOutRemovedExpenses,
   addNewExpense,
+  addNewRoommate,
 };
