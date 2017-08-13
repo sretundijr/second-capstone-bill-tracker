@@ -118,10 +118,6 @@ const removeExpenseFromState = (index) => {
   removeExpense(removedObj, state.getSlug())
     .then(divideTheExpenses)
     .then(renderPage);
-  // removeExpense(state.getOneExpense(index), state.getSlug())
-  //   .then(state.removeExpense(index))
-  //   .then(divideTheExpenses)
-  //   .then(renderPage);
 };
 
 let setEditedRow = (e, i) => {
@@ -149,8 +145,6 @@ const watchAddExpenses = () => {
 // ***************************************
 // divide expenses to roommates and create a table showing the results
 const divideTheExpenses = () => {
-  // todo make sure the following commmented out line doesn't bug
-  // const expenses = state.getExpenses().map(item => item.amount);
   // todo make dynamic
   const divideAt300Dollars = '300.00';
   const dividedBills = billingSummary(state.getExpenses(),
@@ -245,14 +239,15 @@ const renderUserLink = () => {
   userLinkId.innerHTML = `<a href="${location}"><h4>${location}</h4></a>`;
 };
 
+// todo fix path name error with demo
 document.addEventListener('DOMContentLoaded', () => {
   renderUserLink();
   const path = location.pathname.replace('/house-stats/', '');
-  console.log(path);
-  getHouseHold(path).then((house) => {
-    state.setHouseHold(house);
-    console.log(state.getHouseHold());
-  })
+  getHouseHold(path)
+    .then((house) => {
+      state.setHouseHold(house);
+      console.log(state.getHouseHold());
+    })
     .then(divideTheExpenses)
     .then(renderPage);
 });

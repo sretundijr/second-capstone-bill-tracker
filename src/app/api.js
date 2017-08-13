@@ -16,12 +16,9 @@ const getHouseHold = (slug) => {
   return fetch(`/api/household/${slug}`, {
     method: 'GET',
   })
-    .then((response) => {
-      return response.json();
-    });
+    .then(response => response.json());
 };
 
-// todo talk about this, is returning a promise here correct
 const createHouseHold = (obj) => {
   return fetch('/api/household', {
     method: 'POST',
@@ -29,7 +26,7 @@ const createHouseHold = (obj) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(obj),
-  }).then(response => Promise.resolve(response.json()));
+  }).then(response => response.json());
 };
 
 const modifyAnExpense = (expense, slug) => {

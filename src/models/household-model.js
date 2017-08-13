@@ -22,44 +22,7 @@ const householdSchema = mongoose.Schema({
   ],
 });
 
-// no arrow functions due the "this" binding
-// householdSchema.methods.editAnExpense = function (slug, expense) {
-//   const house = this.model('Household').findOne({ slug: slug });
-//   return {
-//     name: house.name,
-//   }
-// }
-
-// householdSchema.methods.setHousehold = function (obj) {
-//   this.name = obj.name;
-//   this.expenses = obj.expenses;
-//   this.roommates = obj.roommates;
-// };
-
-// householdSchema.methods.getHousehold = function () {
-//   return {
-//     id: this.id,
-//     name: this.name,
-//     expenses: this.expenses,
-//     roommates: this.roommates,
-//   };
-// };
-
-
-// const getHouseHold = (id) => {
-//   return Household
-//     .findById(id)
-//     .exec();
-//   // .then(house);
-// };
-
-// let Household;
-
-// try {
-//   Household = mongoose.model('Household');
-// } catch (e) {
 const Household = mongoose.model('Household', householdSchema);
-// }
 
 const createHousehold = (obj) => {
   return Household.create({
@@ -70,12 +33,23 @@ const createHousehold = (obj) => {
   });
 };
 
-// todo add condition to filter any items with deleted flag
 const getHousehold = (slug) => {
   return Household
-    .findOne({ slug }, { 'expenses:removed': false });
-  // return cursor.findOne({ 'expenses.removed': false });
+    .findOne({ slug })
+    .populate('roommates')
+    .populate('expenses')
+    .exec();
 };
+
+const filterOutRemovedExpenses = (expenses) => {
+  const filteredExpenses = [];
+  expenses.forEach((item, index) => {
+    if (item.removed === false) {
+      filteredExpenses.push(item);
+    }
+  });
+  return filteredExpenses;
+}
 
 const findOneExpense = (slug, expense) => {
   return { slug, 'expenses._id': expense._id };
@@ -91,19 +65,21 @@ const updatedExpense = (expense) => {
 
 const updateAnExpense = (slug, expense) => {
   return Household
-    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } });
+    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } })
+    .exec();
 };
 
 const deleteAnExpense = (slug, expense) => {
-  const deletedExpense = {
-    name: expense.name,
-    amount: expense.amount,
-    dueDate: expense.dueDate,
-    removed: true,
-  };
-  console.log(deletedExpense);
   return Household
-    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$.removed': true } });
+    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$.removed': true } })
+    .exec();
 };
 
-module.exports = { Household, createHousehold, getHousehold, updateAnExpense, deleteAnExpense };
+module.exports = {
+  Household,
+  createHousehold,
+  getHousehold,
+  updateAnExpense,
+  deleteAnExpense,
+  filterOutRemovedExpenses,
+};

@@ -8,7 +8,13 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { DATABASE_URL } = require('../config');
-const { createHousehold, getHousehold, updateAnExpense, deleteAnExpense } = require('./models/household-model');
+const {
+  createHousehold,
+  getHousehold,
+  updateAnExpense,
+  deleteAnExpense,
+  filterOutRemovedExpenses,
+ } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const app = express();
@@ -33,15 +39,22 @@ app.get('/create-house/:userType', (req, res) => {
 
 // ******************************
 // api endpoints
-
 app.get('/api/household/:slug', (req, res) => {
-  getHousehold(req.params.slug)
+  return getHousehold(req.params.slug)
     .then((house) => {
-      if (house === null) {
-        res.status(400);
+      console.log(house);
+      if (house == null) {
+        res.status(400).json(house);
+      } else {
+        const filteredHouse = {
+          id: house._id,
+          name: house.name,
+          slug: house.slug,
+          roommates: house.roommates.slice(0),
+          expenses: filterOutRemovedExpenses(house.expenses).slice(0),
+        };
+        res.status(200).json(filteredHouse);
       }
-      // console.log(house);
-      res.status(200).json(house);
     })
     .catch((err) => {
       console.error(err);
@@ -64,16 +77,13 @@ app.post('/api/household', (req, res) => {
 app.put('/api/expenses/:slug', (req, res) => {
   updateAnExpense(req.params.slug, req.body)
     .then((expense) => {
-      console.log(expense);
       res.status(200).json(expense);
     });
 });
 
 app.put('/api/expenses/delete/:slug', (req, res) => {
-  console.log(req.body);
   deleteAnExpense(req.params.slug, req.body)
     .then((expenseStatus) => {
-      console.log(expenseStatus);
       res.status(200).json(expenseStatus);
     });
 });

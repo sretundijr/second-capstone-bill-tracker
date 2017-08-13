@@ -212,7 +212,7 @@ let render = (mobile = '') => {
 };
 
 const getValueOrDefault = (defaultValue) => (value) => {
-  if (value === null) {
+  if (value === null || value === undefined) {
     return defaultValue;
   }
   return value;
@@ -225,12 +225,10 @@ const determineUserPath = (path) => {
 document.addEventListener('DOMContentLoaded', () => {
   const path = determineUserPath(location.pathname);
   if (path === 'demo') {
-    getHouseHold('no-data')
+    return getHouseHold('no-data')
       .then(getValueOrDefault(createDemoHouse()))
       .then(state.setHouseHold)
       .then(render);
-    return createDemoHouse().then(state.setHouseHold).then(render);
-  } else {
-    render();
   }
+  render();
 });
