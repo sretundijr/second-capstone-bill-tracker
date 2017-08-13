@@ -16,6 +16,7 @@ const {
   removeExpense,
   editExpense,
   addRoommate,
+  saveNewExpense,
 } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
@@ -127,8 +128,15 @@ let setEditedRow = (e, i) => {
     dueDate: data.dueDate.value,
     amount: data.amount.value,
   };
-  state.editExpense(dataObj, i);
-  editExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
+  if (state.getNewExpenseFlag() === true) {
+    state.setNewExpenseFlag(false);
+    state.editExpense(dataObj, i);
+    // console.log('hello from add new expense');
+    saveNewExpense(dataObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
+  } else {
+    state.editExpense(dataObj, i);
+    editExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
+  }
 };
 
 const watchAddExpenses = () => {
@@ -136,6 +144,7 @@ const watchAddExpenses = () => {
 
   addExpense.addEventListener('click', () => {
     state.addEmptyExpense();
+    state.setNewExpenseFlag(true);
     renderPage();
     const index = state.getExpenses().length - 1;
     const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });

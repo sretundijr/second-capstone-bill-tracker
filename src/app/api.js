@@ -29,6 +29,17 @@ const createHouseHold = (obj) => {
   }).then(response => response.json());
 };
 
+const saveNewExpense = (expense, slug) => {
+  console.log(slug);
+  return fetch(`/api/expenses/${slug}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(expense),
+  });
+};
+
 const modifyAnExpense = (expense, slug) => {
   return fetch(`/api/expenses/${slug}`, {
     method: 'PUT',
@@ -82,4 +93,5 @@ module.exports = {
   removeExpense,
   addRoommate,
   createDemoHouse,
+  saveNewExpense,
 };

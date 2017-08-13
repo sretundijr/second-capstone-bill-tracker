@@ -14,6 +14,7 @@ const {
   updateAnExpense,
   deleteAnExpense,
   filterOutRemovedExpenses,
+  addNewExpense,
  } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
@@ -70,6 +71,15 @@ app.post('/api/household', (req, res) => {
     }).catch((err) => {
       console.log(err);
       res.status(500).json({ message: 'nope' });
+    });
+});
+
+// add new expense
+app.post('/api/expenses/:slug', (req, res) => {
+  console.log(req.params.slug);
+  addNewExpense(req.params.slug, req.body)
+    .then((status) => {
+      res.status(200).json(status);
     });
 });
 

@@ -66,6 +66,14 @@ class CreateHouseState {
     });
   }
 
+  setNewExpenseFlag(value) {
+    this.state.addNewExpenseFlag = value;
+  }
+
+  getNewExpenseFlag() {
+    return this.state.addNewExpenseFlag;
+  }
+
   addEmptyExpense() {
     const expenseObject = {
       name: '',

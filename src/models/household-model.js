@@ -52,7 +52,7 @@ const filterOutRemovedExpenses = (expenses) => {
 }
 
 const findOneExpense = (slug, expense) => {
-  return { slug, 'expenses._id': expense._id };
+  return { 'expenses._id': expense._id };
 };
 
 const updatedExpense = (expense) => {
@@ -63,9 +63,17 @@ const updatedExpense = (expense) => {
   };
 };
 
+const addNewExpense = (slug, expense) => {
+  return Household
+    .updateOne({ slug }, { $push: { expenses: expense } })
+    .exec();
+};
+
 const updateAnExpense = (slug, expense) => {
   return Household
-    .updateOne(findOneExpense(slug, expense), { $set: { 'expenses.$': updatedExpense(expense) } })
+    .updateOne(
+    findOneExpense(slug, expense),
+    { $set: { 'expenses.$': updatedExpense(expense) } })
     .exec();
 };
 
@@ -82,4 +90,5 @@ module.exports = {
   updateAnExpense,
   deleteAnExpense,
   filterOutRemovedExpenses,
+  addNewExpense,
 };
