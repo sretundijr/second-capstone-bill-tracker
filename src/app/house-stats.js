@@ -143,7 +143,7 @@ let setEditedRow = (e, i) => {
   if (state.getOneExpense(i).newExpense === true) {
     state.getOneExpense(i).newExpense = false;
     state.editExpense(dataObj, i);
-    saveNewExpense(dataObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
+    saveNewExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
   } else {
     state.editExpense(dataObj, i);
     editExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
@@ -155,8 +155,8 @@ const watchAddExpenses = () => {
 
   addExpense.addEventListener('click', () => {
     state.addEmptyExpense();
-    renderPage();
     const index = state.getExpenses().length - 1;
+    renderPage();
     const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
   });
 };
@@ -203,6 +203,11 @@ const renderPage = (mobile = '') => {
     renderExpenseSummary();
     renderTableData(state.getExpenses());
   }
+  // if (state.getManageDatePicker().length > 0) {
+  //   state.getManageDatePicker().forEach((item) => {
+  //     let picker = new Pikaday({ field: document.getElementById(`datePicker${item}`) });
+  //   });
+  // }
 };
 
 const renderAllExpensesExplained = () => {
