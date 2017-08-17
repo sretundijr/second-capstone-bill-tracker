@@ -1,5 +1,7 @@
 div(class="col-md-6 each-roommate-expense-js")
-  h6= name
+  div
+  h4= name 
+  button(class='btn btn-sm btn-primary remove-roommate-js' id=`${name}`) Remove Roommate
   ol(class="list-group")
       each val in list 
           li(class="list-group-item")= `${val.name}: ${val.roommateAmountDue}`

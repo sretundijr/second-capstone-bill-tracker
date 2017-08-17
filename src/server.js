@@ -13,9 +13,10 @@ const {
   getHousehold,
   updateAnExpense,
   deleteAnExpense,
-  filterOutRemovedExpenses,
+  filterOutRemoved,
   addNewExpense,
   addNewRoommate,
+  deleteRoommate,
  } = require('./models/household-model');
 
 const DIST_DIR = path.join(__dirname, '../dist');
@@ -44,7 +45,6 @@ app.get('/create-house/:userType', (req, res) => {
 app.get('/api/household/:slug', (req, res) => {
   return getHousehold(req.params.slug)
     .then((house) => {
-      console.log(house);
       if (house == null) {
         res.status(400).json(house);
       } else {
@@ -52,8 +52,8 @@ app.get('/api/household/:slug', (req, res) => {
           id: house._id,
           name: house.name,
           slug: house.slug,
-          roommates: house.roommates.slice(0),
-          expenses: filterOutRemovedExpenses(house.expenses).slice(0),
+          roommates: filterOutRemoved(house.roommates).slice(0),
+          expenses: filterOutRemoved(house.expenses).slice(0),
         };
         res.status(200).json(filteredHouse);
       }
@@ -105,6 +105,12 @@ app.post('/api/roommates/new/:slug', (req, res) => {
     .then(response => res.status(200).json(response));
 });
 
+// remove a roommate
+app.post('/api/roommates/remove/:slug', (req, res) => {
+  deleteRoommate(req.params.slug, req.body)
+    .then(response => res.status(200).json(response));
+});
+
 // *******************************************
 let server;
 
@@ -142,6 +148,5 @@ function closeServer() {
 if (require.main === module) {
   runServer().catch(err => console.error(err));
 }
-
 
 module.exports = { runServer, app, closeServer };

@@ -1,16 +1,6 @@
-/* global localStorage fetch */
+/* global fetch */
 
 const house = require('./mock-model');
-
-const localObj = 'localObj';
-
-const retrieveFromLocal = () => {
-  return JSON.parse(localStorage.getItem(localObj));
-};
-
-const saveToLocal = (obj) => {
-  localStorage.setItem(localObj, JSON.stringify(obj));
-};
 
 const getHouseHold = (slug) => {
   return fetch(`/api/household/${slug}`, {
@@ -76,8 +66,14 @@ const addRoommate = (roommate, slug) => {
   });
 };
 
-const removeHouseHold = () => {
-  localStorage.removeItem(localObj);
+const removeRoommate = (roommate, slug) => {
+  return fetch(`/api/roommates/remove/${slug}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(roommate),
+  });
 };
 
 const createDemoHouse = () => {
@@ -97,4 +93,5 @@ module.exports = {
   addRoommate,
   createDemoHouse,
   saveNewExpense,
+  removeRoommate,
 };

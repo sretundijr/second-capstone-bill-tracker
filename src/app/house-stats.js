@@ -17,6 +17,7 @@ const {
   editExpense,
   addRoommate,
   saveNewExpense,
+  removeRoommate,
 } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
 const Pikaday = require('pikaday');
@@ -64,6 +65,18 @@ const addNewRoommate = () => {
         .then(divideTheExpenses)
         .then(() => { roommateContainer.innerHTML = ''; })
         .then(renderPage);
+    });
+  });
+};
+
+const watchRemoveRoommate = () => {
+  const removeRoommateBtn = document.getElementsByClassName('remove-roommate-js');
+  Array.from(removeRoommateBtn).forEach((element) => {
+    element.addEventListener('click', (e) => {
+      const roommateObj = state.getRoommateByName(e.target.id);
+      console.log(roommateObj);
+      state.removeRoommateByName(roommateObj.name);
+      removeRoommate(roommateObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
     });
   });
 };
@@ -127,8 +140,8 @@ let setEditedRow = (e, i) => {
     dueDate: data.dueDate.value,
     amount: data.amount.value,
   };
-  if (state.getNewExpenseFlag() === true) {
-    state.setNewExpenseFlag(false);
+  if (state.getOneExpense(i).newExpense === true) {
+    state.getOneExpense(i).newExpense = false;
     state.editExpense(dataObj, i);
     saveNewExpense(dataObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
   } else {
@@ -142,7 +155,6 @@ const watchAddExpenses = () => {
 
   addExpense.addEventListener('click', () => {
     state.addEmptyExpense();
-    state.setNewExpenseFlag(true);
     renderPage();
     const index = state.getExpenses().length - 1;
     const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
@@ -168,6 +180,7 @@ const renderExpenseSummary = () => {
   if (state.getExpenses().length >= 1 && state.getRoommates().length > 1) {
     const summaryContainer = document.getElementById('expense-summary-container');
     summaryContainer.innerHTML = createDividedExpenseHtml().join('');
+    watchRemoveRoommate();
   }
 };
 
@@ -190,8 +203,6 @@ const renderPage = (mobile = '') => {
     renderExpenseSummary();
     renderTableData(state.getExpenses());
   }
-  watchAddExpenses();
-  addNewRoommate();
 };
 
 const renderAllExpensesExplained = () => {
@@ -250,6 +261,8 @@ const renderUserLink = () => {
 document.addEventListener('DOMContentLoaded', () => {
   renderUserLink();
   const path = location.pathname.replace('/house-stats/', '');
+  watchAddExpenses();
+  addNewRoommate();
   getHouseHold(path)
     .then((house) => {
       state.setHouseHold(house);

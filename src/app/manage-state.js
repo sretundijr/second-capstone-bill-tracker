@@ -55,6 +55,24 @@ class CreateHouseState {
     return this.state.roommates.length;
   }
 
+  removeRoommateByName(name) {
+    this.state.roommates.forEach((item, index) => {
+      if (item.name === name) {
+        this.state.roommates.splice(index, 1);
+      }
+    });
+  }
+
+  getRoommateByName(name) {
+    let roommateObj;
+    this.state.roommates.forEach((item) => {
+      if (item.name === name) {
+        roommateObj = item;
+      }
+    });
+    return roommateObj;
+  }
+
   getRoommates() {
     return this.state.roommates;
   }
@@ -66,20 +84,13 @@ class CreateHouseState {
     });
   }
 
-  setNewExpenseFlag(value) {
-    this.state.addNewExpenseFlag = value;
-  }
-
-  getNewExpenseFlag() {
-    return this.state.addNewExpenseFlag;
-  }
-
   addEmptyExpense() {
     const expenseObject = {
       name: '',
       amount: '',
       dueDate: '',
       editable: true,
+      newExpense: true,
     };
     this.state.expenses.push(expenseObject);
   }

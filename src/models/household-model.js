@@ -41,15 +41,15 @@ const getHousehold = (slug) => {
     .exec();
 };
 
-const filterOutRemovedExpenses = (expenses) => {
-  const filteredExpenses = [];
-  expenses.forEach((item, index) => {
+const filterOutRemoved = (list) => {
+  const filtered = [];
+  list.forEach((item) => {
     if (item.removed === false) {
-      filteredExpenses.push(item);
+      filtered.push(item);
     }
   });
-  return filteredExpenses;
-}
+  return filtered;
+};
 
 const findOneExpense = (slug, expense) => {
   return { 'expenses._id': expense._id };
@@ -89,13 +89,20 @@ const addNewRoommate = (slug, roommate) => {
     .exec();
 };
 
+const deleteRoommate = (slug, roommate) => {
+  return Household
+    .updateOne({ 'roommates._id': roommate._id }, { $set: { 'roommates.$.removed': true } })
+    .exec();
+};
+
 module.exports = {
   Household,
   createHousehold,
   getHousehold,
   updateAnExpense,
   deleteAnExpense,
-  filterOutRemovedExpenses,
+  filterOutRemoved,
   addNewExpense,
   addNewRoommate,
+  deleteRoommate,
 };
