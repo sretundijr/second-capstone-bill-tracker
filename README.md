@@ -16,10 +16,31 @@ Demo version
 
 ![Create house form](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/demo-create-house-form.png)
 
+
 Submit house rendering
 
 
 ![Submit house button rendered](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/submit-house-image.png)
+
+
+Create a new household form, none demo version
+
+![blank create house form](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/blank-form.png)
+
+
+After a user has entered household data for submission, they are redirected to the house stats page.  This page shows expenses each roommate is responsible for and all of the household expenses.  The page allows a user to edit and delete all info.  The expense divider evenly splits all expenses over 300 dollars and pass out each expense under 300.  If there is any difference between each roommmates total amount due, the difference is made even through adding and subtracting from the largest monthly expense.
+
+
+![Bills divided image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/bills-divided.png)
+
+
+![all bills image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/all-bills.png)
+
+
+Each household is given a unique url as opposed to a traditional log in system
+
+
+![unique url image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/unique-url.png)
 
 
 
