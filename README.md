@@ -1,22 +1,15 @@
 # second-capstone-bill-tracker
 
-To run locally npm run serve on local host 8080
+This web app is used to track monthly household expenses and divide these expenses among roommates
 
-There are currently three end points:
-  /index (landing page)
-  /house-stats
-  /create-house
+The landing page as shown below, includes two entry points.  The first is used to create a new household 
+and the second is a demo.  The demo is loaded with mock data to spare the users the time and energy of 
+enter expenses and roommates.  While in the demo, the user can add and modify any existing data to experience 
+the functionality.
 
-The create house page is used to collect both roommate and expense data. After all data has been
-entered the user can then submit and the app will divide expenses to the entered roommates.
+![Alt text](images/landingPage?raw=true "Landing Page")
 
-House stats shows all of the expenses entered and the division of bills amongst roommates.
 
-Both pages have a desktop rendering and a mobile friendly rendering for better UX.
-
-The app is currently in demo mode only.
-
-Currently local storage is used
 
 Live app https://secure-coast-72425.herokuapp.com/
 
