@@ -7,7 +7,7 @@ and the second is a demo.  The demo is loaded with mock data to spare the users 
 enter expenses and roommates.  While in the demo, the user can add and modify any existing data to experience 
 the functionality.
 
-![Alt text](images/landingPage?raw=true "Landing Page")
+![App intro page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/landingPage.png)
 
 
 
