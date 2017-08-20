@@ -81,6 +81,16 @@ Add a new expense view in mobile
 ![mobile add a new expense in the stats page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-add-expense.png)
 
 
+This application include unit tests and endpoint test
+
+![image of unit tests and endpoint test](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/all-test-passing.png)
+
+
+The application used webpack for the client side build.  See package json and webpack config for setup details
+
+![webpack build](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/webpack-build.png)
+
+
 Thank you for visiting my app.  I hope that you have enjoyed it as much as I enjoyed building it.  It was a great learing expeirence and my first full stack app.  The link below is to the live version.
 
 
