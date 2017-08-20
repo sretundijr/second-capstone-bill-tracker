@@ -30,6 +30,21 @@ const state = new CreateHouseState();
 
 const pipe = (...pipeline) => input => pipeline.reduce((acc, fn) => fn(acc), input);
 
+// add a date picker to editable expenses
+const addDatePicker = () => {
+  const listOfEditableExpenses = document.querySelectorAll('input:read-write');
+
+  if (listOfEditableExpenses.length > 0) {
+    listOfEditableExpenses.forEach((element) => {
+      element.classList.forEach((item) => {
+        if (item === 'add-picker') {
+          let picker = new Pikaday({ field: element });
+        }
+      });
+    });
+  }
+};
+
 // ************************************
 // initial render
 const buildTable = () => state
@@ -42,6 +57,7 @@ const getTableBodyId = () => document.getElementById('main-content-js');
 
 const renderTableData = (expense = '') => {
   getTableBodyId().innerHTML = tableToString(expense);
+  addDatePicker();
   watchDelete();
   watchEdit();
 };
@@ -119,7 +135,6 @@ let watchEdit = () => {
       } else {
         state.getExpenses()[index].editable = isEditable(index);
         renderPage();
-        let picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
       }
     });
   });
@@ -143,7 +158,9 @@ let setEditedRow = (e, i) => {
   if (state.getOneExpense(i).newExpense === true) {
     state.getOneExpense(i).newExpense = false;
     state.editExpense(dataObj, i);
-    saveNewExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
+    saveNewExpense(state.getOneExpense(i), state.getSlug())
+      .then(divideTheExpenses)
+      .then(renderPage);
   } else {
     state.editExpense(dataObj, i);
     editExpense(state.getOneExpense(i), state.getSlug()).then(divideTheExpenses).then(renderPage);
@@ -157,8 +174,6 @@ const watchAddExpenses = () => {
     state.addEmptyExpense();
     const index = state.getExpenses().length - 1;
     renderPage();
-    // setManpicker.push(index);
-    const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
   });
 };
 
@@ -204,11 +219,6 @@ const renderPage = (mobile = '') => {
     renderExpenseSummary();
     renderTableData(state.getExpenses());
   }
-  // if (state.getManageDatePicker().length > 0) {
-  //   state.getManageDatePicker().forEach((item) => {
-  //     let picker = new Pikaday({ field: document.getElementById(`datePicker${item}`) });
-  //   });
-  // }
 };
 
 const renderAllExpensesExplained = () => {
