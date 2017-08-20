@@ -23,7 +23,7 @@ Submit house rendering
 ![Submit house button rendered](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/submit-house-image.png)
 
 
-Create a new household form, none demo version
+Create a new household form, non demo version
 
 ![blank create house form](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/blank-form.png)
 
