@@ -43,7 +43,7 @@ const getTableBodyId = () => document.getElementById('main-content-js');
 const renderTableData = (expense = '') => {
   getTableBodyId().innerHTML = tableToString(expense);
   watchDelete();
-  return watchEdit();
+  watchEdit();
 };
 
 // **********************************
@@ -157,6 +157,7 @@ const watchAddExpenses = () => {
     state.addEmptyExpense();
     const index = state.getExpenses().length - 1;
     renderPage();
+    // setManpicker.push(index);
     const picker = new Pikaday({ field: document.getElementById(`datePicker${index}`) });
   });
 };

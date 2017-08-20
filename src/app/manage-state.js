@@ -17,6 +17,7 @@ class CreateHouseState {
       slug: '',
       roommates: [],
       expenses: [],
+      managePicker: [],
     };
     this.setHouseHold = this.setHouseHold.bind(this);
   }

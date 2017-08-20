@@ -31,7 +31,13 @@ Create a new household form, none demo version
 After a user has entered household data for submission, they are redirected to the house stats page.  This page shows expenses each roommate is responsible for and all of the household expenses.  The page allows a user to edit and delete all info.  The expense divider evenly splits all expenses over 300 dollars and pass out each expense under 300.  If there is any difference between each roommmates total amount due, the difference is made even through adding and subtracting from the largest monthly expense.
 
 
+Divison of bills
+
+
 ![Bills divided image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/bills-divided.png)
+
+
+All bills listed
 
 
 ![all bills image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/all-bills.png)
@@ -42,6 +48,37 @@ Each household is given a unique url as opposed to a traditional log in system
 
 ![unique url image](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/unique-url.png)
 
+
+Due to the amount of content displayed on each page, there is seperate mobile rendering strategy
+
+The following screen shots show the household creation process on a mobile device
+
+Create a roommate
+
+ ![create roommate mobile rendering](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-create-roommate.png)
+
+ Create an expense
+
+ ![create an expense mobiile rendering](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-create-expense.png)
+
+
+The following are screen shots of the mobile rendering for the household stats page
+
+View all expenses
+
+![mobile rendering for all expenses](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-expenses.png)
+
+View roommates amount due
+
+![mobile rendering for roommates expenses](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-roommate-expenses.png)
+
+Add a new roommate in mobile
+
+![mobile add a new roommate in the stats page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-add-roommate.png)
+
+Add a new expense view in mobile 
+
+![mobile add a new expense in the stats page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-add-expense.png)
 
 
 Live app https://secure-coast-72425.herokuapp.com/
