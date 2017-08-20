@@ -23,7 +23,7 @@ Submit house rendering
 ![Submit house button rendered](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/submit-house-image.png)
 
 
-Create a new household form, non demo version
+Create a new household form, non-demo version
 
 ![blank create house form](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/blank-form.png)
 
@@ -79,6 +79,9 @@ Add a new roommate in mobile
 Add a new expense view in mobile 
 
 ![mobile add a new expense in the stats page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-add-expense.png)
+
+
+Thank you for visiting my app.  I hope that you have enjoyed it as much as I enjoyed building it.  It was a great learing expeirence and my first full stack app.  The link below is to the live version.
 
 
 Live app https://secure-coast-72425.herokuapp.com/
