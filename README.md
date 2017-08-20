@@ -81,7 +81,7 @@ Add a new expense view in mobile
 ![mobile add a new expense in the stats page](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/mobile-stats-add-expense.png)
 
 
-This application included unit tests and endpoint test
+This application included unit tests and endpoint test.  Other technologies like travis ci, nodemon and webpack watcher simpiflied the process and allowed for a faster dev process.
 
 ![image of unit tests and endpoint test](https://github.com/sretundijr/second-capstone-bill-tracker/blob/master/images/all-test-passing.png)
 
