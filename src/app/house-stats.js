@@ -181,7 +181,7 @@ const watchAddExpenses = () => {
 // divide expenses to roommates and create a table showing the results
 const divideTheExpenses = () => {
   // todo make dynamic
-  const divideAt300Dollars = '300.00';
+  const divideAt300Dollars = '100.00';
   const dividedBills = billingSummary(state.getExpenses(),
     divideAt300Dollars,
     formatTheMoneyInput(state.getRoommates().length),

@@ -1,4 +1,7 @@
+
 /* global document location */
+
+require('../styles/index.css');
 
 const pipe = (...pipeline) => input => pipeline.reduce((acc, fn) => fn(acc), input);
 
@@ -17,17 +20,6 @@ const getNewHouseBtn = () => document.getElementById('new-house');
 const watchDemoBtn = pipe(getDemoHouseBtn, addClickListener(redirectToDemoHouse));
 
 const watchNewHouse = pipe(getNewHouseBtn, addClickListener(redirectToNewHouse));
-// const demoBtnId = document.getElementById('demo');
-// demoBtnId.addEventListener('click', () => {
-//   location.href = '/create-house/demo';
-// });
-
-// const watchNewHouse = () => {
-//   const newHouseBtnId = document.getElementById('new-house');
-//   newHouseBtnId.addEventListener('click', () => {
-//     location.href = '/create-house/new-house';
-//   });
-// };
 
 document.addEventListener('DOMContentLoaded', () => {
   watchDemoBtn();

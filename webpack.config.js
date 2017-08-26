@@ -46,6 +46,10 @@ module.exports = {
           loader: 'pug-loader',
         },
       },
+      {
+        test: /\.(png|jpeg)$/,
+        loader: 'url-loader',
+      },
     ],
   },
 };
