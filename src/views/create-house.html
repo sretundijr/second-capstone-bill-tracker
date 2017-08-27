@@ -7,72 +7,74 @@
 <!--<![endif]-->
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>create-household</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-    <script src="/createHouse.js" charset="utf-8"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>create-household</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <script src="/createHouse.js" charset="utf-8"></script>
 
-    <script src="https://use.fontawesome.com/c6ec223217.js"></script>
+  <script src="https://use.fontawesome.com/c6ec223217.js"></script>
 
 </head>
 
 <body>
-    <!--[if lt IE 7]>
+  <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
+  <div class="page-container">
     <main>
-        <div class="fluid-container">
-            <div class="row">
-                <div class="main-header col-md-4">
-                    <h2>Add Roommates and shared expenses</h2>
-                    <h6 class="text-center">
-                        Enter a name, add expenses and roommates below, you must have atleast one user and expense
-                    </h6>
+      <div class="fluid-container">
+        <div class="row">
+          <div class="main-header col-md-4">
+            <h2>Add Roommates and shared expenses</h2>
+            <h4 class="text-center">
+              Enter a name, add expenses and roommates below, you must have atleast one user and expense
+            </h4>
+          </div>
+          <div class="col-md-6">
+            <div class="form-container">
+              <form onsubmit="event.preventDefault()">
+                <div class="form-group">
+                  <label class="control-label" for="Household-name">Household Name</label>
+                  <input class="form-control input-style" id="household-name" type="text" name="create-house">
                 </div>
-                <div class="col-md-6">
-                    <div class="form-container">
-                        <form onsubmit="event.preventDefault()">
-                            <div class="form-group">
-                                <label class="control-label" for="Household-name">Household Name</label>
-                                <input class="form-control input-style" id="household-name" type="text" name="create-house">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="text-center" id="mobile-nav-render-area">
-
-                    </div>
-                </div>
-                <div class="col-md-2">
-
-                </div>
+              </form>
             </div>
-            <!--add roommate-->
-            <div class="row" id="roommate-row">
+            <div class="text-center" id="mobile-nav-render-area">
 
             </div>
-            <!--add expenses-->
-            <div class="row" id="add-expense-row">
+          </div>
+          <div class="col-md-2">
 
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-md-offset-5 centered" id="submit-household">
+          </div>
+        </div>
+        <!--add roommate-->
+        <div class="row" id="roommate-row">
 
-                </div>
-            </div>
+        </div>
+        <!--add expenses-->
+        <div class="row" id="add-expense-row">
+
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-md-offset-5 centered" id="submit-household">
+
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer>
-        <div class="row">
-            <div class="col-md-12 create-house-footer">
+      <div class="row">
+        <div class="col-md-12 create-house-footer">
 
-            </div>
         </div>
+      </div>
     </footer>
+  </div>
 </body>
 
 </html>
