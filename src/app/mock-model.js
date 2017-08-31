@@ -10,7 +10,7 @@ const households = [
       },
       {
         name: 'mortgage',
-        amount: '886.78',
+        amount: '1562.87',
         dueDate: '2017-11-15',
       },
       {
@@ -19,13 +19,13 @@ const households = [
         dueDate: '2017-11-11',
       },
       {
-        name: 'Ferrari',
-        amount: '1331.56',
+        name: 'Auto',
+        amount: '331.56',
         dueDate: '2017-11-11',
       },
       {
-        name: 'yacht',
-        amount: '8872.00',
+        name: 'Hoa',
+        amount: '225.00',
         dueDate: '2017-11-11',
       },
     ],
