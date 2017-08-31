@@ -20,7 +20,6 @@ const createHouseHold = (obj) => {
 };
 
 const saveNewExpense = (expense, slug) => {
-  console.log(slug);
   return fetch(`/api/expenses/${slug}`, {
     method: 'POST',
     headers: {
@@ -76,9 +75,13 @@ const removeRoommate = (roommate, slug) => {
   });
 };
 
+const createRandomNumberForDemo = () => {
+  return Math.floor(Math.random() * 10000) + 1;
+};
+
 const createDemoHouse = () => {
   const obj = {
-    name: house[0].name,
+    name: `${house[0].name} ${createRandomNumberForDemo()}`,
     roommates: house[0].roommates.slice(0),
     expenses: house[0].expenses.slice(0),
   };
