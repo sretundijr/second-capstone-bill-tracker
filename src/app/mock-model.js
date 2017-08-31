@@ -28,6 +28,11 @@ const households = [
         amount: '225.00',
         dueDate: '2017-11-11',
       },
+      {
+        name: 'cable',
+        amount: '136.42',
+        dueDate: '2017-11-14',
+      },
     ],
     roommates: [
       {
