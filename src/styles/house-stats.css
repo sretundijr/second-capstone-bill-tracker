@@ -36,3 +36,21 @@ hr.style-four {
     margin: 20px;
     width: auto;
 }
+
+.roommate-expense{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+  .expense-summary{
+    display: flex;
+    flex-wrap: wrap;
+}  
+
+.input-style{
+    width: 300px;
+}
+
+.btn-margin{
+    margin: 20px;
+}

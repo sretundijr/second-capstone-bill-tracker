@@ -1,7 +1,5 @@
 each item, index in roommates
-  div(class='row')
-    div(class='col-md-2 col-md-offset-3')
-      li(class="rendered-list")= item.name
-    div(class='col-md-2 col-md-offset-1')
-      button(class="btn btn-small delete-btn-js rendered-roommate-btn" id=`roommate-${index}`) Delete
-
+  tr
+    td()= item.name
+    td()
+      button(class="btn btn-primary btn-sm delete-btn-js rendered-roommate-btn" id=`roommate-${index}`) Delete

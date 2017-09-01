@@ -1,7 +1,8 @@
 .page-container{
     /* background-image: url('../../images/Zinc.jpg'); */
-    background: linear-gradient(to left, rgb(142, 158, 171), rgb(238, 242, 243));
+    /* background: linear-gradient(to left, rgb(142, 158, 171), rgb(238, 242, 243)); */
     /* background-color:#d5d5d5;  */
+    background-color: rgb(247, 247, 249); 
     color:black;
 }
 
@@ -24,6 +25,7 @@
     /* border: 2px solid rgb(228, 228, 228); */
     /* background:#9099a2; */
     /* background: linear-gradient(to right, rgb(142, 158, 171), rgb(238, 242, 243)); */
+     /* background-color: rgb(147, 197, 245);  */
     padding: 20px;
 }
 
@@ -44,7 +46,7 @@
 
 .rendered-roommate-btn{
     margin-left: 20px;
-    background-color: rgb(204, 213, 218);        
+    /* background-color: rgb(204, 213, 218);         */
 }
 
 .expense-table-container{
@@ -64,9 +66,9 @@
 }
 
 .btn-form-color{
-    background-color: rgb(146, 161, 173);    
+    /* background-color: rgb(146, 161, 173);     */
 }
 
 .expense-rendered-btn{
-    background-color: rgb(204, 213, 218);    
+    /* background-color: rgb(204, 213, 218);     */
 }
