@@ -75,13 +75,13 @@ const saveOrEditRoommate = (index) => {
     state.getRoommates()[index].editable = false;
     addRoommate(state.getRoommates()[index], state.getSlug())
       .then(divideTheExpenses)
-      .then(renderPage);
+      .then(() => renderPage('summary'));
   } else {
     state.getRoommates()[index].name = newRoomateInfo;
     state.getRoommates()[index].editable = false;
     editRoommate(state.getRoommates()[index], state.getSlug())
       .then(divideTheExpenses)
-      .then(renderPage)
+      .then(() => renderPage('summary'));
   }
 };
 
@@ -93,7 +93,7 @@ const setRoomateEditable = () => {
         saveOrEditRoommate(index);
       } else {
         state.getRoommates()[index].editable = true;
-        renderPage();
+        renderPage('summary');
         document.getElementById(`focus-${index}`).focus();
       }
     });
@@ -105,7 +105,7 @@ const addNewRoommate = () => {
   roommateBtn.addEventListener('click', () => {
     state.addEmptyRoommate();
     divideTheExpenses();
-    renderPage();
+    renderPage('summary');
     document.getElementById(`focus-${state.getRoommates().length - 1}`).focus();
   });
 };
@@ -116,7 +116,7 @@ const watchRemoveRoommate = () => {
     element.addEventListener('click', (e) => {
       const roommateObj = state.getRoommateByName(e.target.id);
       state.removeRoommateByName(roommateObj.name);
-      removeRoommate(roommateObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
+      removeRoommate(roommateObj, state.getSlug()).then(divideTheExpenses).then(() => renderPage('summary'));
     });
   });
 };
@@ -229,7 +229,8 @@ const renderExpenseSummary = () => {
 // **********************************
 // main render
 const renderPage = (mobile = '') => {
-  // removeHtml();
+  removeHtml();
+  console.log(mobile);
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
     if (mobile === 'summary') {
