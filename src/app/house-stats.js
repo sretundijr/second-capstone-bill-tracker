@@ -230,7 +230,6 @@ const renderExpenseSummary = () => {
 // main render
 const renderPage = (mobile = '') => {
   removeHtml();
-  console.log(mobile);
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
     if (mobile === 'summary') {

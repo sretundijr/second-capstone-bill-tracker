@@ -3,7 +3,6 @@
 // js
 const CreateHouseState = require('./manage-state');
 const Pikaday = require('pikaday');
-const HouseHold = require('./mock-model');
 const { getHouseHold, createHouseHold, createDemoHouse } = require('./api');
 const { AddRoommateForm, RoommateList } = require('./create-roommate.js');
 const {
