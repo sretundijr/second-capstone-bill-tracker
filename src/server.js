@@ -16,6 +16,7 @@ const {
   filterOutRemoved,
   addNewExpense,
   addNewRoommate,
+  updateRoommate,
   deleteRoommate,
  } = require('./models/household-model');
 
@@ -103,6 +104,14 @@ app.put('/api/expenses/delete/:slug', (req, res) => {
 app.post('/api/roommates/new/:slug', (req, res) => {
   addNewRoommate(req.params.slug, req.body)
     .then(response => res.status(200).json(response));
+});
+
+// edit a roommate
+app.put('/api/roommates/:slug', (req, res) => {
+  updateRoommate(req.params.slug, req.body)
+    .then((roommate) => {
+      res.status(200).json(roommate);
+    });
 });
 
 // remove a roommate

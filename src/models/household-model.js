@@ -63,6 +63,12 @@ const updatedExpense = (expense) => {
   };
 };
 
+const updatedRoommate = (roommate) => {
+  return {
+    name: roommate.name,
+  };
+};
+
 const addNewExpense = (slug, expense) => {
   return Household
     .updateOne({ slug }, { $push: { expenses: expense } })
@@ -89,6 +95,12 @@ const addNewRoommate = (slug, roommate) => {
     .exec();
 };
 
+const updateRoommate = (slug, roommate) => {
+  return Household
+    .updateOne({ 'roommates._id': roommate._id }, { $set: { 'roommates.$': updatedRoommate(roommate) } })
+    .exec();
+};
+
 const deleteRoommate = (slug, roommate) => {
   return Household
     .updateOne({ 'roommates._id': roommate._id }, { $set: { 'roommates.$.removed': true } })
@@ -104,5 +116,6 @@ module.exports = {
   filterOutRemoved,
   addNewExpense,
   addNewRoommate,
+  updateRoommate,
   deleteRoommate,
 };

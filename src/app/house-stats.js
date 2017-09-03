@@ -17,6 +17,7 @@ const {
   editExpense,
   addRoommate,
   saveNewExpense,
+  editRoommate,
   removeRoommate,
 } = require('./api');
 const { formatTheMoneyInput } = require('./formatting');
@@ -63,25 +64,49 @@ const renderTableData = (expense = '') => {
 };
 
 // **********************************
-// add or remove roommate
+// add, edit or remove roommate
+const saveOrEditBtnClass = () => document.getElementsByClassName('save-or-edit');
+
+const saveOrEditRoommate = (index) => {
+  const newRoomateInfo = document.getElementById(`focus-${index}`).value;
+  if (state.getRoommates()[index].newRoommate) {
+    state.getRoommates()[index].newRoommate = false;
+    state.getRoommates()[index].name = newRoomateInfo;
+    state.getRoommates()[index].editable = false;
+    addRoommate(state.getRoommates()[index], state.getSlug())
+      .then(divideTheExpenses)
+      .then(renderPage);
+  } else {
+    state.getRoommates()[index].name = newRoomateInfo;
+    state.getRoommates()[index].editable = false;
+    editRoommate(state.getRoommates()[index], state.getSlug())
+      .then(divideTheExpenses)
+      .then(renderPage)
+  }
+};
+
+const setRoomateEditable = () => {
+  Array.from(saveOrEditBtnClass()).forEach((element) => {
+    element.addEventListener('click', (e) => {
+      const index = parseInt(e.target.id);
+      if (state.getRoommates()[index].editable) {
+        saveOrEditRoommate(index);
+      } else {
+        state.getRoommates()[index].editable = true;
+        renderPage();
+        document.getElementById(`focus-${index}`).focus();
+      }
+    });
+  });
+};
+
 const addNewRoommate = () => {
   const roommateBtn = document.getElementById('add-roommate');
   roommateBtn.addEventListener('click', () => {
-    removeHtml();
-    const roommateContainer = document.getElementById('expense-summary-container');
-    roommateContainer.innerHTML = createRoommate();
-    // todo reused from create house clean up for this ui
-    const addRoommateBtn = document.getElementById('add-roommate-form');
-
-    addRoommateBtn.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const value = document.getElementsByName('create-roommate')[0].value;
-      state.addRoommate(value);
-      addRoommate(state.getRoommates()[state.getRoommates().length - 1], state.getSlug())
-        .then(divideTheExpenses)
-        .then(() => { roommateContainer.innerHTML = ''; })
-        .then(renderPage);
-    });
+    state.addEmptyRoommate();
+    divideTheExpenses();
+    renderPage();
+    document.getElementById(`focus-${state.getRoommates().length - 1}`).focus();
   });
 };
 
@@ -90,7 +115,6 @@ const watchRemoveRoommate = () => {
   Array.from(removeRoommateBtn).forEach((element) => {
     element.addEventListener('click', (e) => {
       const roommateObj = state.getRoommateByName(e.target.id);
-      console.log(roommateObj);
       state.removeRoommateByName(roommateObj.name);
       removeRoommate(roommateObj, state.getSlug()).then(divideTheExpenses).then(renderPage);
     });
@@ -106,7 +130,7 @@ const isEditable = (index) => {
   return true;
 };
 
-const getDeleteElementIndex = (e) => parseInt(e.target.id.substring(7));
+const getDeleteElementIndex = e => parseInt(e.target.id.substring(7));
 
 const getEditElementIndex = (actionType, id) => parseInt(id.substring(10));
 
@@ -190,20 +214,22 @@ const divideTheExpenses = () => {
 };
 
 const createDividedExpenseHtml = () =>
-  state.getRoommates().map(arr => EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name }));
+  state.getRoommates().map((arr, index) =>
+    EXPENSE_DIVIDED_HTML({ list: arr.bills, name: arr.name, editable: arr.editable, index }));
 
 const renderExpenseSummary = () => {
   if (state.getExpenses().length >= 1 && state.getRoommates().length > 1) {
     const summaryContainer = document.getElementById('expense-summary-container');
     summaryContainer.innerHTML = createDividedExpenseHtml().join('');
     watchRemoveRoommate();
+    setRoomateEditable();
   }
 };
 
 // **********************************
 // main render
 const renderPage = (mobile = '') => {
-  removeHtml();
+  // removeHtml();
   if (window.innerWidth <= '1000') {
     renderMenuBtn();
     if (mobile === 'summary') {
@@ -282,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
   getHouseHold(path)
     .then((house) => {
       state.setHouseHold(house);
-      console.log(state.getHouseHold());
     })
     .then(divideTheExpenses)
     .then(renderPage);

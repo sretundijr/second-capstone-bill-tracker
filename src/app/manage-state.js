@@ -43,10 +43,19 @@ class CreateHouseState {
     return this.state.name;
   }
 
+  addEmptyRoommate() {
+    const emptyRoommate = {
+      name: '',
+      editable: true,
+      newRoommate: true,
+    };
+    this.state.roommates.push(emptyRoommate);
+  }
+
   addRoommate(data) {
     const validData = isValidRoommate(data);
     if (validData.isValid) {
-      this.state.roommates.push({ name: data });
+      this.state.roommates.push({ name: data, editable: false });
     }
     return this.state.roommates.length;
   }

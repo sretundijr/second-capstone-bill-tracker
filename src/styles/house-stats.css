@@ -22,7 +22,7 @@
 }
 
 body{
-    background-color: rgb(247, 247,249)
+    background-color: rgb(247, 247,249);
 }
 
 hr.style-four {
@@ -53,4 +53,10 @@ hr.style-four {
 
 .btn-margin{
     margin: 20px;
+}
+
+.roommate-input{
+    background-color: rgb(247, 247,249);
+    border: 0;
+    margin-top: 10px;
 }

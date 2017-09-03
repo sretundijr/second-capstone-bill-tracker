@@ -65,6 +65,16 @@ const addRoommate = (roommate, slug) => {
   });
 };
 
+const editRoommate = (roommate, slug) => {
+  return fetch(`/api/roommates/${slug}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(roommate),
+  });
+};
+
 const removeRoommate = (roommate, slug) => {
   return fetch(`/api/roommates/remove/${slug}`, {
     method: 'POST',
@@ -96,5 +106,6 @@ module.exports = {
   addRoommate,
   createDemoHouse,
   saveNewExpense,
+  editRoommate,
   removeRoommate,
 };
